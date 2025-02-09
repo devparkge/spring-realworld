@@ -26,11 +26,11 @@ public class UserService {
         }
 
         return new UserByLoginResponse(
-                result.getEmail(),
-                result.getToken(),
-                result.getUsername(),
-                result.getBio(),
-                result.getImage()
+                result.email(),
+                result.token(),
+                result.username(),
+                result.bio(),
+                result.image()
         );
     }
 }
