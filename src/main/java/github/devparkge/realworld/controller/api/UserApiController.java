@@ -25,7 +25,6 @@ public class UserApiController {
                 loginRequest.user().password()
         );
         LoginResponse loginResponse = new LoginResponse(user);
-        System.out.println("UserController Response : " + loginResponse);
         return loginResponse;
     }
 }

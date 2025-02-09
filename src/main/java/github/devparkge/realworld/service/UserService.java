@@ -25,8 +25,6 @@ public class UserService {
             throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
         }
 
-        System.out.println("UserService user : " + result);
-
         return new UserByLoginResponse(
                 result.getEmail(),
                 result.getToken(),
