@@ -1,12 +1,12 @@
 package github.devparkge.realworld.controller.api;
 
-import github.devparkge.realworld.controller.dto.UserByLoginResponse;
+import github.devparkge.realworld.controller.config.JsonRequest;
+import github.devparkge.realworld.controller.dto.UserDto;
 import github.devparkge.realworld.controller.request.LoginRequest;
 import github.devparkge.realworld.controller.response.LoginResponse;
 import github.devparkge.realworld.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,11 +18,11 @@ public class UserApiController {
 
     @PostMapping("/login")
     public LoginResponse login(
-            @RequestBody LoginRequest loginRequest
+            @JsonRequest("user") LoginRequest loginRequest
     ) {
-        UserByLoginResponse user = userService.login(
-                loginRequest.user().email(),
-                loginRequest.user().password()
+        UserDto user = userService.login(
+                loginRequest.email(),
+                loginRequest.password()
         );
         LoginResponse loginResponse = new LoginResponse(user);
         return loginResponse;

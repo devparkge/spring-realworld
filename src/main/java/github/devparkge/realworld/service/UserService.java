@@ -1,6 +1,6 @@
 package github.devparkge.realworld.service;
 
-import github.devparkge.realworld.controller.dto.UserByLoginResponse;
+import github.devparkge.realworld.controller.dto.UserDto;
 import github.devparkge.realworld.exception.EmailNotFoundException;
 import github.devparkge.realworld.exception.InvalidPasswordException;
 import github.devparkge.realworld.repository.mapper.UserMapper;
@@ -15,7 +15,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     @Transactional
-    public UserByLoginResponse login(String email, String password) {
+    public UserDto login(String email, String password) {
         if(!userMapper.isValidEmail(email)) {
             throw new EmailNotFoundException("유효하지 않은 이메일입니다.");
         }
@@ -25,7 +25,7 @@ public class UserService {
             throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
         }
 
-        return new UserByLoginResponse(
+        return new UserDto(
                 result.email(),
                 result.token(),
                 result.username(),
