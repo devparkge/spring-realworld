@@ -1,6 +1,6 @@
-package github.devparkge.realworld.service.dto;
+package github.devparkge.realworld.repository.domain;
 
-public record SelectUserToPasswordDto(
+public record User(
         String email,
         String token,
         String username,
