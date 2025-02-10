@@ -1,7 +1,6 @@
 package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.controller.config.JsonRequest;
-import github.devparkge.realworld.controller.dto.UserDto;
 import github.devparkge.realworld.controller.request.LoginRequest;
 import github.devparkge.realworld.controller.response.LoginResponse;
 import github.devparkge.realworld.service.UserService;
@@ -20,11 +19,9 @@ public class UserApiController {
     public LoginResponse login(
             @JsonRequest("user") LoginRequest loginRequest
     ) {
-        UserDto user = userService.login(
+        return userService.login(
                 loginRequest.email(),
                 loginRequest.password()
         );
-        LoginResponse loginResponse = new LoginResponse(user);
-        return loginResponse;
     }
 }

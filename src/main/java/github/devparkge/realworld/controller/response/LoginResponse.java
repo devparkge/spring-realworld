@@ -1,20 +1,28 @@
 package github.devparkge.realworld.controller.response;
 
-import github.devparkge.realworld.controller.dto.UserDto;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@Getter
-public class LoginResponse {
-    private UserDto user;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
-    public LoginResponse(UserDto user) {
-        this.user = user;
-    }
-
+@JsonTypeName("user")
+@JsonTypeInfo(include = WRAPPER_OBJECT, use = NAME)
+public record LoginResponse(
+        String email,
+        String token,
+        String username,
+        String bio,
+        String image
+) {
     @Override
     public String toString() {
         return "LoginResponse{" +
-                "user=" + user +
+                "email='" + email + '\'' +
+                ", token='" + token + '\'' +
+                ", username='" + username + '\'' +
+                ", bio='" + bio + '\'' +
+                ", image='" + image + '\'' +
                 '}';
     }
 }
