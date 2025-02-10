@@ -21,12 +21,6 @@ public class UserService {
 
         if(!user.machesPassword(email)) throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
 
-        return new LoginResponse(
-                user.email(),
-                "jwt.token.here",
-                user.username(),
-                user.bio(),
-                user.image()
-        );
+        return LoginResponse.from(user);
     }
 }
