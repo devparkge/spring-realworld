@@ -4,8 +4,8 @@ import github.devparkge.realworld.service.dto.SelectUserToPasswordDto;
 
 public interface UserRepository {
     //Login email 검증
-    boolean selectEmail(String email);
+    boolean findEmail(String email);
 
     //Login password 확인
-    SelectUserToPasswordDto selectUserToPassword(String email, String password);
+    SelectUserToPasswordDto getUserToEmail(String email, String password);
 }

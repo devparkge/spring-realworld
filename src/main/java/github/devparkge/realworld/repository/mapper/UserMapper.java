@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper implements UserRepository {
     @Override
-    public boolean selectEmail(String email) {
+    public boolean findEmail(String email) {
         return true;
     }
 
     @Override
-    public SelectUserToPasswordDto selectUserToPassword(String email, String password) {
+    public SelectUserToPasswordDto getUserToEmail(String email, String password) {
         return new SelectUserToPasswordDto(
                 "jake@jake.jake",
                 "jwt.token.here",

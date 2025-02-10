@@ -4,7 +4,6 @@ import github.devparkge.realworld.controller.response.LoginResponse;
 import github.devparkge.realworld.exception.EmailNotFoundException;
 import github.devparkge.realworld.exception.InvalidPasswordException;
 import github.devparkge.realworld.repository.UserRepository;
-import github.devparkge.realworld.repository.mapper.UserMapper;
 import github.devparkge.realworld.service.dto.SelectUserToPasswordDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,11 @@ public class UserService {
 
     @Transactional
     public LoginResponse login(String email, String password) {
-        if(!userRepository.selectEmail(email)) {
+        if(!userRepository.findEmail(email)) {
             throw new EmailNotFoundException("유효하지 않은 이메일입니다.");
         }
 
-        SelectUserToPasswordDto result = userRepository.selectUserToPassword(email,password);
+        SelectUserToPasswordDto result = userRepository.getUserToEmail(email,password);
         if(result == null) {
             throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
         }
