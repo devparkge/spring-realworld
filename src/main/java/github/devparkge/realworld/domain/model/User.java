@@ -8,7 +8,7 @@ public record User(
         String bio,
         String image
 ) {
-    public boolean machesPassword(String password) {
+    public boolean matchesPassword(String password) {
         return password().equals(password);
     }
 }

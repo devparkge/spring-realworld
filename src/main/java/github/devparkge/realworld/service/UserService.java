@@ -25,7 +25,7 @@ public class UserService {
     }
 
     private void validatePassword(User user, String password) {
-        if (!user.machesPassword(password)) {
+        if (!user.matchesPassword(password)) {
             throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
         }
     }
