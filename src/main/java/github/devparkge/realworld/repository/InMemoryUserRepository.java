@@ -1,6 +1,5 @@
-package github.devparkge.realworld.repository.mapper;
+package github.devparkge.realworld.repository;
 
-import github.devparkge.realworld.repository.UserRepository;
 import github.devparkge.realworld.repository.domain.User;
 import org.springframework.stereotype.Component;
 
