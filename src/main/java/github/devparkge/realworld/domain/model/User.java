@@ -1,4 +1,4 @@
-package github.devparkge.realworld.repository.domain;
+package github.devparkge.realworld.domain.model;
 
 public record User(
         String email,

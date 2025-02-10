@@ -1,6 +1,6 @@
-package github.devparkge.realworld.repository;
+package github.devparkge.realworld.domain.repository;
 
-import github.devparkge.realworld.repository.domain.User;
+import github.devparkge.realworld.domain.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
