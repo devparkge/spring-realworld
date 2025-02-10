@@ -19,7 +19,7 @@ public class UserService {
         User user = userRepository.findEmail(email)
                 .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
 
-        if(!user.password().equals(password)) throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
+        if(!user.machesPassword(email)) throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
 
         return new LoginResponse(
                 user.email(),
