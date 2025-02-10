@@ -1,6 +1,6 @@
 package github.devparkge.realworld.service.dto;
 
-public record IsvlidPasswordDto(
+public record SelectUserToPasswordDto(
         String email,
         String token,
         String username,
