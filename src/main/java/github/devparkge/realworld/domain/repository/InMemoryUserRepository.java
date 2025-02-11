@@ -26,7 +26,8 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void saveUser(User user) {
+    public User saveUser(User user) {
         users.add(user);
+        return user;
     }
 }

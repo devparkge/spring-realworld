@@ -34,17 +34,12 @@ public class UserService {
 
     @Transactional
     public SignUpDto signUp(String username, String email, String password) {
-        if(userRepository.findByEmail(email).isPresent()) throw new DuplicateEmailException("중복된 이메일 입니다.");
+        if (userRepository.findByEmail(email).isPresent()) throw new DuplicateEmailException("중복된 이메일 입니다.");
 
-        User user = new User(
+        return SignUpDto.from(userRepository.saveUser(User.signUp(
                 email,
                 password,
-                username,
-                null,
-                null
-        );
-        userRepository.saveUser(user);
-
-        return SignUpDto.from(user);
+                username
+        )));
     }
 }
