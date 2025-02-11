@@ -1,11 +1,12 @@
 package github.devparkge.realworld.service;
 
-import github.devparkge.realworld.controller.response.LoginResponse;
 import github.devparkge.realworld.domain.model.User;
 import github.devparkge.realworld.domain.repository.UserRepository;
+import github.devparkge.realworld.exception.DuplicateEmailException;
 import github.devparkge.realworld.exception.EmailNotFoundException;
 import github.devparkge.realworld.exception.InvalidPasswordException;
 import github.devparkge.realworld.service.dto.LoginDto;
+import github.devparkge.realworld.service.dto.SignUpDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,5 +30,14 @@ public class UserService {
         if (!user.matchesPassword(password)) {
             throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
         }
+    }
+
+    @Transactional
+    public SignUpDto signUp(String username, String email, String password) {
+        if(userRepository.findEmail(email).isPresent()) throw new DuplicateEmailException("중복된 이메일 입니다.");
+        User user = userRepository.findEmail(email)
+                .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
+
+        return SignUpDto.from(user);
     }
 }
