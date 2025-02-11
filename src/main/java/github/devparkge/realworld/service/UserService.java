@@ -40,7 +40,7 @@ public class UserService {
                 email,
                 password,
                 username,
-                "I work at statefarm",
+                null,
                 null
         );
         userRepository.saveUser(user);
