@@ -9,3 +9,8 @@ spring:
   h2:
     console:
       enabled: true
+jwt:
+  secret: realword
+  expiration: 3600000
+  token-prefix: "Bearer "
+  header: "Authorization"
