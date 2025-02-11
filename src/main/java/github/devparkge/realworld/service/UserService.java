@@ -35,6 +35,9 @@ public class UserService {
     @Transactional
     public SignUpDto signUp(String username, String email, String password) {
         if(userRepository.findEmail(email).isPresent()) throw new DuplicateEmailException("중복된 이메일 입니다.");
+
+        userRepository.addUser(username,email,password);
+
         User user = userRepository.findEmail(email)
                 .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
 
