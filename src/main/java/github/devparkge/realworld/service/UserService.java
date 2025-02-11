@@ -36,10 +36,14 @@ public class UserService {
     public SignUpDto signUp(String username, String email, String password) {
         if(userRepository.findByEmail(email).isPresent()) throw new DuplicateEmailException("중복된 이메일 입니다.");
 
-        userRepository.addUser(username,email,password);
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
+        User user = new User(
+                email,
+                password,
+                username,
+                "I work at statefarm",
+                null
+        );
+        userRepository.saveUser(user);
 
         return SignUpDto.from(user);
     }
