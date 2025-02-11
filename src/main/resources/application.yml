@@ -10,7 +10,7 @@ spring:
     console:
       enabled: true
 jwt:
-  secret: realword
+  secret: "realword"
   expiration: 3600000
   token-prefix: "Bearer "
   header: "Authorization"
