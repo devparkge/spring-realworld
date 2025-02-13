@@ -10,6 +10,7 @@ import github.devparkge.realworld.controller.response.SignUpResponse;
 import github.devparkge.realworld.service.UserService;
 import github.devparkge.realworld.service.dto.GetCurrentUserDto;
 import github.devparkge.realworld.service.dto.LoginDto;
+import github.devparkge.realworld.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import github.devparkge.realworld.service.dto.SignUpDto;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserApiController {
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public LoginResponse login(
@@ -47,9 +49,8 @@ public class UserApiController {
     public CurrentUserResponse currentUser(
             HttpServletRequest request
     ) {
-        String header = ((HttpServletRequest) request).getHeader("Authorization");
-        String token = (header != null && header.startsWith("Bearer ")) ? header.substring(7) : null;
         String email = (String) request.getAttribute("email");
+        String token = jwtUtil.generateToken(email);
         GetCurrentUserDto user = userService.getCurrentUserDto(email, token);
 
         return CurrentUserResponse.from(user);
