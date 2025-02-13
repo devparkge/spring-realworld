@@ -1,6 +1,7 @@
 package github.devparkge.realworld.filter;
 
 
+import github.devparkge.realworld.exception.InvalidTokenException;
 import github.devparkge.realworld.service.UserService;
 import github.devparkge.realworld.util.JwtUtil;
 import jakarta.servlet.*;
@@ -31,9 +32,11 @@ public class JwtAuthenticationFilter implements Filter {
             if (header != null && header.startsWith("Bearer ")) {
                 String token = header.substring(7);
                 String email = jwtUtil.parseToken(token);
-                if (userService.jwtAuthenticationByEmail(email)) {
-                    request.setAttribute("email", email);
+                if (!userService.jwtAuthenticationByEmail(email)) {
+                    throw new InvalidTokenException("유효하지 않은 토큰입니다.");
                 }
+                request.setAttribute("email", email);
+
             }
         }
         chain.doFilter(request, response);

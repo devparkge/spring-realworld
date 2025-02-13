@@ -50,7 +50,6 @@ public class UserApiController {
         String header = ((HttpServletRequest) request).getHeader("Authorization");
         String token = (header != null && header.startsWith("Bearer ")) ? header.substring(7) : null;
         String email = (String) request.getAttribute("email");
-        if(email == null) throw new InvalidTokenException("유효하지 않은 토큰입니다.");
         GetCurrentUserDto user = userService.getCurrentUserDto(email, token);
 
         return CurrentUserResponse.from(user);
