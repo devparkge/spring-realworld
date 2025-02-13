@@ -10,10 +10,10 @@ public record LoginDto(
         String bio,
         String image
 ) {
-    public static LoginDto from(User user) {
+    public static LoginDto from(User user, String token) {
         return new LoginDto(
                 user.email(),
-                "jwt.token.here",
+                token,
                 user.username(),
                 user.bio(),
                 user.image()
