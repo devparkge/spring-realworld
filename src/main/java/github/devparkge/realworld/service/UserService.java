@@ -4,6 +4,7 @@ import github.devparkge.realworld.domain.model.User;
 import github.devparkge.realworld.domain.repository.UserRepository;
 import github.devparkge.realworld.exception.EmailNotFoundException;
 import github.devparkge.realworld.exception.InvalidPasswordException;
+import github.devparkge.realworld.service.dto.GetCurrentUserDto;
 import github.devparkge.realworld.service.dto.LoginDto;
 import github.devparkge.realworld.util.JwtUtil;
 import lombok.AllArgsConstructor;
@@ -37,5 +38,11 @@ public class UserService {
         User user = userRepository.findEmail(email)
                 .orElse(null);
         return (user != null) ? true : false;
+    }
+
+    public GetCurrentUserDto getCurrentUserDto(String email, String token) {
+        User user = userRepository.findEmail(email)
+                .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
+        return GetCurrentUserDto.from(user, token);
     }
 }
