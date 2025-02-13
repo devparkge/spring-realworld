@@ -1,6 +1,5 @@
 package github.devparkge.realworld.service;
 
-import github.devparkge.realworld.controller.response.LoginResponse;
 import github.devparkge.realworld.domain.model.User;
 import github.devparkge.realworld.domain.repository.UserRepository;
 import github.devparkge.realworld.exception.EmailNotFoundException;
@@ -9,6 +8,8 @@ import github.devparkge.realworld.service.dto.LoginDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -29,5 +30,11 @@ public class UserService {
         if (!user.matchesPassword(password)) {
             throw new InvalidPasswordException("유효하지 않은 비밀번호입니다.");
         }
+    }
+
+    public boolean jwtAuthenticationByEmail(String email) {
+        User user = userRepository.findEmail(email)
+                .orElse(null);
+        return (user != null) ? true : false;
     }
 }
