@@ -5,7 +5,6 @@ import github.devparkge.realworld.controller.request.LoginRequest;
 import github.devparkge.realworld.controller.response.CurrentUserResponse;
 import github.devparkge.realworld.controller.request.SignUpRequest;
 import github.devparkge.realworld.controller.response.LoginResponse;
-import github.devparkge.realworld.exception.InvalidTokenException;
 import github.devparkge.realworld.controller.response.SignUpResponse;
 import github.devparkge.realworld.service.UserService;
 import github.devparkge.realworld.service.dto.GetCurrentUserDto;
@@ -13,14 +12,14 @@ import github.devparkge.realworld.service.dto.LoginDto;
 import github.devparkge.realworld.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import github.devparkge.realworld.service.dto.SignUpDto;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserApiController {
     private final UserService userService;
