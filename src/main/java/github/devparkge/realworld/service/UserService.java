@@ -5,16 +5,16 @@ import github.devparkge.realworld.domain.repository.UserRepository;
 import github.devparkge.realworld.exception.EmailNotFoundException;
 import github.devparkge.realworld.exception.InvalidPasswordException;
 import github.devparkge.realworld.service.dto.LoginDto;
+import github.devparkge.realworld.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public LoginDto login(String email, String password) {
@@ -22,8 +22,9 @@ public class UserService {
                 .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
 
         validatePassword(user, password);
+        String token = jwtUtil.generateToken(email);
 
-        return LoginDto.from(user);
+        return LoginDto.from(user, token);
     }
 
     private void validatePassword(User user, String password) {
