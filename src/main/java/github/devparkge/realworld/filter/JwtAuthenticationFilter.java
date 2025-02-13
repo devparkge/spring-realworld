@@ -28,10 +28,12 @@ public class JwtAuthenticationFilter implements Filter {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             String header = ((HttpServletRequest) request).getHeader("Authorization");
-            String token = (header != null && header.startsWith("Bearer ")) ? header.substring(7) : null;
-            String email = jwtUtil.parseToken(token);
-            if (userService.jwtAuthenticationByEmail(email)) {
-                request.setAttribute("email", email);
+            if (header != null && header.startsWith("Bearer ")) {
+                String token = header.substring(7);
+                String email = jwtUtil.parseToken(token);
+                if (userService.jwtAuthenticationByEmail(email)) {
+                    request.setAttribute("email", email);
+                }
             }
         }
         chain.doFilter(request, response);
