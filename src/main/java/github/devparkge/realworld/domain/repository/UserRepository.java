@@ -5,5 +5,6 @@ import github.devparkge.realworld.domain.model.User;
 import java.util.Optional;
 
 public interface UserRepository {
-    Optional<User> findEmail(String email);
+    Optional<User> findByEmail(String email);
+    User saveUser(User user);
 }
