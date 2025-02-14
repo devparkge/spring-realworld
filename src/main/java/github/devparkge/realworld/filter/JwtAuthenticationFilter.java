@@ -1,0 +1,70 @@
+package github.devparkge.realworld.filter;
+
+
+import github.devparkge.realworld.exception.InvalidTokenException;
+import github.devparkge.realworld.service.UserService;
+import github.devparkge.realworld.util.JwtUtil;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Consumer;
+
+
+public class JwtAuthenticationFilter implements Filter {
+    private final JwtUtil jwtUtil;
+    private final UserService userService;
+    private final String header;
+    private final String tokenPrefix;
+
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserService userService, String header, String tokenPrefix) {
+        this.jwtUtil = jwtUtil;
+        this.userService = userService;
+        this.header = header;
+        this.tokenPrefix = tokenPrefix;
+    }
+
+    @Override
+    public void doFilter(
+            ServletRequest request,
+            ServletResponse response,
+            FilterChain chain
+    ) throws IOException, ServletException {
+        if ((request instanceof HttpServletRequest httpRequest)) {
+            doFilter(request, response, chain, httpRequest);
+        }
+        chain.doFilter(request, response);
+    }
+
+    private void doFilter(
+            ServletRequest request,
+            ServletResponse response,
+            FilterChain chain,
+            HttpServletRequest httpRequest
+    ) throws IOException, ServletException {
+        getToken(httpRequest).ifPresent(validateToken(request));
+        chain.doFilter(request, response);
+    }
+
+    private Consumer<String> validateToken(ServletRequest request) {
+        return token -> {
+            UUID uuid = jwtUtil.parseToken(token);
+            validateUUID(uuid);
+            request.setAttribute("UUID", uuid);
+        };
+    }
+
+    private Optional<String> getToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(this.header))
+                .filter(header -> header.startsWith(this.tokenPrefix))
+                .map(header -> header.substring(7));
+    }
+
+    private void validateUUID(UUID uuid) {
+        if (!userService.jwtAuthenticationByUUID(uuid)) {
+            throw new InvalidTokenException("유효하지 않은 토큰입니다.");
+        }
+    }
+}
