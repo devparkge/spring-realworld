@@ -26,14 +26,23 @@ public class JwtAuthenticationFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(
+            ServletRequest request,
+            ServletResponse response,
+            FilterChain chain
+    ) throws IOException, ServletException {
         if ((request instanceof HttpServletRequest httpRequest)) {
             doFilter(request, response, chain, httpRequest);
         }
         chain.doFilter(request, response);
     }
 
-    private void doFilter(ServletRequest request, ServletResponse response, FilterChain chain, HttpServletRequest httpRequest) throws IOException, ServletException {
+    private void doFilter(
+            ServletRequest request,
+            ServletResponse response,
+            FilterChain chain,
+            HttpServletRequest httpRequest
+    ) throws IOException, ServletException {
         String token = getToken(httpRequest)
                 .orElse(null);
         if (token == null) {
@@ -54,7 +63,7 @@ public class JwtAuthenticationFilter implements Filter {
     }
 
     private void validateUUID(UUID uuid) {
-        if (!userService.jwtAuthenticationByUUID(uuid)){
+        if (!userService.jwtAuthenticationByUUID(uuid)) {
             throw new InvalidTokenException("유효하지 않은 토큰입니다.");
         }
     }
