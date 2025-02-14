@@ -26,12 +26,17 @@ public class JwtUtil {
     }
 
     public String generateToken(UUID uuid) {
+        Date date = new Date();
         return Jwts.builder()
                 .subject(uuid.toString())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .issuedAt(date)
+                .expiration(getExpiredDate(date))
                 .signWith(key)
                 .compact();
+    }
+
+    private Date getExpiredDate(Date date) {
+        return new Date(date.getTime() + expiration);
     }
 
     public UUID parseToken(String token) {
