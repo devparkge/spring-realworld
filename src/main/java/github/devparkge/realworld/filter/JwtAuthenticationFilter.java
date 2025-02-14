@@ -8,6 +8,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -31,9 +32,15 @@ public class JwtAuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (!(request instanceof HttpServletRequest)) chain.doFilter(request, response);
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String token = getToken(httpRequest);
+        if ((request instanceof HttpServletRequest httpRequest)) {
+            doFilter(request, response, chain, httpRequest);
+        }
+        chain.doFilter(request, response);
+    }
+
+    private void doFilter(ServletRequest request, ServletResponse response, FilterChain chain, HttpServletRequest httpRequest) throws IOException, ServletException {
+        String token = getToken(httpRequest)
+                .orElse(null);
         if (token == null) {
             chain.doFilter(request, response);
         } else {
@@ -45,9 +52,10 @@ public class JwtAuthenticationFilter implements Filter {
         }
     }
 
-    private String getToken(HttpServletRequest request) {
-        String header = request.getHeader(this.header);
-        return (header != null && header.startsWith(this.tokenPrefix)) ? header.substring(7) : null;
+    private Optional<String> getToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(this.header))
+                .filter(header -> header.startsWith(this.tokenPrefix))
+                .map(header -> header.substring(7));
     }
 
     private void validateUUID(UUID uuid) {
