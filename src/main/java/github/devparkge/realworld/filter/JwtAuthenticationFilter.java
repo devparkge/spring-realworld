@@ -32,7 +32,6 @@ public class JwtAuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!(request instanceof HttpServletRequest)) chain.doFilter(request, response);
-        ;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String token = getToken(httpRequest);
         System.out.println("token : " + token);
