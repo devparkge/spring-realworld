@@ -26,11 +26,6 @@ public class JwtAuthenticationFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
-
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if ((request instanceof HttpServletRequest httpRequest)) {
             doFilter(request, response, chain, httpRequest);
@@ -62,10 +57,5 @@ public class JwtAuthenticationFilter implements Filter {
         if (!userService.jwtAuthenticationByUUID(uuid)){
             throw new InvalidTokenException("유효하지 않은 토큰입니다.");
         }
-    }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
     }
 }
