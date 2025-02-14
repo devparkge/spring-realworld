@@ -39,9 +39,9 @@ public class UserService {
     }
 
     public boolean jwtAuthenticationByUUID(UUID uuid) {
-        User user = userRepository.findByUUID(uuid)
-                .orElse(null);
-        return (user != null) ? true : false;
+        return userRepository.findByUUID(uuid)
+                .map(user -> true)
+                .orElse(false);
     }
 
     public User getCurrentUser(UUID uuid) {
