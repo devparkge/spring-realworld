@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -48,9 +50,9 @@ public class UserApiController {
     public CurrentUserResponse currentUser(
             HttpServletRequest request
     ) {
-        String email = (String) request.getAttribute("email");
-        String token = jwtUtil.generateToken(email);
-        User user = userService.getCurrentUser(email);
+        UUID uuid = (UUID) request.getAttribute("UUID");
+        String token = jwtUtil.generateToken(uuid);
+        User user = userService.getCurrentUser(uuid);
 
         return CurrentUserResponse.from(user, token);
     }

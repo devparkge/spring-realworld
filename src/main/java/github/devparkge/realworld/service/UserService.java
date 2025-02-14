@@ -5,6 +5,7 @@ import github.devparkge.realworld.domain.repository.UserRepository;
 import github.devparkge.realworld.exception.DuplicateEmailException;
 import github.devparkge.realworld.exception.EmailNotFoundException;
 import github.devparkge.realworld.exception.InvalidPasswordException;
+import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.service.dto.LoginDto;
 import github.devparkge.realworld.service.dto.SignUpDto;
 import github.devparkge.realworld.util.JwtUtil;
@@ -26,7 +27,7 @@ public class UserService {
                 .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
 
         validatePassword(user, password);
-        String token = jwtUtil.generateToken(email);
+        String token = jwtUtil.generateToken(user.uuid());
 
         return LoginDto.from(user, token);
     }
@@ -43,9 +44,9 @@ public class UserService {
         return (user != null) ? true : false;
     }
 
-    public User getCurrentUser(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
+    public User getCurrentUser(UUID uuid) {
+        return userRepository.findByUUID(uuid)
+                .orElseThrow(() -> new UUIDNotFoundException("유효하지 않은 아이디입니다."));
     }
 
     @Transactional
