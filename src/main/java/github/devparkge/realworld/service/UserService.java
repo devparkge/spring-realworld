@@ -40,8 +40,7 @@ public class UserService {
 
     public boolean jwtAuthenticationByUUID(UUID uuid) {
         return userRepository.findByUUID(uuid)
-                .map(user -> true)
-                .orElse(false);
+                .isPresent();
     }
 
     public User getCurrentUser(UUID uuid) {
