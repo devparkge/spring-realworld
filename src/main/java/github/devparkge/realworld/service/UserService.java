@@ -50,10 +50,6 @@ public class UserService {
     public SignUpDto signUp(String username, String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) throw new DuplicateEmailException("중복된 이메일 입니다.");
 
-        return SignUpDto.from(userRepository.saveUser(User.signUp(
-                email,
-                password,
-                username
-        )));
+        return SignUpDto.from(userRepository.saveUser(username, email, password));
     }
 }

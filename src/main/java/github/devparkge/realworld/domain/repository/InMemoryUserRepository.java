@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Component
@@ -14,7 +15,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     public InMemoryUserRepository() {
         this.users = new ArrayList<>(List.of(
-                new User("jake@jake.jake", "jakejake", "jake", "I work at statefarm", null)
+                new User(UUID.randomUUID(), "jake@jake.jake", "jakejake", "jake", "I work at statefarm", null)
         ));
     }
 
@@ -26,7 +27,13 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User saveUser(User user) {
+    public User saveUser(String username, String email, String password) {
+        User user = User.signUp(
+                UUID.randomUUID(),
+                email,
+                password,
+                username
+        );
         users.add(user);
         return user;
     }
