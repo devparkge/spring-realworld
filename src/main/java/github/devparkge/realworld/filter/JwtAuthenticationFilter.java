@@ -8,6 +8,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
+import java.util.UUID;
 
 
 public class JwtAuthenticationFilter implements Filter {
@@ -31,9 +32,9 @@ public class JwtAuthenticationFilter implements Filter {
         String token = getToken(httpRequest);
         System.out.println("token : " + token);
         if (token == null) chain.doFilter(request, response);
-        String email = jwtUtil.parseToken(token);
-        validateToken(token);
-        request.setAttribute("email", email);
+        UUID uuid = UUID.fromString(jwtUtil.parseToken(token));
+        validateToken(uuid);
+        request.setAttribute("UUID", uuid);
 
         chain.doFilter(request, response);
     }
@@ -43,8 +44,8 @@ public class JwtAuthenticationFilter implements Filter {
         return (header != null && header.startsWith("Bearer ")) ? header.substring(7) : null;
     }
 
-    private void validateToken(String email) {
-        if (!userService.jwtAuthenticationByEmail(email)) throw new InvalidTokenException("유효하지 않은 토큰입니다.");
+    private void validateToken(UUID uuid) {
+        if (!userService.jwtAuthenticationByUUID(uuid)) throw new InvalidTokenException("유효하지 않은 토큰입니다.");
     }
 
     @Override

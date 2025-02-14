@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -35,8 +37,8 @@ public class UserService {
         }
     }
 
-    public boolean jwtAuthenticationByEmail(String email) {
-        User user = userRepository.findByEmail(email)
+    public boolean jwtAuthenticationByUUID(UUID uuid) {
+        User user = userRepository.findByUUID(uuid)
                 .orElse(null);
         return (user != null) ? true : false;
     }
