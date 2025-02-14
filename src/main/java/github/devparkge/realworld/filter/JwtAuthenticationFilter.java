@@ -26,20 +26,25 @@ public class JwtAuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (request instanceof HttpServletRequest) {
-            HttpServletRequest httpRequest = (HttpServletRequest) request;
-            String header = ((HttpServletRequest) request).getHeader("Authorization");
-            if (header != null && header.startsWith("Bearer ")) {
-                String token = header.substring(7);
-                String email = jwtUtil.parseToken(token);
-                if (!userService.jwtAuthenticationByEmail(email)) {
-                    throw new InvalidTokenException("유효하지 않은 토큰입니다.");
-                }
-                request.setAttribute("email", email);
+        if (!(request instanceof HttpServletRequest)) chain.doFilter(request, response);;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String token = getToken(httpRequest);
+        System.out.println("token : " + token);
+        if (token == null) chain.doFilter(request, response);
+        String email = jwtUtil.parseToken(token);
+        validateToken(token);
+        request.setAttribute("email", email);
 
-            }
-        }
         chain.doFilter(request, response);
+    }
+
+    private String getToken(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        return (header != null && header.startsWith("Bearer ")) ? header.substring(7) : null;
+    }
+
+    private void validateToken(String email) {
+        if (!userService.jwtAuthenticationByEmail(email)) throw new InvalidTokenException("유효하지 않은 토큰입니다.");
     }
 
     @Override
