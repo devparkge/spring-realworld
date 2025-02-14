@@ -34,13 +34,15 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String parseToken(String token) {
-        return Jwts.parser()
+    public UUID parseToken(String token) {
+        return UUID.fromString(
+                Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .getSubject();
+                .getSubject()
+        );
     }
 }
 

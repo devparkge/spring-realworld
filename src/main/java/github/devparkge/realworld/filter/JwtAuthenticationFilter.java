@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter implements Filter {
         if (token == null) {
             chain.doFilter(request, response);
         } else {
-            UUID uuid = UUID.fromString(jwtUtil.parseToken(token));
+            UUID uuid = jwtUtil.parseToken(token);
             validateUUID(uuid);
             request.setAttribute("UUID", uuid);
 
