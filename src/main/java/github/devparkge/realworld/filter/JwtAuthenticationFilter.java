@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 
 public class JwtAuthenticationFilter implements Filter {
@@ -43,17 +44,16 @@ public class JwtAuthenticationFilter implements Filter {
             FilterChain chain,
             HttpServletRequest httpRequest
     ) throws IOException, ServletException {
-        String token = getToken(httpRequest)
-                .orElse(null);
-        if (token == null) {
-            chain.doFilter(request, response);
-        } else {
+        getToken(httpRequest).ifPresent(validateToken(request));
+        chain.doFilter(request, response);
+    }
+
+    private Consumer<String> validateToken(ServletRequest request) {
+        return token -> {
             UUID uuid = jwtUtil.parseToken(token);
             validateUUID(uuid);
             request.setAttribute("UUID", uuid);
-
-            chain.doFilter(request, response);
-        }
+        };
     }
 
     private Optional<String> getToken(HttpServletRequest request) {
