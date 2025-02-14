@@ -14,10 +14,14 @@ import java.util.UUID;
 public class JwtAuthenticationFilter implements Filter {
     private final JwtUtil jwtUtil;
     private final UserService userService;
+    private final String header;
+    private final String tokenPrefix;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserService userService) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserService userService, String header, String tokenPrefix) {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
+        this.header = header;
+        this.tokenPrefix = tokenPrefix;
     }
 
     @Override
@@ -27,7 +31,8 @@ public class JwtAuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (!(request instanceof HttpServletRequest)) chain.doFilter(request, response);;
+        if (!(request instanceof HttpServletRequest)) chain.doFilter(request, response);
+        ;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String token = getToken(httpRequest);
         System.out.println("token : " + token);
@@ -40,8 +45,8 @@ public class JwtAuthenticationFilter implements Filter {
     }
 
     private String getToken(HttpServletRequest request) {
-        String header = request.getHeader("Authorization");
-        return (header != null && header.startsWith("Bearer ")) ? header.substring(7) : null;
+        String header = request.getHeader(this.header);
+        return (header != null && header.startsWith(this.tokenPrefix)) ? header.substring(7) : null;
     }
 
     private void validateToken(UUID uuid) {
