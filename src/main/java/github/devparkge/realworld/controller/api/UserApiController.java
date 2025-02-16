@@ -1,6 +1,7 @@
 package github.devparkge.realworld.controller.api;
 
-import github.devparkge.realworld.controller.config.JsonRequest;
+import github.devparkge.realworld.controller.config.annotation.JsonRequest;
+import github.devparkge.realworld.controller.config.annotation.JwtAuthentication;
 import github.devparkge.realworld.controller.request.LoginRequest;
 import github.devparkge.realworld.controller.request.SignUpRequest;
 import github.devparkge.realworld.controller.response.CurrentUserResponse;
@@ -48,11 +49,10 @@ public class UserApiController {
 
     @GetMapping
     public CurrentUserResponse currentUser(
-            HttpServletRequest request
+            @JwtAuthentication UUID authUserUUID
     ) {
-        UUID uuid = (UUID) request.getAttribute("UUID");
-        String token = jwtUtil.generateToken(uuid);
-        User user = userService.getCurrentUser(uuid);
+        String token = jwtUtil.generateToken(authUserUUID);
+        User user = userService.getCurrentUser(authUserUUID);
 
         return CurrentUserResponse.from(user, token);
     }
