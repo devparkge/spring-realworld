@@ -36,7 +36,7 @@ public class JwtAuthenticationArgumentResolver implements HandlerMethodArgumentR
             WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        String token = getToken(httpServletRequest)
+        String token = extractToken(httpServletRequest)
                 .orElseThrow(() -> new IllegalArgumentException("토큰이 존재하지 않습니다."));
 
         return validateToken(token);
@@ -54,7 +54,7 @@ public class JwtAuthenticationArgumentResolver implements HandlerMethodArgumentR
         }
     }
 
-    private Optional<String> getToken(HttpServletRequest httpServletRequest) {
+    private Optional<String> extractToken(HttpServletRequest httpServletRequest) {
         return Optional.ofNullable(httpServletRequest.getHeader(header))
                 .filter(header -> header.startsWith(tokenPrefix))
                 .map(header -> header.substring(7));
