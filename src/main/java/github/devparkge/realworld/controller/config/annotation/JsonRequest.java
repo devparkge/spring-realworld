@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.config;
+package github.devparkge.realworld.controller.config.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
