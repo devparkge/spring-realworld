@@ -41,26 +41,13 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User updateUser(
-            UUID uuid,
-            String email,
-            String username,
-            String password,
-            String bio,
-            String image
+            User updateUser
     ) {
-        User newUser = new User(
-                uuid,
-                email,
-                password,
-                username,
-                bio,
-                image
-        );
 
         users.stream()
-                .filter(user -> user.uuid().equals(uuid))
-                .map(user -> user == newUser);
+                .filter(user -> user.uuid().equals(updateUser.uuid()))
+                .map(user -> user == updateUser);
 
-        return newUser;
+        return updateUser;
     }
 }

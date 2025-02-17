@@ -71,14 +71,6 @@ public class UserService {
                 .map(user -> user.update(email, username, password, bio, image))
                 .orElseThrow(() -> new UUIDNotFoundException("존재하지 않는 아이디입니다."));
 
-        return UpdateUserDto.from(
-                userRepository.updateUser(
-                        uuid,
-                        updateUser.email(),
-                        updateUser.username(),
-                        updateUser.password(),
-                        updateUser.bio(),
-                        updateUser.image()
-                ), token);
+        return UpdateUserDto.from(userRepository.updateUser(updateUser), token);
     }
 }

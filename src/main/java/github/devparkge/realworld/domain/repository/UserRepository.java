@@ -9,5 +9,5 @@ public interface UserRepository {
     Optional<User> findByEmail(String email);
     Optional<User> findByUUID(UUID uuid);
     User saveUser(String username, String email, String password);
-    User updateUser(UUID uuid, String email, String username, String password, String bio, String image);
+    User updateUser(User updateUser);
 }
