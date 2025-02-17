@@ -1,6 +1,5 @@
 package github.devparkge.realworld.service.dto;
 
-import github.devparkge.realworld.controller.response.LoginResponse;
 import github.devparkge.realworld.domain.model.User;
 
 public record LoginDto(
