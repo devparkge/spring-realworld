@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -61,16 +60,16 @@ public class UserService {
 
     public UpdateUserDto updateUser(
             UUID uuid,
-            Optional<String> email,
-            Optional<String> username,
-            Optional<String> password,
-            Optional<String> bio,
-            Optional<String> image
+            String email,
+            String username,
+            String password,
+            String bio,
+            String image
     ) {
         String token = jwtUtil.generateToken(uuid);
-        User user = userRepository.findByUUID(uuid)
+        User updateUser = userRepository.findByUUID(uuid)
+                .map(user -> user.update(email, username, password, bio, image))
                 .orElseThrow(() -> new UUIDNotFoundException("존재하지 않는 아이디입니다."));
-        User updateUser = User.updateUser(user, email, username, password, bio, image);
 
         return UpdateUserDto.from(
                 userRepository.updateUser(
