@@ -15,7 +15,6 @@ import github.devparkge.realworld.service.dto.LoginDto;
 import github.devparkge.realworld.service.dto.SignUpDto;
 import github.devparkge.realworld.service.dto.UpdateUserDto;
 import github.devparkge.realworld.util.JwtUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

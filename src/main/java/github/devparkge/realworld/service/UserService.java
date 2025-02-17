@@ -75,12 +75,12 @@ public class UserService {
 
         return UpdateUserDto.from(
                 userRepository.updateUser(
-                uuid,
-                newUser.email(),
-                newUser.username(),
-                newUser.password(),
-                newUser.bio(),
-                newUser.image()
-        ), token);
+                        uuid,
+                        newUser.email(),
+                        newUser.username(),
+                        newUser.password(),
+                        newUser.bio(),
+                        newUser.image()
+                ), token);
     }
 }
