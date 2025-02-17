@@ -71,7 +71,6 @@ public class UserService {
         User user = userRepository.findByUUID(uuid)
                 .orElseThrow(() -> new UUIDNotFoundException("존재하지 않는 아이디입니다."));
         User newUser = User.updateUser(user, email, username, password, bio, image);
-        System.out.println("user : " + newUser);
 
         return UpdateUserDto.from(
                 userRepository.updateUser(
