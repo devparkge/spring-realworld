@@ -70,16 +70,16 @@ public class UserService {
         String token = jwtUtil.generateToken(uuid);
         User user = userRepository.findByUUID(uuid)
                 .orElseThrow(() -> new UUIDNotFoundException("존재하지 않는 아이디입니다."));
-        User newUser = User.updateUser(user, email, username, password, bio, image);
+        User updateUser = User.updateUser(user, email, username, password, bio, image);
 
         return UpdateUserDto.from(
                 userRepository.updateUser(
                         uuid,
-                        newUser.email(),
-                        newUser.username(),
-                        newUser.password(),
-                        newUser.bio(),
-                        newUser.image()
+                        updateUser.email(),
+                        updateUser.username(),
+                        updateUser.password(),
+                        updateUser.bio(),
+                        updateUser.image()
                 ), token);
     }
 }
