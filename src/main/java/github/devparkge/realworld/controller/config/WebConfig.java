@@ -36,7 +36,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new JsonRequestArgumentResolver(objectMapper));
-        resolvers.add(new JwtAuthenticationArgumentResolver(
+        resolvers.add(new JwtAuthenticationOptionalArgumentResolver(
+                userService,
+                jwtUtil,
+                header,
+                tokenPrefix
+        ));
+        resolvers.add(new JwtAuthenticationRequiredArgumentResolver(
                 userService,
                 jwtUtil,
                 header,

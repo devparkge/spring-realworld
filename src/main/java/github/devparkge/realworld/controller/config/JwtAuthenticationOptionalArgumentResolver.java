@@ -1,7 +1,6 @@
 package github.devparkge.realworld.controller.config;
 
-import github.devparkge.realworld.controller.config.annotation.JwtAuthentication;
-import github.devparkge.realworld.exception.InvalidTokenException;
+import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationOptional;
 import github.devparkge.realworld.service.UserService;
 import github.devparkge.realworld.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +16,7 @@ import java.util.UUID;
 
 
 @RequiredArgsConstructor
-public class JwtAuthenticationArgumentResolver implements HandlerMethodArgumentResolver {
+public class JwtAuthenticationOptionalArgumentResolver implements HandlerMethodArgumentResolver {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     private final String header;
@@ -25,7 +24,7 @@ public class JwtAuthenticationArgumentResolver implements HandlerMethodArgumentR
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterAnnotation(JwtAuthentication.class) != null;
+        return parameter.getParameterAnnotation(JwtAuthenticationOptional.class) != null;
     }
 
     @Override
@@ -37,24 +36,22 @@ public class JwtAuthenticationArgumentResolver implements HandlerMethodArgumentR
     ) {
         HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         String token = extractToken(httpServletRequest)
-                .orElseThrow(() -> new IllegalArgumentException("토큰이 존재하지 않습니다."));
+                .orElse(null);
 
-        return validateToken(token);
+        return Optional.ofNullable(validateToken(token));
     }
 
-    private UUID validateToken(String token) {
+    protected UUID validateToken(String token) {
+        if(token == null) return null;
         UUID uuid = jwtUtil.parseToken(token);
-        validateUUID(uuid);
-        return uuid;
+        return validateUUID(uuid);
     }
 
-    private void validateUUID(UUID uuid) {
-        if(!userService.jwtAuthenticationByUUID(uuid)) {
-            throw new InvalidTokenException("존재하지 않는 토큰입니다.");
-        }
+    protected UUID validateUUID(UUID uuid) {
+        return (!userService.jwtAuthenticationByUUID(uuid)) ? null : uuid;
     }
 
-    private Optional<String> extractToken(HttpServletRequest httpServletRequest) {
+    protected Optional<String> extractToken(HttpServletRequest httpServletRequest) {
         return Optional.ofNullable(httpServletRequest.getHeader(header))
                 .filter(header -> header.startsWith(tokenPrefix))
                 .map(header -> header.substring(7));
