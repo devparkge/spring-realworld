@@ -28,6 +28,13 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUsername(String username) {
+        return users.stream()
+                .filter(user -> user.username().equals(username))
+                .findFirst();
+    }
+
+    @Override
     public User saveUser(String username, String email, String password) {
         User user = User.signUp(
                 UUID.randomUUID(),
