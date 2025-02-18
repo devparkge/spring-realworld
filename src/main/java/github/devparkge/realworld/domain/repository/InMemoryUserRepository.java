@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Component
 public class InMemoryUserRepository implements UserRepository {
-    private final List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -49,5 +49,9 @@ public class InMemoryUserRepository implements UserRepository {
                 .map(user -> user == updateUser);
 
         return updateUser;
+    }
+
+    public void clear() {
+        this.users = new ArrayList<>();
     }
 }
