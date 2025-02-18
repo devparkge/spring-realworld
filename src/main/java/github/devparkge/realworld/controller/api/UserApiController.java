@@ -2,21 +2,18 @@ package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.controller.config.annotation.JsonRequest;
 import github.devparkge.realworld.controller.config.annotation.JwtAuthentication;
-import github.devparkge.realworld.controller.request.LoginRequest;
-import github.devparkge.realworld.controller.request.SignUpRequest;
 import github.devparkge.realworld.controller.request.UpdateUserRequest;
 import github.devparkge.realworld.controller.response.CurrentUserResponse;
-import github.devparkge.realworld.controller.response.LoginResponse;
-import github.devparkge.realworld.controller.response.SignUpResponse;
 import github.devparkge.realworld.controller.response.UpdateUserResponse;
 import github.devparkge.realworld.domain.model.User;
 import github.devparkge.realworld.service.UserService;
-import github.devparkge.realworld.service.dto.LoginDto;
-import github.devparkge.realworld.service.dto.SignUpDto;
 import github.devparkge.realworld.service.dto.UpdateUserDto;
 import github.devparkge.realworld.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
@@ -26,25 +23,6 @@ import java.util.UUID;
 public class UserApiController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
-
-    @PostMapping("/login")
-    public LoginResponse login(
-            @JsonRequest("user") LoginRequest loginRequest
-    ) {
-        LoginDto loginDto = userService.login(
-                loginRequest.email(),
-                loginRequest.password()
-        );
-        return LoginResponse.from(loginDto);
-    }
-
-    @PostMapping()
-    public SignUpResponse signUp(
-            @JsonRequest("user") SignUpRequest signUpRequest
-    ) {
-        SignUpDto signUpDto = userService.signUp(signUpRequest.username(), signUpRequest.email(), signUpRequest.password());
-        return SignUpResponse.from(signUpDto);
-    }
 
     @GetMapping
     public CurrentUserResponse currentUser(
