@@ -1,15 +1,16 @@
 package github.devparkge.realworld.controller.config;
 
-import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationOptional;
 import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationRequired;
-import github.devparkge.realworld.exception.InvalidTokenException;
+import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.service.UserService;
 import github.devparkge.realworld.util.JwtUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import java.util.Optional;
+import java.util.UUID;
 
 public class JwtAuthenticationRequiredArgumentResolver extends JwtAuthenticationOptionalArgumentResolver {
     public JwtAuthenticationRequiredArgumentResolver(UserService userService, JwtUtil jwtUtil, String header, String tokenPrefix) {
@@ -28,10 +29,7 @@ public class JwtAuthenticationRequiredArgumentResolver extends JwtAuthentication
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
     ) {
-        HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        String token = extractToken(httpServletRequest)
-                .orElseThrow(() -> new InvalidTokenException("유효하지 않은 토큰 입니다."));
-
-        return validateToken(token);
+        return Optional.ofNullable((UUID) super.resolveArgument(parameter, mavContainer, webRequest, binderFactory))
+                .orElseThrow(() -> new UUIDNotFoundException("메시지"));
     }
 }

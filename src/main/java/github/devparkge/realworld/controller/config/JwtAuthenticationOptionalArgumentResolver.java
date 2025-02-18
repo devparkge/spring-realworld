@@ -12,7 +12,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Optional;
-import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -35,20 +34,11 @@ public class JwtAuthenticationOptionalArgumentResolver implements HandlerMethodA
             WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        String token = extractToken(httpServletRequest)
+
+        return extractToken(httpServletRequest)
+                .map(jwtUtil::parseToken)
+                .filter(userService::jwtAuthenticationByUUID)
                 .orElse(null);
-
-        return Optional.ofNullable(validateToken(token));
-    }
-
-    protected UUID validateToken(String token) {
-        if(token == null) return null;
-        UUID uuid = jwtUtil.parseToken(token);
-        return validateUUID(uuid);
-    }
-
-    protected UUID validateUUID(UUID uuid) {
-        return (!userService.jwtAuthenticationByUUID(uuid)) ? null : uuid;
     }
 
     protected Optional<String> extractToken(HttpServletRequest httpServletRequest) {
