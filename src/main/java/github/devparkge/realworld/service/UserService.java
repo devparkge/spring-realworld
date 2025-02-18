@@ -8,6 +8,7 @@ import github.devparkge.realworld.exception.InvalidPasswordException;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.service.dto.LoginDto;
 import github.devparkge.realworld.service.dto.SignUpDto;
+import github.devparkge.realworld.service.dto.UpdateUserDto;
 import github.devparkge.realworld.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,25 @@ public class UserService {
     @Transactional
     public SignUpDto signUp(String username, String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) throw new DuplicateEmailException("중복된 이메일 입니다.");
+        User user = userRepository.saveUser(username, email, password);
+        String token = jwtUtil.generateToken(user.uuid());
 
-        return SignUpDto.from(userRepository.saveUser(username, email, password));
+        return SignUpDto.from(user, token);
+    }
+
+    public UpdateUserDto updateUser(
+            UUID uuid,
+            String email,
+            String username,
+            String password,
+            String bio,
+            String image
+    ) {
+        String token = jwtUtil.generateToken(uuid);
+        User updateUser = userRepository.findByUUID(uuid)
+                .map(user -> user.update(email, username, password, bio, image))
+                .orElseThrow(() -> new UUIDNotFoundException("존재하지 않는 아이디입니다."));
+
+        return UpdateUserDto.from(userRepository.updateUser(updateUser), token);
     }
 }

@@ -11,13 +11,7 @@ import java.util.UUID;
 
 @Component
 public class InMemoryUserRepository implements UserRepository {
-    private final List<User> users;
-
-    public InMemoryUserRepository() {
-        this.users = new ArrayList<>(List.of(
-                new User(UUID.randomUUID(), "jake@jake.jake", "jakejake", "jake", "I work at statefarm", null)
-        ));
-    }
+    private final List<User> users = new ArrayList<>();
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -37,11 +31,23 @@ public class InMemoryUserRepository implements UserRepository {
     public User saveUser(String username, String email, String password) {
         User user = User.signUp(
                 UUID.randomUUID(),
-                email,
+                username,
                 password,
-                username
+                email
         );
         users.add(user);
         return user;
+    }
+
+    @Override
+    public User updateUser(
+            User updateUser
+    ) {
+
+        users.stream()
+                .filter(user -> user.uuid().equals(updateUser.uuid()))
+                .map(user -> user == updateUser);
+
+        return updateUser;
     }
 }

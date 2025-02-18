@@ -23,6 +23,22 @@ public record User(
                 .build();
     }
 
+    public User update(
+            String email,
+            String username,
+            String password,
+            String bio,
+            String image
+    ) {
+        return User.builder()
+                .email((email != null ? email : email()))
+                .username((username != null ? username : username()))
+                .password((password != null ? password : password()))
+                .bio((bio != null ? bio : bio()))
+                .image((image != null ? image : image()))
+                .build();
+    }
+
     public boolean matchesPassword(String password) {
         return password().equals(password);
     }
