@@ -14,7 +14,7 @@ public class InMemoryFollowerRepository implements FollowerRepository {
     @Override
     public boolean isFollow(String username, UUID uuid) {
         return followers.stream()
-                .allMatch(
+                .anyMatch(
                         follower ->
                                 follower.uuid().equals(uuid) && follower.username().equals(username)
                 );
@@ -23,11 +23,13 @@ public class InMemoryFollowerRepository implements FollowerRepository {
 
     @Override
     public Follower follow(String username, UUID uuid) {
-        return Follower.follow(
+        Follower follower = Follower.follow(
                 UUID.randomUUID(),
                 uuid,
                 username
         );
+        followers.add(follower);
+        return follower;
     }
 
     public void clear() {
