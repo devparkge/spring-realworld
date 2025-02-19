@@ -7,7 +7,7 @@ import github.devparkge.realworld.service.dto.FollowUserDto;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
-@JsonTypeName("profiile")
+@JsonTypeName("profile")
 @JsonTypeInfo(include = WRAPPER_OBJECT, use = NAME)
 public record FollowUserResponse(
         String username,
