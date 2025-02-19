@@ -1,14 +1,14 @@
 package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationOptional;
+import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationRequired;
+import github.devparkge.realworld.controller.response.FollowUserResponse;
 import github.devparkge.realworld.controller.response.GetProfileResponse;
 import github.devparkge.realworld.service.ProfilesService;
+import github.devparkge.realworld.service.dto.FollowUserDto;
 import github.devparkge.realworld.service.dto.GetProfileDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -25,5 +25,14 @@ public class ProfilesApiController {
     ) {
         GetProfileDto getProfileDto = profilesService.getProfile(username, authUserUUID);
         return GetProfileResponse.from(getProfileDto);
+    }
+
+    @PostMapping("/{username}/follow")
+    public FollowUserResponse folloUser(
+            @JwtAuthenticationRequired UUID uuid,
+            @PathVariable("username") String username
+    ) {
+        FollowUserDto followUserDto = profilesService.followUser(username, uuid);
+        return FollowUserResponse.from(followUserDto);
     }
 }
