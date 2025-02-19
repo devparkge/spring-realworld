@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -65,6 +66,33 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.profile.bio").isEmpty())
                     .andExpect(jsonPath("$.profile.image").isEmpty())
                     .andExpect(jsonPath("$.profile.following").value(false))
+                    .andDo(print());
+        }
+    }
+
+    @Nested
+    @DisplayName("POST /api/profiles/:username/follow")
+    class FolloUser {
+        @Test
+        @DisplayName("인증된 유저가 팔로우를 한 유저의 정보를 반환한다")
+        void followUser() throws Exception {
+            var targetUser = createUser(
+                    "gunKim",
+                    "gunkim@gamil.com",
+                    "1234"
+            );
+            var myUser = createUser(
+                    "parkge",
+                    "parkge@gamil.com",
+                    "1234"
+            );
+            String token = "Bearer " + jwtUtil.generateToken(myUser.uuid());
+            mockMvc.perform(post("/api/profiles/gunKim/follow")
+                    .header(HttpHeaders.AUTHORIZATION, token))
+                    .andExpect(jsonPath("$.profile.username").value(targetUser.username()))
+                    .andExpect(jsonPath("$.profile.bio").isEmpty())
+                    .andExpect(jsonPath("$.profile.image").isEmpty())
+                    .andExpect(jsonPath("$.profile.following").value(true))
                     .andDo(print());
         }
     }
