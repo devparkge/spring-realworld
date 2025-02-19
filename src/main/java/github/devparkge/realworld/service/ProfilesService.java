@@ -19,7 +19,7 @@ public class ProfilesService {
 
     public GetProfileDto getProfile(String username, UUID uuid) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException( username + "은 존재하지 않는 유저명 입니다."));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("%s은 존재하지 않는 유저명 입니다.", username)));
         return GetProfileDto.from(user, isFollow(username, uuid));
     }
 
