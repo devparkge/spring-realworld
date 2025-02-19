@@ -30,6 +30,6 @@ public class JwtAuthenticationRequiredArgumentResolver extends JwtAuthentication
             WebDataBinderFactory binderFactory
     ) {
         return Optional.ofNullable((UUID) super.resolveArgument(parameter, mavContainer, webRequest, binderFactory))
-                .orElseThrow(() -> new UUIDNotFoundException("메시지"));
+                .orElseThrow(() -> new UUIDNotFoundException("존재하지 않는 UUID 입니다."));
     }
 }
