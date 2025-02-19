@@ -27,14 +27,14 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "parkge@gamil.com",
                     "1234"
             );
-            var folllower = createFollower(
+            createFollower(
                     targetUser.username(),
                     myUser.uuid()
             );
 
             String token = "Bearer " + jwtUtil.generateToken(myUser.uuid());
             mockMvc.perform(get("/api/profiles/gunKim")
-                            .header(HttpHeaders.AUTHORIZATION,token))
+                            .header(HttpHeaders.AUTHORIZATION, token))
                     .andExpect(jsonPath("$.profile.username").value(targetUser.username()))
                     .andExpect(jsonPath("$.profile.bio").isEmpty())
                     .andExpect(jsonPath("$.profile.image").isEmpty())
@@ -55,7 +55,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "parkge@gamil.com",
                     "1234"
             );
-            var folllower = createFollower(
+            createFollower(
                     targetUser.username(),
                     myUser.uuid()
             );
