@@ -4,9 +4,9 @@ import github.devparkge.realworld.controller.config.annotation.JwtAuthentication
 import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationRequired;
 import github.devparkge.realworld.controller.response.FollowUserResponse;
 import github.devparkge.realworld.controller.response.GetProfileResponse;
-import github.devparkge.realworld.service.ProfilesService;
-import github.devparkge.realworld.service.dto.FollowUserDto;
-import github.devparkge.realworld.service.dto.GetProfileDto;
+import github.devparkge.realworld.domain.user.service.ProfilesService;
+import github.devparkge.realworld.domain.user.service.dto.FollowUserDto;
+import github.devparkge.realworld.domain.user.service.dto.GetProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

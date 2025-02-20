@@ -1,6 +1,6 @@
-package github.devparkge.realworld.service.dto;
+package github.devparkge.realworld.domain.user.service.dto;
 
-import github.devparkge.realworld.domain.model.User;
+import github.devparkge.realworld.domain.user.model.User;
 
 public record LoginDto(
         String email,

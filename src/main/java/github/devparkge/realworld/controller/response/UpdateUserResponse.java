@@ -2,7 +2,7 @@ package github.devparkge.realworld.controller.response;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import github.devparkge.realworld.service.dto.UpdateUserDto;
+import github.devparkge.realworld.domain.user.service.dto.UpdateUserDto;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;

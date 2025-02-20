@@ -1,6 +1,6 @@
-package github.devparkge.realworld.domain.repository;
+package github.devparkge.realworld.domain.user.repository;
 
-import github.devparkge.realworld.domain.model.Follower;
+import github.devparkge.realworld.domain.user.model.Follower;
 
 import java.util.UUID;
 

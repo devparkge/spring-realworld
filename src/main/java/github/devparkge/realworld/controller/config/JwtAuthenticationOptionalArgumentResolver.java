@@ -1,7 +1,7 @@
 package github.devparkge.realworld.controller.config;
 
 import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationOptional;
-import github.devparkge.realworld.service.UserService;
+import github.devparkge.realworld.domain.user.service.UserService;
 import github.devparkge.realworld.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,11 @@
-package github.devparkge.realworld.service;
+package github.devparkge.realworld.domain.user.service;
 
-import github.devparkge.realworld.domain.model.User;
-import github.devparkge.realworld.domain.repository.FollowerRepository;
-import github.devparkge.realworld.domain.repository.UserRepository;
+import github.devparkge.realworld.domain.user.model.User;
+import github.devparkge.realworld.domain.user.repository.FollowerRepository;
+import github.devparkge.realworld.domain.user.repository.UserRepository;
 import github.devparkge.realworld.exception.UsernameNotFoundException;
-import github.devparkge.realworld.service.dto.FollowUserDto;
-import github.devparkge.realworld.service.dto.GetProfileDto;
+import github.devparkge.realworld.domain.user.service.dto.FollowUserDto;
+import github.devparkge.realworld.domain.user.service.dto.GetProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

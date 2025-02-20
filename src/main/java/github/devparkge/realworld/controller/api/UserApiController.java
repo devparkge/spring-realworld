@@ -5,9 +5,9 @@ import github.devparkge.realworld.controller.config.annotation.JwtAuthentication
 import github.devparkge.realworld.controller.request.UpdateUserRequest;
 import github.devparkge.realworld.controller.response.CurrentUserResponse;
 import github.devparkge.realworld.controller.response.UpdateUserResponse;
-import github.devparkge.realworld.domain.model.User;
-import github.devparkge.realworld.service.UserService;
-import github.devparkge.realworld.service.dto.UpdateUserDto;
+import github.devparkge.realworld.domain.user.model.User;
+import github.devparkge.realworld.domain.user.service.UserService;
+import github.devparkge.realworld.domain.user.service.dto.UpdateUserDto;
 import github.devparkge.realworld.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

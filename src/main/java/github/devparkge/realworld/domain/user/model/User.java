@@ -1,4 +1,4 @@
-package github.devparkge.realworld.domain.model;
+package github.devparkge.realworld.domain.user.model;
 
 
 import lombok.Builder;
