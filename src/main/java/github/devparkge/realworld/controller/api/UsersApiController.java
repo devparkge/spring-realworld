@@ -4,11 +4,9 @@ import github.devparkge.realworld.config.annotation.JsonRequest;
 import github.devparkge.realworld.controller.UserResponseAddUp;
 import github.devparkge.realworld.controller.request.LoginRequest;
 import github.devparkge.realworld.controller.request.SignUpRequest;
-import github.devparkge.realworld.controller.response.SignUpResponse;
 import github.devparkge.realworld.controller.response.UserResponse;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.service.UsersService;
-import github.devparkge.realworld.domain.user.service.dto.SignUpDto;
 import github.devparkge.realworld.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,10 +32,10 @@ public class UsersApiController {
     }
 
     @PostMapping()
-    public SignUpResponse signUp(
+    public UserResponse signUp(
             @JsonRequest("user") SignUpRequest signUpRequest
     ) {
-        SignUpDto signUpDto = usersService.signUp(signUpRequest.username(), signUpRequest.email(), signUpRequest.password());
-        return SignUpResponse.from(signUpDto);
+        User user = usersService.signUp(signUpRequest.username(), signUpRequest.email(), signUpRequest.password());
+        return UserResponseAddUp.from(user);
     }
 }
