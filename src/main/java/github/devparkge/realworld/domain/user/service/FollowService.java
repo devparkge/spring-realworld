@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ProfilesService {
+public class FollowService {
     private final UserRepository userRepository;
     private final FollowerRepository followerRepository;
 

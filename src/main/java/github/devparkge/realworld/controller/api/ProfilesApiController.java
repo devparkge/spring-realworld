@@ -5,7 +5,7 @@ import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
 import github.devparkge.realworld.controller.response.ProfileResponse;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.service.GetUserService;
-import github.devparkge.realworld.domain.user.service.ProfilesService;
+import github.devparkge.realworld.domain.user.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/api/profiles")
 public class ProfilesApiController {
-    private final ProfilesService profilesService;
+    private final FollowService profilesService;
     private final GetUserService getUserService;
 
     @GetMapping("/{username}")
