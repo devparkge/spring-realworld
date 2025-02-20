@@ -2,11 +2,10 @@ package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.config.annotation.JwtAuthenticationOptional;
 import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
-import github.devparkge.realworld.controller.response.FollowUserResponse;
-import github.devparkge.realworld.controller.response.GetProfileResponse;
+import github.devparkge.realworld.controller.response.ProfileResponse;
+import github.devparkge.realworld.domain.user.model.User;
+import github.devparkge.realworld.domain.user.service.GetUserService;
 import github.devparkge.realworld.domain.user.service.ProfilesService;
-import github.devparkge.realworld.domain.user.service.dto.FollowUserDto;
-import github.devparkge.realworld.domain.user.service.dto.GetProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,22 +16,26 @@ import java.util.UUID;
 @RequestMapping("/api/profiles")
 public class ProfilesApiController {
     private final ProfilesService profilesService;
+    private final GetUserService getUserService;
 
     @GetMapping("/{username}")
-    public GetProfileResponse getProfilse(
+    public ProfileResponse getProfile(
             @JwtAuthenticationOptional UUID authUserUUID,
             @PathVariable("username") String username
     ) {
-        GetProfileDto getProfileDto = profilesService.getProfile(username, authUserUUID);
-        return GetProfileResponse.from(getProfileDto);
+        User user = getUserService.getByUsername(username);
+        boolean isFollowing = profilesService.isFollowing(username, authUserUUID);
+        return ProfileResponse.from(user, isFollowing);
     }
 
     @PostMapping("/{username}/follow")
-    public FollowUserResponse folloUser(
-            @JwtAuthenticationRequired UUID uuid,
+    public ProfileResponse folloUser(
+            @JwtAuthenticationRequired UUID authUserUUID,
             @PathVariable("username") String username
     ) {
-        FollowUserDto followUserDto = profilesService.followUser(username, uuid);
-        return FollowUserResponse.from(followUserDto);
+        profilesService.followUser(username, authUserUUID);
+        User user = getUserService.getByUsername(username);
+        boolean isFollowing = profilesService.isFollowing(username, authUserUUID);
+        return ProfileResponse.from(user, isFollowing);
     }
 }

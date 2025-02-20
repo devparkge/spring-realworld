@@ -5,6 +5,7 @@ import github.devparkge.realworld.domain.user.repository.UserRepository;
 import github.devparkge.realworld.exception.EmailNotFoundException;
 import github.devparkge.realworld.exception.InvalidPasswordException;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
+import github.devparkge.realworld.exception.UsernameNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,11 @@ public class GetUserService {
     public User getByUUID(UUID uuid) {
         return userRepository.findByUUID(uuid)
                 .orElseThrow(() -> new UUIDNotFoundException("유효하지 않은 아이디입니다."));
+    }
+
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("%s은 존재하지 않는 유저명 입니다.", username)));
     }
 
     private void validatePassword(User user, String password) {
