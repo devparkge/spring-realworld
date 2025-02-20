@@ -6,6 +6,7 @@ import github.devparkge.realworld.controller.UserResponseAddUp;
 import github.devparkge.realworld.controller.request.UpdateUserRequest;
 import github.devparkge.realworld.controller.response.UserResponse;
 import github.devparkge.realworld.domain.user.model.User;
+import github.devparkge.realworld.domain.user.service.GetUserService;
 import github.devparkge.realworld.domain.user.service.UserService;
 import github.devparkge.realworld.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +22,12 @@ import java.util.UUID;
 @RequestMapping("/api/user")
 public class UserApiController {
     private final UserService userService;
-    private final JwtUtil jwtUtil;
-
+    private final GetUserService getUserService;
     @GetMapping
     public UserResponse currentUser(
             @JwtAuthenticationRequired UUID authUserUUID
     ) {
-        User user = userService.getCurrentUser(authUserUUID);
+        User user = getUserService.getByUUID(authUserUUID);
         return UserResponseAddUp.from(user);
     }
 
