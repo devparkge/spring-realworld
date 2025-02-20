@@ -4,7 +4,6 @@ import github.devparkge.realworld.config.annotation.JsonRequest;
 import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
 import github.devparkge.realworld.controller.UserResponseAddUp;
 import github.devparkge.realworld.controller.request.UpdateUserRequest;
-import github.devparkge.realworld.controller.response.CurrentUserResponse;
 import github.devparkge.realworld.controller.response.UserResponse;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.service.UserService;
@@ -25,14 +24,11 @@ public class UserApiController {
     private final JwtUtil jwtUtil;
 
     @GetMapping
-    public CurrentUserResponse currentUser(
+    public UserResponse currentUser(
             @JwtAuthenticationRequired UUID authUserUUID
     ) {
-
-        String token = jwtUtil.generateToken(authUserUUID);
         User user = userService.getCurrentUser(authUserUUID);
-
-        return CurrentUserResponse.from(user, token);
+        return UserResponseAddUp.from(user);
     }
 
     @PutMapping()
