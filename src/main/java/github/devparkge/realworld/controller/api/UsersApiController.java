@@ -1,12 +1,13 @@
 package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.config.annotation.JsonRequest;
+import github.devparkge.realworld.controller.UserResponseAddUp;
 import github.devparkge.realworld.controller.request.LoginRequest;
 import github.devparkge.realworld.controller.request.SignUpRequest;
-import github.devparkge.realworld.controller.response.LoginResponse;
 import github.devparkge.realworld.controller.response.SignUpResponse;
+import github.devparkge.realworld.controller.response.UserResponse;
+import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.service.UsersService;
-import github.devparkge.realworld.domain.user.service.dto.LoginDto;
 import github.devparkge.realworld.domain.user.service.dto.SignUpDto;
 import github.devparkge.realworld.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +23,14 @@ public class UsersApiController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public LoginResponse login(
+    public UserResponse login(
             @JsonRequest("user") LoginRequest loginRequest
     ) {
-        LoginDto loginDto = usersService.login(
+        User user = usersService.login(
                 loginRequest.email(),
                 loginRequest.password()
         );
-        return LoginResponse.from(loginDto);
+        return UserResponseAddUp.from(user);
     }
 
     @PostMapping()

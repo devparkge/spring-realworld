@@ -19,14 +19,11 @@ public class UsersService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public LoginDto login(String email, String password) {
+    public User login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EmailNotFoundException("유효하지 않은 이메일입니다."));
-
         validatePassword(user, password);
-        String token = jwtUtil.generateToken(user.uuid());
-
-        return LoginDto.from(user, token);
+        return user;
     }
 
     private void validatePassword(User user, String password) {
