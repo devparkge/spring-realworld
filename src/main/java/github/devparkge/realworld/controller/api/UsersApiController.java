@@ -8,6 +8,7 @@ import github.devparkge.realworld.controller.response.UserResponse;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.service.GetUserService;
 import github.devparkge.realworld.domain.user.service.UsersService;
+import github.devparkge.realworld.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UsersApiController {
+    private final JwtUtil jwtUtil;
     private final UsersService usersService;
     private final GetUserService getUserService;
 
@@ -28,7 +30,7 @@ public class UsersApiController {
                 loginRequest.email(),
                 loginRequest.password()
         );
-        return UserResponseAddUp.from(user);
+        return UserResponseAddUp.from(user, jwtUtil);
     }
 
     @PostMapping()
@@ -36,6 +38,6 @@ public class UsersApiController {
             @JsonRequest("user") SignUpRequest signUpRequest
     ) {
         User user = usersService.signUp(signUpRequest.username(), signUpRequest.email(), signUpRequest.password());
-        return UserResponseAddUp.from(user);
+        return UserResponseAddUp.from(user, jwtUtil);
     }
 }

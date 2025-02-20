@@ -27,7 +27,7 @@ public class UserService {
             String image
     ) {
         User updateUser = userRepository.findByUUID(uuid)
-                .map(user -> user.update(email, username, password, bio, image))
+                .map(user -> user.update(uuid, email, username, password, bio, image))
                 .orElseThrow(() -> new UUIDNotFoundException("존재하지 않는 아이디입니다."));
 
         return userRepository.updateUser(updateUser);

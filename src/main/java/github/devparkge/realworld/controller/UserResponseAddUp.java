@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserResponseAddUp {
-    private static JwtUtil jwtUtil;
 
-    public static UserResponse from(User user) {
+    public static UserResponse from(User user, JwtUtil jwtUtil) {
         String token = jwtUtil.generateToken(user.uuid());
         return UserResponse.from(user, token);
     }

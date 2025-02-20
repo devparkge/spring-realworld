@@ -24,6 +24,7 @@ public record User(
     }
 
     public User update(
+            UUID uuid,
             String email,
             String username,
             String password,
@@ -31,6 +32,7 @@ public record User(
             String image
     ) {
         return User.builder()
+                .uuid(uuid)
                 .email((email != null ? email : email()))
                 .username((username != null ? username : username()))
                 .password((password != null ? password : password()))

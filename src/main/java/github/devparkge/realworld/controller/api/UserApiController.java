@@ -21,14 +21,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserApiController {
+    private final JwtUtil jwtUtil;
     private final UserService userService;
     private final GetUserService getUserService;
+
     @GetMapping
     public UserResponse currentUser(
             @JwtAuthenticationRequired UUID authUserUUID
     ) {
         User user = getUserService.getByUUID(authUserUUID);
-        return UserResponseAddUp.from(user);
+        return UserResponseAddUp.from(user, jwtUtil);
     }
 
     @PutMapping()
@@ -44,6 +46,6 @@ public class UserApiController {
                 updateUserRequest.bio(),
                 updateUserRequest.image()
         );
-        return UserResponseAddUp.from(user);
+        return UserResponseAddUp.from(user, jwtUtil);
     }
 }
