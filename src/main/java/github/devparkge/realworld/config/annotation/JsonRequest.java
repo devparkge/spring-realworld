@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.config.annotation;
+package github.devparkge.realworld.config.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface JwtAuthenticationOptional {
+public @interface JsonRequest {
+    String value();
 }

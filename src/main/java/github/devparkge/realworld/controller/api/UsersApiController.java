@@ -1,6 +1,6 @@
 package github.devparkge.realworld.controller.api;
 
-import github.devparkge.realworld.controller.config.annotation.JsonRequest;
+import github.devparkge.realworld.config.annotation.JsonRequest;
 import github.devparkge.realworld.controller.request.LoginRequest;
 import github.devparkge.realworld.controller.request.SignUpRequest;
 import github.devparkge.realworld.controller.response.LoginResponse;

@@ -1,7 +1,7 @@
 package github.devparkge.realworld.controller.api;
 
-import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationOptional;
-import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationRequired;
+import github.devparkge.realworld.config.annotation.JwtAuthenticationOptional;
+import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
 import github.devparkge.realworld.controller.response.FollowUserResponse;
 import github.devparkge.realworld.controller.response.GetProfileResponse;
 import github.devparkge.realworld.domain.user.service.ProfilesService;

@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.config;
+package github.devparkge.realworld.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import github.devparkge.realworld.domain.user.service.UserService;

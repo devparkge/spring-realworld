@@ -1,7 +1,7 @@
 package github.devparkge.realworld.controller.api;
 
-import github.devparkge.realworld.controller.config.annotation.JsonRequest;
-import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationRequired;
+import github.devparkge.realworld.config.annotation.JsonRequest;
+import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
 import github.devparkge.realworld.controller.request.UpdateUserRequest;
 import github.devparkge.realworld.controller.response.CurrentUserResponse;
 import github.devparkge.realworld.controller.response.UpdateUserResponse;
