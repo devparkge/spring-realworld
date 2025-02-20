@@ -26,7 +26,7 @@ public class UserService {
                 .orElseThrow(() -> new UUIDNotFoundException("유효하지 않은 아이디입니다."));
     }
 
-    public UpdateUserDto updateUser(
+    public User updateUser(
             UUID uuid,
             String email,
             String username,
@@ -34,11 +34,10 @@ public class UserService {
             String bio,
             String image
     ) {
-        String token = jwtUtil.generateToken(uuid);
         User updateUser = userRepository.findByUUID(uuid)
                 .map(user -> user.update(email, username, password, bio, image))
                 .orElseThrow(() -> new UUIDNotFoundException("존재하지 않는 아이디입니다."));
 
-        return UpdateUserDto.from(userRepository.updateUser(updateUser), token);
+        return userRepository.updateUser(updateUser);
     }
 }
