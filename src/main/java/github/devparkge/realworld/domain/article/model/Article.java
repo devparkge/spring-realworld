@@ -20,4 +20,19 @@ public record Article(
         boolean favorited,
         int favoritesCount
 ) {
+    public static Article addArticle(UUID userId, String title, String description, String body, List<String> tagList) {
+        return Article.builder()
+                .uuid(UUID.randomUUID())
+                .userId(userId)
+                .slug(title.toLowerCase())
+                .title(title)
+                .description(description)
+                .body(body)
+                .tagList(tagList)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .favorited(false)
+                .favoritesCount(0)
+                .build();
+    }
 }
