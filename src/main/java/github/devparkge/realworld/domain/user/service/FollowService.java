@@ -23,4 +23,8 @@ public class FollowService {
     public void followUser(String username, UUID uuid) {
         followerRepository.follow(username, uuid);
     }
+
+    public void unFollowUser(String username, UUID uuid) {
+        followerRepository.unFollow(username, uuid);
+    }
 }
