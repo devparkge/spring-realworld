@@ -29,7 +29,7 @@ public class ProfilesApiController {
     }
 
     @PostMapping("/{username}/follow")
-    public ProfileResponse folloUser(
+    public ProfileResponse followUser(
             @JwtAuthenticationRequired UUID authUserUUID,
             @PathVariable("username") String username
     ) {
