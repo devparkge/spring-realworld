@@ -12,7 +12,7 @@ public record Author(
         return new Author(
                 user.username(),
                 user.bio(),
-                user.image(), ,
+                user.image(),
                 isFollowing
         );
     }
