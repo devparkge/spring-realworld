@@ -1,7 +1,6 @@
 package github.devparkge.realworld.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import github.devparkge.realworld.domain.user.model.Follower;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.InMemoryFollowerRepository;
 import github.devparkge.realworld.domain.user.repository.InMemoryUserRepository;
@@ -42,8 +41,8 @@ public class IntegrationTest {
         );
     }
 
-    protected Follower createFollower(String username, UUID uuid) {
-        return this.followerRepository.follow(
+    protected void createFollower(String username, UUID uuid) {
+        this.followerRepository.follow(
                 username,
                 uuid
         );

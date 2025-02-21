@@ -22,14 +22,22 @@ public class InMemoryFollowerRepository implements FollowerRepository {
     }
 
     @Override
-    public Follower follow(String username, UUID uuid) {
-        Follower follower = Follower.follow(
+    public void follow(String username, UUID uuid) {
+        followers.add(Follower.follow(
                 UUID.randomUUID(),
                 uuid,
                 username
-        );
-        followers.add(follower);
-        return follower;
+        ));
+    }
+
+    @Override
+    public void unFollow(String username, UUID uuid) {
+        followers.stream()
+                .filter(
+                        follower ->
+                                follower.uuid().equals(uuid) && follower.username().equals(username)
+                ).findFirst()
+                .map(follower -> followers.remove(follower));
     }
 
     public void clear() {
