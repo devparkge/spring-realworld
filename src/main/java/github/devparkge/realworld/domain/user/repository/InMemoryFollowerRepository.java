@@ -30,6 +30,16 @@ public class InMemoryFollowerRepository implements FollowerRepository {
         ));
     }
 
+    @Override
+    public void unFollow(String username, UUID uuid) {
+        followers.stream()
+                .filter(
+                        follower ->
+                                follower.uuid().equals(uuid) && follower.username().equals(username)
+                ).findFirst()
+                .map(follower -> followers.remove(follower));
+    }
+
     public void clear() {
         followers = new ArrayList<>();
     }
