@@ -38,4 +38,15 @@ public class ProfilesApiController {
         boolean isFollowing = profilesService.isFollowing(username, authUserUUID);
         return ProfileResponse.from(user, isFollowing);
     }
+
+    @DeleteMapping("/{username}/follow")
+    public ProfileResponse unFollowUser(
+            @JwtAuthenticationOptional UUID authUserUUID,
+            @PathVariable("username") String username
+    ) {
+        profilesService.unFollowUser(username, authUserUUID);
+        User user = getUserService.getByUsername(username);
+        boolean isFollowing = profilesService.isFollowing(username, authUserUUID);
+        return ProfileResponse.from(user, isFollowing);
+    }
 }
