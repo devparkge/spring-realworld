@@ -1,9 +1,8 @@
-package github.devparkge.realworld.controller.config;
+package github.devparkge.realworld.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import github.devparkge.realworld.service.UserService;
+import github.devparkge.realworld.domain.user.service.UserService;
 import github.devparkge.realworld.util.JwtUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

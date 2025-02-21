@@ -1,6 +1,6 @@
 package github.devparkge.realworld.controller.api;
 
-import github.devparkge.realworld.domain.repository.InMemoryFollowerRepository;
+import github.devparkge.realworld.domain.user.repository.InMemoryFollowerRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

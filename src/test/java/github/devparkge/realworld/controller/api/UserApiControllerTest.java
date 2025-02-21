@@ -1,7 +1,7 @@
 package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.controller.request.UpdateUserRequest;
-import github.devparkge.realworld.domain.model.User;
+import github.devparkge.realworld.domain.user.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -9,7 +9,8 @@ import org.springframework.http.MediaType;
 
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 

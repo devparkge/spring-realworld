@@ -1,8 +1,8 @@
-package github.devparkge.realworld.controller.config;
+package github.devparkge.realworld.config;
 
-import github.devparkge.realworld.controller.config.annotation.JwtAuthenticationRequired;
+import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
-import github.devparkge.realworld.service.UserService;
+import github.devparkge.realworld.domain.user.service.UserService;
 import github.devparkge.realworld.util.JwtUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

@@ -1,10 +1,10 @@
 package github.devparkge.realworld.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import github.devparkge.realworld.domain.model.Follower;
-import github.devparkge.realworld.domain.model.User;
-import github.devparkge.realworld.domain.repository.InMemoryFollowerRepository;
-import github.devparkge.realworld.domain.repository.InMemoryUserRepository;
+import github.devparkge.realworld.domain.user.model.Follower;
+import github.devparkge.realworld.domain.user.model.User;
+import github.devparkge.realworld.domain.user.repository.InMemoryFollowerRepository;
+import github.devparkge.realworld.domain.user.repository.InMemoryUserRepository;
 import github.devparkge.realworld.util.JwtUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
