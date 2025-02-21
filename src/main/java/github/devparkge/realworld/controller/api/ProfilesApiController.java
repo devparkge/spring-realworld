@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/api/profiles")
 public class ProfilesApiController {
-    private final FollowService profilesService;
+    private final FollowService followService;
     private final GetUserService getUserService;
 
     @GetMapping("/{username}")
@@ -24,7 +24,7 @@ public class ProfilesApiController {
             @PathVariable("username") String username
     ) {
         User user = getUserService.getByUsername(username);
-        boolean isFollowing = profilesService.isFollowing(username, authUserUUID);
+        boolean isFollowing = followService.isFollowing(username, authUserUUID);
         return ProfileResponse.from(user, isFollowing);
     }
 
@@ -33,9 +33,9 @@ public class ProfilesApiController {
             @JwtAuthenticationRequired UUID authUserUUID,
             @PathVariable("username") String username
     ) {
-        profilesService.followUser(username, authUserUUID);
+        followService.followUser(username, authUserUUID);
         User user = getUserService.getByUsername(username);
-        boolean isFollowing = profilesService.isFollowing(username, authUserUUID);
+        boolean isFollowing = followService.isFollowing(username, authUserUUID);
         return ProfileResponse.from(user, isFollowing);
     }
 
@@ -44,9 +44,9 @@ public class ProfilesApiController {
             @JwtAuthenticationOptional UUID authUserUUID,
             @PathVariable("username") String username
     ) {
-        profilesService.unFollowUser(username, authUserUUID);
+        followService.unFollowUser(username, authUserUUID);
         User user = getUserService.getByUsername(username);
-        boolean isFollowing = profilesService.isFollowing(username, authUserUUID);
+        boolean isFollowing = followService.isFollowing(username, authUserUUID);
         return ProfileResponse.from(user, isFollowing);
     }
 }
