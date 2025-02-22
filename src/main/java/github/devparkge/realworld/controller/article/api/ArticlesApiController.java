@@ -1,9 +1,9 @@
-package github.devparkge.realworld.controller.api;
+package github.devparkge.realworld.controller.article.api;
 
 import github.devparkge.realworld.config.annotation.JsonRequest;
 import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
-import github.devparkge.realworld.controller.request.CreateArticleRequest;
-import github.devparkge.realworld.controller.response.ArticleResponse;
+import github.devparkge.realworld.controller.article.request.CreateArticleRequest;
+import github.devparkge.realworld.controller.article.response.ArticleResponse;
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.article.service.CreateArticleService;
 import github.devparkge.realworld.domain.user.model.User;

@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.request;
+package github.devparkge.realworld.controller.user.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

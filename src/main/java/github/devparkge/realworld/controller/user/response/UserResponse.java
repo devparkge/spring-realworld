@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.response;
+package github.devparkge.realworld.controller.user.response;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;

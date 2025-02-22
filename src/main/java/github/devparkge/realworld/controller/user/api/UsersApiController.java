@@ -1,10 +1,10 @@
-package github.devparkge.realworld.controller.api;
+package github.devparkge.realworld.controller.user.api;
 
 import github.devparkge.realworld.config.annotation.JsonRequest;
-import github.devparkge.realworld.controller.UserResponseAddUp;
-import github.devparkge.realworld.controller.request.LoginRequest;
-import github.devparkge.realworld.controller.request.SignUpRequest;
-import github.devparkge.realworld.controller.response.UserResponse;
+import github.devparkge.realworld.controller.user.UserResponseAddUp;
+import github.devparkge.realworld.controller.user.request.LoginRequest;
+import github.devparkge.realworld.controller.user.request.SignUpRequest;
+import github.devparkge.realworld.controller.user.response.UserResponse;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.service.GetUserService;
 import github.devparkge.realworld.domain.user.service.UsersService;

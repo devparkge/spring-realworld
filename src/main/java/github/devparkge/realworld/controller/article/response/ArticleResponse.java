@@ -1,8 +1,8 @@
-package github.devparkge.realworld.controller.response;
+package github.devparkge.realworld.controller.article.response;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import github.devparkge.realworld.controller.Author;
+import github.devparkge.realworld.controller.article.Author;
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.user.model.User;
 

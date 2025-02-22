@@ -1,6 +1,6 @@
 package github.devparkge.realworld.controller.api;
 
-import github.devparkge.realworld.controller.request.UpdateUserRequest;
+import github.devparkge.realworld.controller.user.request.UpdateUserRequest;
 import github.devparkge.realworld.domain.user.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
