@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.article.request;
+package github.devparkge.realworld.controller.article.model.request;
 
 import java.util.List;
 

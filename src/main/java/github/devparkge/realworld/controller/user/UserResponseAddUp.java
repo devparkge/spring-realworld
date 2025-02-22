@@ -1,6 +1,6 @@
 package github.devparkge.realworld.controller.user;
 
-import github.devparkge.realworld.controller.user.response.UserResponse;
+import github.devparkge.realworld.controller.user.model.response.UserResponse;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.util.JwtUtil;
 import org.springframework.stereotype.Component;

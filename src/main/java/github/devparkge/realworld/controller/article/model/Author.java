@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.article;
+package github.devparkge.realworld.controller.article.model;
 
 import github.devparkge.realworld.domain.user.model.User;
 
