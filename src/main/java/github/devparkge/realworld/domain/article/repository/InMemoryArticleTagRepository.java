@@ -20,4 +20,11 @@ public class InMemoryArticleTagRepository implements ArticleTagRepository{
         articleTags.add(articleTag);
         return articleTag;
     }
+
+    @Override
+    public List<ArticleTag> findByTagId(UUID tagId) {
+        return articleTags.stream()
+                .filter(articleTag -> articleTag.tagId().equals(tagId))
+                .toList();
+    }
 }
