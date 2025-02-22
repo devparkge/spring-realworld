@@ -3,6 +3,7 @@ package github.devparkge.realworld.controller.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.article.repository.InMemoryArticleRepository;
+import github.devparkge.realworld.domain.article.service.CreateArticleService;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.InMemoryFollowerRepository;
 import github.devparkge.realworld.domain.user.repository.InMemoryUserRepository;
@@ -25,6 +26,8 @@ public class IntegrationTest {
     private InMemoryFollowerRepository followerRepository;
     @Autowired
     private InMemoryArticleRepository articleRepository;
+    @Autowired
+    private CreateArticleService createArticleService;
     @Autowired
     protected MockMvc mockMvc;
     @Autowired
@@ -55,7 +58,7 @@ public class IntegrationTest {
     }
 
     protected Article createArticle(UUID userId, String title, String description, String body, List<String> tagList) {
-        return this.articleRepository.saveArticle(
+        return this.createArticleService.createArticle(
                 userId,
                 title,
                 description,
