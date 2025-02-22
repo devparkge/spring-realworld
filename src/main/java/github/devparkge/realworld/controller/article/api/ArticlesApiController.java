@@ -1,20 +1,22 @@
 package github.devparkge.realworld.controller.article.api;
 
 import github.devparkge.realworld.config.annotation.JsonRequest;
+import github.devparkge.realworld.config.annotation.JwtAuthenticationOptional;
 import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
+import github.devparkge.realworld.controller.article.ArticleResponseAssembler;
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
-import github.devparkge.realworld.controller.article.model.response.ArticleResponse;
+import github.devparkge.realworld.controller.article.model.response.wrapper.ArticleWrapper;
+import github.devparkge.realworld.controller.article.model.response.wrapper.ArticlesWrapper;
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.article.service.CreateArticleService;
 import github.devparkge.realworld.domain.article.service.CreateTagService;
-import github.devparkge.realworld.domain.user.model.User;
+import github.devparkge.realworld.domain.article.service.GetArticlesService;
 import github.devparkge.realworld.domain.user.service.FollowService;
 import github.devparkge.realworld.domain.user.service.GetUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,9 +27,11 @@ public class ArticlesApiController {
     private final FollowService followService;
     private final CreateArticleService createArticleService;
     private final CreateTagService createTagService;
+    private final GetArticlesService getArticlesService;
+    private final ArticleResponseAssembler articleResponseAssembler;
 
     @PostMapping()
-    public ArticleResponse createArticle(
+    public ArticleWrapper createArticle(
             @JwtAuthenticationRequired UUID authUserUUID,
             @JsonRequest("article") CreateArticleRequest createArticleRequest
     ) {
@@ -38,9 +42,19 @@ public class ArticlesApiController {
                 createArticleRequest.body(),
                 createArticleRequest.tagList()
         );
-        createTagService.createTag(article.tagList(), article.uuid());
-        User user = getUserService.getByUUID(authUserUUID);
-        boolean isFollowing = followService.isFollowing(user.username(),authUserUUID);
-        return ArticleResponse.from(article, user, isFollowing);
+        return articleResponseAssembler.assembleArticleResponse(article, authUserUUID);
+    }
+
+    @GetMapping()
+    public ArticlesWrapper getArticles(
+            @JwtAuthenticationOptional UUID authUserUUID,
+            @RequestParam(required = false, name = "tag") String tag,
+            @RequestParam(required = false, name = "author") String author,
+            @RequestParam(required = false, name = "favorited") String favorited,
+            @RequestParam(defaultValue = "20", name = "limit") int limit,
+            @RequestParam(defaultValue = "0", name = "offset") int offset
+    ) {
+        List<Article> articles = getArticlesService.getArticles(tag, author, limit, offset);
+        return articleResponseAssembler.assembleArticlesResponse(articles, authUserUUID);
     }
 }
