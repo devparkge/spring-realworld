@@ -6,6 +6,7 @@ import github.devparkge.realworld.controller.article.model.request.CreateArticle
 import github.devparkge.realworld.controller.article.model.response.ArticleResponse;
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.article.service.CreateArticleService;
+import github.devparkge.realworld.domain.article.service.CreateTagService;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.service.FollowService;
 import github.devparkge.realworld.domain.user.service.GetUserService;
@@ -23,6 +24,7 @@ public class ArticlesApiController {
     private final GetUserService getUserService;
     private final FollowService followService;
     private final CreateArticleService createArticleService;
+    private final CreateTagService createTagService;
 
     @PostMapping()
     public ArticleResponse createArticle(
@@ -36,6 +38,7 @@ public class ArticlesApiController {
                 createArticleRequest.body(),
                 createArticleRequest.tagList()
         );
+        createTagService.createTag(article.tagList(), article.uuid());
         User user = getUserService.getByUUID(authUserUUID);
         boolean isFollowing = followService.isFollowing(user.username(),authUserUUID);
         return ArticleResponse.from(article, user, isFollowing);
