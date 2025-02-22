@@ -3,6 +3,7 @@ package github.devparkge.realworld.controller.article.response;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import github.devparkge.realworld.controller.article.Author;
+import github.devparkge.realworld.controller.user.response.ProfileResponse;
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.user.model.User;
 
@@ -24,7 +25,7 @@ public record ArticleResponse(
         LocalDateTime updatedAt,
         boolean favorited,
         int favoritesCount,
-        Author author
+        ProfileResponse author
 ) {
     public static ArticleResponse from(Article article, User user, boolean isFollowing) {
         return new ArticleResponse(
@@ -37,7 +38,7 @@ public record ArticleResponse(
                 article.updatedAt(),
                 article.favorited(),
                 article.favoritesCount(),
-                Author.from(user, isFollowing)
+                ProfileResponse.from(user, isFollowing)
         );
     }
 }
