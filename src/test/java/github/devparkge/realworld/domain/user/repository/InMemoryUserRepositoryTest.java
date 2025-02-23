@@ -1,13 +1,12 @@
 package github.devparkge.realworld.domain.user.repository;
 
-import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserReadRepository;
 import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-public class InMemoryFollowerRepositoryTest {
+public class InMemoryUserRepositoryTest {
     @Test
     void follow() {
         var repository = new InMemoryUserRepository();

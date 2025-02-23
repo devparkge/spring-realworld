@@ -2,9 +2,9 @@ package github.devparkge.realworld.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import github.devparkge.realworld.domain.article.model.Article;
-import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
 import github.devparkge.realworld.domain.user.model.User;
-import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserReadRepository;
+import github.devparkge.realworld.exception.UUIDNotFoundException;
+import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
 import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserRepository;
 import github.devparkge.realworld.util.JwtUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -53,11 +53,13 @@ public class IntegrationTest {
 
     protected Article createArticle(UUID userId, String title, String description, String body, List<String> tagList) {
         return this.articleRepository.save(
-                userId,
-                title,
-                description,
-                body,
-                tagList
+                Article.create(
+                        userRepository.findByUUID(userId).orElseThrow(() -> new UUIDNotFoundException(String.format("%s를 찾을 수 없습니다.", userId))),
+                        title,
+                        description,
+                        body,
+                        tagList
+                )
         );
     }
 }

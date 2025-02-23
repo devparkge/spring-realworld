@@ -2,6 +2,7 @@ package github.devparkge.realworld.domain.article.repository;
 
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
+import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,11 +23,13 @@ class InMemoryArticleRepositoryTest {
         );
         UUID userId = UUID.randomUUID();
         Article article = repository.save(
-                userId,
-                "Test",
-                "test saveArticle",
-                "test saveArticle unit test",
-                List.of("unitTest", "test", "unit")
+                Article.create(
+                        userRepository.findByUUID(userId).orElseThrow(() -> new UUIDNotFoundException(String.format("%s를 찾을 수 없습니다.", userId))),
+                        "Test",
+                        "test saveArticle",
+                        "test saveArticle unit test",
+                        List.of("unitTest", "test", "unit")
+                )
         );
         Assertions.assertThat(article.author().uuid().equals(article.author().uuid()));
         Assertions.assertThat(article.title().equals(article.title()));

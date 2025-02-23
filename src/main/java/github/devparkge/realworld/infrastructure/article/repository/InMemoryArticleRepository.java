@@ -18,14 +18,7 @@ public class InMemoryArticleRepository implements ArticleRepository {
     public List<Article> articles = new ArrayList<>();
 
     @Override
-    public Article save(UUID userId, String title, String description, String body, List<String> tagList) {
-        Article article = Article.create(
-                userRepository.findByUUID(userId).orElseThrow(() -> new UUIDNotFoundException(String.format("%s를 찾을 수 없습니다.", userId))),
-                title,
-                description,
-                body,
-                tagList
-        );
+    public Article save(Article article) {
         articles.add(article);
         return article;
     }
