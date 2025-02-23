@@ -29,9 +29,9 @@ public class ArticleResponseAssembler {
         return ArticlesWrapper.create(
                 articles.stream()
                         .map(article -> {
-                                    User user = getUserService.getByUUID(article.userId());
-                                    boolean isFollowing = (authUserUUID != null) ? followService.isFollowing(user.username(), authUserUUID) : false;
-                                    return ArticleResponse.from(article, user, isFollowing);
+                                    User author = article.author();
+                                    boolean isFollowing = (authUserUUID != null) ? followService.isFollowing(author.username(), authUserUUID) : false;
+                                    return ArticleResponse.from(article, author, isFollowing);
                                 }
                         ).toList()
         );
