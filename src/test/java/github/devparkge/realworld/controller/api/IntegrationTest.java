@@ -2,11 +2,10 @@ package github.devparkge.realworld.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import github.devparkge.realworld.domain.article.model.Article;
-import github.devparkge.realworld.domain.article.repository.InMemoryArticleRepository;
-import github.devparkge.realworld.domain.article.service.CreateArticleService;
+import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
 import github.devparkge.realworld.domain.user.model.User;
-import github.devparkge.realworld.domain.user.repository.InMemoryFollowerRepository;
-import github.devparkge.realworld.domain.user.repository.InMemoryUserRepository;
+import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserReadRepository;
+import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserRepository;
 import github.devparkge.realworld.util.JwtUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ public class IntegrationTest {
     @Autowired
     private InMemoryUserRepository userRepository;
     @Autowired
-    private InMemoryFollowerRepository followerRepository;
-    @Autowired
     private InMemoryArticleRepository articleRepository;
     @Autowired
     protected MockMvc mockMvc;
@@ -36,7 +33,6 @@ public class IntegrationTest {
     @AfterEach
     void after() {
         this.userRepository.clear();
-        this.followerRepository.clear();
         this.articleRepository.clear();
     }
 
@@ -49,7 +45,7 @@ public class IntegrationTest {
     }
 
     protected void createFollower(String username, UUID uuid) {
-        this.followerRepository.follow(
+        this.userRepository.follow(
                 username,
                 uuid
         );

@@ -1,6 +1,8 @@
-package github.devparkge.realworld.domain.user.repository;
+package github.devparkge.realworld.infrastructure.user.repository;
 
+import github.devparkge.realworld.domain.user.model.Follower;
 import github.devparkge.realworld.domain.user.model.User;
+import github.devparkge.realworld.domain.user.repository.UserReadRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,10 +10,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
 @Component
-public class InMemoryUserRepository implements UserRepository {
-    private List<User> users = new ArrayList<>();
+public class InMemoryUserReadRepository implements UserReadRepository {
+    protected List<User> users = new ArrayList<>();
+    protected List<Follower> followers = new ArrayList<>();
+
+    @Override
+    public boolean isFollowing(String username, UUID uuid) {
+        return followers.stream()
+                .anyMatch(
+                        follower ->
+                                follower.uuid().equals(uuid) && follower.username().equals(username)
+                );
+
+    }
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -34,31 +46,9 @@ public class InMemoryUserRepository implements UserRepository {
                 .findFirst();
     }
 
-    @Override
-    public User saveUser(String username, String email, String password) {
-        User user = User.signUp(
-                UUID.randomUUID(),
-                username,
-                password,
-                email
-        );
-        users.add(user);
-        return user;
-    }
-
-    @Override
-    public User updateUser(
-            User updateUser
-    ) {
-
-        users.stream()
-                .filter(user -> user.uuid().equals(updateUser.uuid()))
-                .map(user -> user == updateUser);
-
-        return updateUser;
-    }
 
     public void clear() {
-        this.users = new ArrayList<>();
+        users = new ArrayList<>();
+        followers = new ArrayList<>();
     }
 }

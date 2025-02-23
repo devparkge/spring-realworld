@@ -2,6 +2,7 @@ package github.devparkge.realworld.domain.article.repository;
 
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
+import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

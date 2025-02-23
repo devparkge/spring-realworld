@@ -1,6 +1,7 @@
-package github.devparkge.realworld.domain.article.repository;
+package github.devparkge.realworld.infrastructure.article.repository;
 
 import github.devparkge.realworld.domain.article.model.Article;
+import github.devparkge.realworld.domain.article.repository.ArticleRepository;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
 import lombok.RequiredArgsConstructor;
