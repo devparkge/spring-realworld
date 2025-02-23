@@ -27,8 +27,6 @@ public class IntegrationTest {
     @Autowired
     private InMemoryArticleRepository articleRepository;
     @Autowired
-    private CreateArticleService createArticleService;
-    @Autowired
     protected MockMvc mockMvc;
     @Autowired
     protected ObjectMapper objectMapper;
@@ -58,7 +56,7 @@ public class IntegrationTest {
     }
 
     protected Article createArticle(UUID userId, String title, String description, String body, List<String> tagList) {
-        return this.createArticleService.createArticle(
+        return this.articleRepository.save(
                 userId,
                 title,
                 description,

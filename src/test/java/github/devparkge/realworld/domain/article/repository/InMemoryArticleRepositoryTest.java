@@ -12,28 +12,22 @@ import java.util.UUID;
 
 class InMemoryArticleRepositoryTest {
     @Autowired
-    private ArticleTagRepository articleTagRepository;
-    @Autowired
-    private TagRepository tagRepository;
-    @Autowired
     private UserRepository userRepository;
 
     @Test
     void saveArticle() {
         var repository = new InMemoryArticleRepository(
-                articleTagRepository,
-                tagRepository,
                 userRepository
         );
         UUID userId = UUID.randomUUID();
-        Article article = repository.saveArticle(
+        Article article = repository.save(
                 userId,
                 "Test",
                 "test saveArticle",
                 "test saveArticle unit test",
                 List.of("unitTest", "test", "unit")
         );
-        Assertions.assertThat(article.userId().equals(article.userId()));
+        Assertions.assertThat(article.author().uuid().equals(article.author().uuid()));
         Assertions.assertThat(article.title().equals(article.title()));
         Assertions.assertThat(article.description().equals(article.description()));
         Assertions.assertThat(article.body().equals(article.body()));

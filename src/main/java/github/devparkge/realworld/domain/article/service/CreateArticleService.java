@@ -12,17 +12,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CreateArticleService {
     private final ArticleRepository articleRepository;
-    private final CreateTagService createTagService;
 
     public Article createArticle(UUID userId, String title, String description, String body, List<String> tagList) {
-        Article article = articleRepository.saveArticle(
+        Article article = articleRepository.save(
                 userId,
                 title,
                 description,
                 body,
                 tagList
         );
-        createTagService.createTag(article.tagList(), article.uuid());
         return article;
     }
 }

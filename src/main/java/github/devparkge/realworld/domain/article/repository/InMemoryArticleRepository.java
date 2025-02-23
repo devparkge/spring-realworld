@@ -1,30 +1,25 @@
 package github.devparkge.realworld.domain.article.repository;
 
 import github.devparkge.realworld.domain.article.model.Article;
-import github.devparkge.realworld.domain.article.model.ArticleTag;
-import github.devparkge.realworld.domain.article.model.Tag;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
+import github.devparkge.realworld.exception.UUIDNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class InMemoryArticleRepository implements ArticleRepository {
-    private final ArticleTagRepository articleTagRepository;
-    private final TagRepository tagRepository;
     private final UserRepository userRepository;
     public List<Article> articles = new ArrayList<>();
 
     @Override
-    public Article saveArticle(UUID userId, String title, String description, String body, List<String> tagList) {
-        Article article = Article.addArticle(
-                userId,
+    public Article save(UUID userId, String title, String description, String body, List<String> tagList) {
+        Article article = Article.create(
+                userRepository.findByUUID(userId).orElseThrow(() -> new UUIDNotFoundException(String.format("%s를 찾을 수 없습니다.", userId))),
                 title,
                 description,
                 body,
@@ -42,30 +37,23 @@ public class InMemoryArticleRepository implements ArticleRepository {
     }
 
     private List<Article> getFindByTag(String tagName, int limit, int offset) {
-        return tagRepository.findByTagName(tagName)
-                .map(getArticleId())
-                .map(tags ->
-                        articles.stream()
-                                .filter(article -> tags.stream()
-                                        .anyMatch(tag -> tag.articleId().equals(article.uuid())))
-                                .skip(offset)
-                                .limit(limit)
-                                .collect(Collectors.toList())
-                ).orElse(List.of());
-    }
-
-    private Function<Tag, List<ArticleTag>> getArticleId() {
-        return tag -> articleTagRepository.findByTagId(tag.tagId());
+        return articles.stream()
+                .filter(article ->
+                        article.tagList().stream()
+                                .anyMatch(tag -> tag.equals(tagName))
+                ).skip(offset)
+                .limit(limit)
+                .toList();
     }
 
     private List<Article> getFindByAuthor(String author, int limit, int offset) {
         return userRepository.findByUsername(author)
                 .map(user ->
                         articles.stream()
-                                .filter(article -> article.userId().equals(user.uuid()))
+                                .filter(article -> article.author().uuid().equals(user.uuid()))
                                 .skip(offset)
                                 .limit(limit)
-                                .collect(Collectors.toList())
+                                .toList()
                 ).orElse(List.of());
     }
 
