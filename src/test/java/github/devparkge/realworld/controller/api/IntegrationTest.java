@@ -38,9 +38,12 @@ public class IntegrationTest {
 
     protected User createUser(String username, String email, String password) {
         return this.userRepository.saveUser(
-                username,
-                email,
-                password
+                User.signUp(
+                        UUID.randomUUID(),
+                        username,
+                        email,
+                        password
+                )
         );
     }
 
