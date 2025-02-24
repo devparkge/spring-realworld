@@ -12,13 +12,7 @@ import java.util.UUID;
 public class InMemoryUserRepository extends InMemoryUserReadRepository implements UserRepository {
 
     @Override
-    public User saveUser(String username, String email, String password) {
-        User user = User.signUp(
-                UUID.randomUUID(),
-                username,
-                password,
-                email
-        );
+    public User saveUser(User user) {
         users.add(user);
         return user;
     }

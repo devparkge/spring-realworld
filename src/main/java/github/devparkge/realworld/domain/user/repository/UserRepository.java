@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends UserReadRepository {
-    User saveUser(String username, String email, String password);
+    User saveUser(User saveUser);
 
     User updateUser(User updateUser);
 
