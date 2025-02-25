@@ -12,5 +12,5 @@ public interface UserReadRepository {
 
     Optional<User> findByUsername(String username);
 
-    boolean isFollowing(String username, UUID uuid);
+    boolean isFollowing(UUID followerId, UUID followeeId);
 }

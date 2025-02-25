@@ -13,14 +13,14 @@ import java.util.UUID;
 @Component
 public class InMemoryUserReadRepository implements UserReadRepository {
     protected List<User> users = new ArrayList<>();
-    protected List<Follow> followers = new ArrayList<>();
+    protected List<Follow> follows = new ArrayList<>();
 
     @Override
-    public boolean isFollowing(String username, UUID uuid) {
-        return followers.stream()
+    public boolean isFollowing(UUID followerId, UUID followeeId) {
+        return follows.stream()
                 .anyMatch(
-                        follower ->
-                                follower.uuid().equals(uuid) && follower.username().equals(username)
+                        follow ->
+                                follow.followeeId().equals(followeeId) && follow.followerId().equals(followerId)
                 );
     }
 
@@ -48,6 +48,6 @@ public class InMemoryUserReadRepository implements UserReadRepository {
 
     public void clear() {
         users = new ArrayList<>();
-        followers = new ArrayList<>();
+        follows = new ArrayList<>();
     }
 }

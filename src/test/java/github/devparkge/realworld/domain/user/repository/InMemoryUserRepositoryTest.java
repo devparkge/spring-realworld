@@ -11,40 +11,44 @@ public class InMemoryUserRepositoryTest {
     void follow() {
         var repository = new InMemoryUserRepository();
 
-        UUID uuid = UUID.randomUUID();
-        repository.follow("test", uuid);
+        UUID followeeId = UUID.randomUUID();
+        UUID followerId = UUID.randomUUID();
+        repository.follow(followerId, followeeId);
 
-        var isFollow = repository.isFollowing("test", uuid);
+        var isFollow = repository.isFollowing(followerId, followeeId);
         Assertions.assertThat(isFollow).isTrue();
     }
     @Test
     void follow_false() {
         var repository = new InMemoryUserRepository();
 
-        UUID uuid = UUID.randomUUID();
-        repository.follow("test", uuid);
+        UUID followeeId = UUID.randomUUID();
+        UUID followerId = UUID.randomUUID();
+        repository.follow(followerId, followeeId);
 
-        var isFollow = repository.isFollowing("test1", uuid);
+        var isFollow = repository.isFollowing(UUID.randomUUID(), followeeId);
         Assertions.assertThat(isFollow).isFalse();
     }
     @Test
     void unFollow_true() {
         var repository = new InMemoryUserRepository();
-        UUID uuid = UUID.randomUUID();
-        repository.follow("test", uuid);
-        repository.unFollow("test", uuid);
+        UUID followeeId = UUID.randomUUID();
+        UUID followerId = UUID.randomUUID();
+        repository.follow(followerId, followeeId);
+        repository.unFollow(followerId, followeeId);
 
-        var isFollow = repository.isFollowing("test", uuid);
+        var isFollow = repository.isFollowing(followerId, followeeId);
         Assertions.assertThat(isFollow).isFalse();
     }
     @Test
     void unFollow_false() {
         var repository = new InMemoryUserRepository();
-        UUID uuid = UUID.randomUUID();
-        repository.follow("test", uuid);
-        repository.unFollow("test1", uuid);
+        UUID followeeId = UUID.randomUUID();
+        UUID followerId = UUID.randomUUID();
+        repository.follow(followerId, followeeId);
+        repository.unFollow(UUID.randomUUID(), followeeId);
 
-        var isFollow = repository.isFollowing("test", uuid);
+        var isFollow = repository.isFollowing(followerId, followeeId);
         Assertions.assertThat(isFollow).isTrue();
     }
 }

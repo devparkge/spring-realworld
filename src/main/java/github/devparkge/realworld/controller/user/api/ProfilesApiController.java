@@ -24,7 +24,7 @@ public class ProfilesApiController {
             @PathVariable("username") String username
     ) {
         User user = getUserService.getByUsername(username);
-        boolean isFollowing = followService.isFollowing(username, authUserUUID);
+        boolean isFollowing = followService.isFollowing(user.uuid(), authUserUUID);
         return ProfileResponse.from(user, isFollowing);
     }
 
@@ -33,9 +33,9 @@ public class ProfilesApiController {
             @JwtAuthenticationRequired UUID authUserUUID,
             @PathVariable("username") String username
     ) {
-        followService.followUser(username, authUserUUID);
         User user = getUserService.getByUsername(username);
-        boolean isFollowing = followService.isFollowing(username, authUserUUID);
+        followService.followUser(user.uuid(), authUserUUID);
+        boolean isFollowing = followService.isFollowing(user.uuid(), authUserUUID);
         return ProfileResponse.from(user, isFollowing);
     }
 
@@ -44,9 +44,9 @@ public class ProfilesApiController {
             @JwtAuthenticationOptional UUID authUserUUID,
             @PathVariable("username") String username
     ) {
-        followService.unFollowUser(username, authUserUUID);
         User user = getUserService.getByUsername(username);
-        boolean isFollowing = followService.isFollowing(username, authUserUUID);
+        followService.unFollowUser(user.uuid(), authUserUUID);
+        boolean isFollowing = followService.isFollowing(user.uuid(), authUserUUID);
         return ProfileResponse.from(user, isFollowing);
     }
 }

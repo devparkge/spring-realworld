@@ -30,22 +30,22 @@ public class InMemoryUserRepository extends InMemoryUserReadRepository implement
     }
 
     @Override
-    public void follow(String username, UUID uuid) {
-        followers.add(Follow.follow(
+    public void follow(UUID followerId, UUID followeeId) {
+        follows.add(Follow.follow(
                 UUID.randomUUID(),
-                uuid,
-                username
+                followeeId,
+                followerId
         ));
     }
 
     @Override
-    public void unFollow(String username, UUID uuid) {
-        followers.stream()
+    public void unFollow(UUID followerId, UUID followeeId) {
+        follows.stream()
                 .filter(
-                        follower ->
-                                follower.uuid().equals(uuid) && follower.username().equals(username)
+                        follow ->
+                                follow.followeeId().equals(followeeId) && follow.followerId().equals(followerId)
                 ).findFirst()
-                .map(follower -> followers.remove(follower));
+                .map(follower -> follows.remove(follower));
     }
 
 }

@@ -47,10 +47,10 @@ public class IntegrationTest {
         );
     }
 
-    protected void createFollower(String username, UUID uuid) {
+    protected void createFollower(UUID followerId, UUID followeeId) {
         this.userRepository.follow(
-                username,
-                uuid
+                followerId,
+                followeeId
         );
     }
 

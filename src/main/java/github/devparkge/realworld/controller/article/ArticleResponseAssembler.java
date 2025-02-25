@@ -25,7 +25,7 @@ public class ArticleResponseAssembler {
         User author = getUserService.getByUUID(authUserUUID);
         boolean favorited = favoriteArticleService.getFavoritesArticleIds(authUserUUID).contains(article.uuid());
         int favoriteCount = favoriteArticleService.getFavoriteCount(article.uuid());
-        boolean isFollowing = (authUserUUID != null) ? followService.isFollowing(author.username(), authUserUUID) : false;
+        boolean isFollowing = (authUserUUID != null) ? followService.isFollowing(author.uuid(), authUserUUID) : false;
         return ArticleWrapper.create(ArticleResponse.from(article, author, favorited, favoriteCount, isFollowing));
     }
 
@@ -36,7 +36,7 @@ public class ArticleResponseAssembler {
                                     User author = article.author();
                                     boolean favorited = favoriteArticleService.getFavoritesArticleIds(authUserUUID).contains(article.uuid());
                                     int favoriteCount = favoriteArticleService.getFavoriteCount(article.uuid());
-                                    boolean isFollowing = (authUserUUID != null) ? followService.isFollowing(author.username(), authUserUUID) : false;
+                                    boolean isFollowing = (authUserUUID != null) ? followService.isFollowing(author.uuid(), authUserUUID) : false;
                                     return ArticleResponse.from(article, author, favorited, favoriteCount, isFollowing);
                                 }
                         ).toList()

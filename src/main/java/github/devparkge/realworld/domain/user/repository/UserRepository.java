@@ -10,7 +10,7 @@ public interface UserRepository extends UserReadRepository {
 
     User updateUser(User updateUser);
 
-    void follow(String username, UUID uuid);
+    void follow(UUID followerId, UUID followeeId);
 
-    void unFollow(String username, UUID uuid);
+    void unFollow(UUID followerId, UUID followeeId);
 }
