@@ -1,4 +1,4 @@
-package github.devparkge.realworld.domain.user.model;
+package github.devparkge.realworld.infrastructure.user.model;
 
 import lombok.Builder;
 import java.util.UUID;
