@@ -12,7 +12,7 @@ import java.util.List;
 public class GetArticlesService {
     private final ArticleRepository articleRepository;
 
-    public List<Article> getArticles(String tag, String author, int limit, int offset) {
-        return articleRepository.findByTagOrAuthor(tag, author, limit, offset);
+    public List<Article> getArticles(String tag, String author, String favorited, int limit, int offset) {
+        return articleRepository.findByTagOrAuthor(tag, author, favorited, limit, offset);
     }
 }

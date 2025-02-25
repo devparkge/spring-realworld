@@ -48,7 +48,7 @@ public class ArticlesApiController {
             @RequestParam(defaultValue = "20", name = "limit") int limit,
             @RequestParam(defaultValue = "0", name = "offset") int offset
     ) {
-        List<Article> articles = getArticlesService.getArticles(tag, author, limit, offset);
+        List<Article> articles = getArticlesService.getArticles(tag, author, favorited, limit, offset);
         return articleResponseAssembler.assembleArticlesResponse(articles, authUserUUID);
     }
 }
