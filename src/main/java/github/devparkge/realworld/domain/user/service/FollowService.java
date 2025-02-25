@@ -1,6 +1,5 @@
 package github.devparkge.realworld.domain.user.service;
 
-import github.devparkge.realworld.domain.user.repository.FollowerRepository;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,19 +11,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FollowService {
     private final UserRepository userRepository;
-    private final FollowerRepository followerRepository;
 
-    public Boolean isFollowing(String username, UUID uuid) {
-        return Optional.ofNullable(uuid)
-                .map(id -> followerRepository.isFollow(username, id))
+    public Boolean isFollowing(UUID followerId, UUID followeeId) {
+        return Optional.ofNullable(followeeId)
+                .map(id -> userRepository.isFollowing(followerId, followeeId))
                 .orElse(false);
     }
 
-    public void followUser(String username, UUID uuid) {
-        followerRepository.follow(username, uuid);
+    public void followUser(UUID followerId, UUID followeeId) {
+        userRepository.follow(followerId, followeeId);
     }
 
-    public void unFollowUser(String username, UUID uuid) {
-        followerRepository.unFollow(username, uuid);
+    public void unFollowUser(UUID followerId, UUID followeeId) {
+        userRepository.unFollow(followerId, followeeId);
     }
 }

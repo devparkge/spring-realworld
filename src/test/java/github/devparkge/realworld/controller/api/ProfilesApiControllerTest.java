@@ -28,7 +28,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "1234"
             );
             createFollower(
-                    targetUser.username(),
+                    targetUser.uuid(),
                     myUser.uuid()
             );
 
@@ -56,7 +56,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "1234"
             );
             createFollower(
-                    targetUser.username(),
+                    targetUser.uuid(),
                     myUser.uuid()
             );
 
@@ -113,7 +113,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "1234"
             );
             createFollower(
-                    targetUser.username(),
+                    targetUser.uuid(),
                     myUser.uuid()
             );
             String token = "Bearer " + jwtUtil.generateToken(myUser.uuid());

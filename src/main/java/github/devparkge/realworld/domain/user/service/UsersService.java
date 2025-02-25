@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class UsersService {
@@ -15,7 +17,13 @@ public class UsersService {
     @Transactional
     public User signUp(String username, String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) throw new DuplicateEmailException("중복된 이메일 입니다.");
-        User user = userRepository.saveUser(username, email, password);
-        return user;
+        return userRepository.saveUser(
+                User.signUp(
+                        UUID.randomUUID(),
+                        username,
+                        password,
+                        email
+                )
+        );
     }
 }

@@ -1,7 +1,7 @@
 package github.devparkge.realworld.controller.api;
 
-import github.devparkge.realworld.controller.request.LoginRequest;
-import github.devparkge.realworld.controller.request.SignUpRequest;
+import github.devparkge.realworld.controller.user.model.request.LoginRequest;
+import github.devparkge.realworld.controller.user.model.request.SignUpRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
