@@ -1,6 +1,7 @@
 package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
+import github.devparkge.realworld.domain.article.model.Slug;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                             .header(HttpHeaders.AUTHORIZATION, token)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(Map.of("article", request))))
-                    .andExpect(jsonPath("$.article.slug").value(request.title().toLowerCase()))
+                    .andExpect(jsonPath("$.article.slug").value(Slug.from(request.title()).value()))
                     .andExpect(jsonPath("$.article.title").value(request.title()))
                     .andExpect(jsonPath("$.article.description").value(request.description()))
                     .andExpect(jsonPath("$.article.body").value(request.body()))
@@ -95,7 +96,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.articles").isArray())
                     .andExpect(jsonPath("$.articlesCount").value(2))
 
-                    .andExpect(jsonPath("$.articles[0].slug").value(article1.slug()))
+                    .andExpect(jsonPath("$.articles[0].slug").value(article1.slug().value()))
                     .andExpect(jsonPath("$.articles[0].title").value(article1.title()))
                     .andExpect(jsonPath("$.articles[0].description").value(article1.description()))
                     .andExpect(jsonPath("$.articles[0].body").value(article1.body()))
@@ -112,7 +113,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.articles[0].author.image").value(user.image()))
                     .andExpect(jsonPath("$.articles[0].author.isFollowing").value(false))
 
-                    .andExpect(jsonPath("$.articles[1].slug").value(article2.slug()))
+                    .andExpect(jsonPath("$.articles[1].slug").value(article2.slug().value()))
                     .andExpect(jsonPath("$.articles[1].title").value(article2.title()))
                     .andExpect(jsonPath("$.articles[1].description").value(article2.description()))
                     .andExpect(jsonPath("$.articles[1].body").value(article2.body()))
@@ -163,7 +164,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.articles").isArray())
                     .andExpect(jsonPath("$.articlesCount").value(1))
 
-                    .andExpect(jsonPath("$.articles[0].slug").value(article1.slug()))
+                    .andExpect(jsonPath("$.articles[0].slug").value(article1.slug().value()))
                     .andExpect(jsonPath("$.articles[0].title").value(article1.title()))
                     .andExpect(jsonPath("$.articles[0].description").value(article1.description()))
                     .andExpect(jsonPath("$.articles[0].body").value(article1.body()))
