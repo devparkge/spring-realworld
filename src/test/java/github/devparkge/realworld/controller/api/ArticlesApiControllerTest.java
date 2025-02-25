@@ -1,6 +1,8 @@
 package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
+import github.devparkge.realworld.controller.article.model.request.GetArticlesRequest;
+import github.devparkge.realworld.controller.article.model.request.UpdateArticleRequest;
 import github.devparkge.realworld.domain.article.model.Slug;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,8 +13,7 @@ import org.springframework.http.MediaType;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -86,13 +87,19 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "test2 create article integration test",
                     List.of("test2", "integrationTest", "integration")
             );
+            var request = new GetArticlesRequest(
+                    "integrationTest",
+                    null,
+                    null,
+                    null,
+                    null
+            );
 
             String token = "Bearer " + jwtUtil.generateToken(user.uuid());
             mockMvc.perform(get("/api/articles")
                             .header(HttpHeaders.AUTHORIZATION, token)
-                            .param("tag", "integrationTest")
-                            .param("limit", "10")
-                            .param("offset", "0"))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
                     .andExpect(jsonPath("$.articles").isArray())
                     .andExpect(jsonPath("$.articlesCount").value(2))
 
@@ -131,6 +138,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.articles[1].author.isFollowing").value(false))
                     .andDo(print());
         }
+
         @Test
         @DisplayName("tag쿼리 파라미터만 존재할 경우 arlticles를 반환한다.")
         void test() throws Exception {
@@ -153,14 +161,19 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "test2 create article integration test",
                     List.of("test2", "integrationTest", "integration")
             );
+            var request = new GetArticlesRequest(
+                    "test1",
+                    "parkge",
+                    null,
+                    null,
+                    null
+            );
 
             String token = "Bearer " + jwtUtil.generateToken(user.uuid());
             mockMvc.perform(get("/api/articles")
                             .header(HttpHeaders.AUTHORIZATION, token)
-                            .param("tag", "test1")
-                            .param("author", "parkge")
-                            .param("limit", "10")
-                            .param("offset", "0"))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
                     .andExpect(jsonPath("$.articles").isArray())
                     .andExpect(jsonPath("$.articlesCount").value(1))
 
@@ -180,6 +193,56 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.articles[0].author.bio").value(user.bio()))
                     .andExpect(jsonPath("$.articles[0].author.image").value(user.image()))
                     .andExpect(jsonPath("$.articles[0].author.isFollowing").value(false))
+                    .andDo(print());
+        }
+    }
+
+    @Nested
+    @DisplayName("PUT /api/articles/:slug")
+    class UpdateArticle {
+        @Test
+        @DisplayName("인증된 유저의 업데이트된 Article을 반환한다.")
+        void test() throws Exception {
+            var user = createUser(
+                    "parkge",
+                    "parkge@gmail.com",
+                    "1234"
+            );
+            var article1 = ArticlesApiControllerTest.this.createArticle(
+                    user.uuid(),
+                    "Test1",
+                    "test1 create article",
+                    "test1 create article integration test",
+                    List.of("test1", "integrationTest", "integration")
+            );
+
+            var request = new UpdateArticleRequest(
+                    "Test2",
+                    "test2 create article",
+                    "test2 create article integration test"
+            );
+
+            String token = "Bearer " + jwtUtil.generateToken(user.uuid());
+            mockMvc.perform(put("/api/articles/test1")
+                            .header(HttpHeaders.AUTHORIZATION, token)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(Map.of("article", request))))
+                    .andExpect(jsonPath("$.article.slug").value(Slug.from(request.title()).value()))
+                    .andExpect(jsonPath("$.article.title").value(request.title()))
+                    .andExpect(jsonPath("$.article.description").value(request.description()))
+                    .andExpect(jsonPath("$.article.body").value(request.body()))
+                    .andExpect(jsonPath("$.article.tagList").isArray())
+                    .andExpect(jsonPath("$.article.tagList[0]").value("test1"))
+                    .andExpect(jsonPath("$.article.tagList[1]").value("integrationTest"))
+                    .andExpect(jsonPath("$.article.tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.article.createdAt").isNotEmpty())
+                    .andExpect(jsonPath("$.article.updatedAt").isNotEmpty())
+                    .andExpect(jsonPath("$.article.favorited").value(false))
+                    .andExpect(jsonPath("$.article.favoritesCount").value(0))
+                    .andExpect(jsonPath("$.article.author.username").value(user.username()))
+                    .andExpect(jsonPath("$.article.author.bio").value(user.bio()))
+                    .andExpect(jsonPath("$.article.author.image").value(user.image()))
+                    .andExpect(jsonPath("$.article.author.isFollowing").value(false))
                     .andDo(print());
         }
     }
