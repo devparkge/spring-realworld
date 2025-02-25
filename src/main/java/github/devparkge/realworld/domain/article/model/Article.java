@@ -32,4 +32,13 @@ public record Article(
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
+
+    public Article update(String title, String description, String body) {
+        return Article.builder()
+                .slug((title != null) ? Slug.from(title) : slug())
+                .title((title != null) ? title : title())
+                .description((description != null) ? description : description())
+                .body((body != null) ? body : body())
+                .build();
+    }
 }
