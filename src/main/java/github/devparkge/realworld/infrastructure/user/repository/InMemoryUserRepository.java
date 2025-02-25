@@ -1,6 +1,6 @@
 package github.devparkge.realworld.infrastructure.user.repository;
 
-import github.devparkge.realworld.infrastructure.user.model.Follower;
+import github.devparkge.realworld.infrastructure.user.model.Follow;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class InMemoryUserRepository extends InMemoryUserReadRepository implement
 
     @Override
     public void follow(String username, UUID uuid) {
-        followers.add(Follower.follow(
+        followers.add(Follow.follow(
                 UUID.randomUUID(),
                 uuid,
                 username

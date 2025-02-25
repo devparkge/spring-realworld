@@ -1,6 +1,6 @@
 package github.devparkge.realworld.infrastructure.user.repository;
 
-import github.devparkge.realworld.infrastructure.user.model.Follower;
+import github.devparkge.realworld.infrastructure.user.model.Follow;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserReadRepository;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 public class InMemoryUserReadRepository implements UserReadRepository {
     protected List<User> users = new ArrayList<>();
-    protected List<Follower> followers = new ArrayList<>();
+    protected List<Follow> followers = new ArrayList<>();
 
     @Override
     public boolean isFollowing(String username, UUID uuid) {
