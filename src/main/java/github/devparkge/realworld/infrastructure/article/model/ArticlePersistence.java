@@ -1,6 +1,7 @@
 package github.devparkge.realworld.infrastructure.article.model;
 
 import github.devparkge.realworld.domain.article.model.Article;
+import github.devparkge.realworld.domain.article.model.Slug;
 import github.devparkge.realworld.domain.user.model.User;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public record ArticlePersistence(
         UUID uuid,
         UUID authorId,
-        String slug,
+        Slug slug,
         String title,
         String description,
         String body,

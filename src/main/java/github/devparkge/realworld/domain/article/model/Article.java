@@ -11,7 +11,7 @@ import java.util.UUID;
 public record Article(
         UUID uuid,
         User author,
-        String slug,
+        Slug slug,
         String title,
         String description,
         String body,
@@ -23,8 +23,8 @@ public record Article(
         return Article.builder()
                 .uuid(UUID.randomUUID())
                 .author(author)
-                .slug(title.toLowerCase())
                 .title(title)
+                .slug(Slug.from(title))
                 .description(description)
                 .body(body)
                 .tagList(tagList)
