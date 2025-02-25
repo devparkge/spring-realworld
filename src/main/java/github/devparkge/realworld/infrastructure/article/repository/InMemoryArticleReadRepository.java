@@ -5,6 +5,7 @@ import github.devparkge.realworld.domain.article.repository.ArticleReadRepositor
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
 import github.devparkge.realworld.infrastructure.article.model.ArticleFavorite;
+import github.devparkge.realworld.infrastructure.article.model.ArticlePersistence;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,22 +23,12 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
     protected final UserRepository userRepository;
 
     @Override
-    public List<Article> findByTagOrAuthor(String tagName, String author, String favorited, int limit, int offset) {
-        User user = (favorited != null) ? userRepository.findByUsername(favorited).orElseThrow(() -> new UsernameNotFoundException(String.format("%s은 존재하지 않는 유저입니다.", favorited))) : null;
-        List<ArticleFavorite> favoriteList = (favorited != null) ? favorites.stream().filter(articleFavorite -> articleFavorite.userId().equals(user.uuid())).toList() : null;
-        return articles.stream()
-                .filter(article -> tagName == null || article.tagList().stream().anyMatch(isMatchTag(tagName)))
-                .toList().stream()
-                .filter(article -> author == null || article.author().username().equals(author))
-                .toList().stream()
-                .filter(article -> {
-                    if (favoriteList != null) {
-                        favoriteList.stream().anyMatch(articleFavorite -> articleFavorite.articleId().equals(article.uuid()));
-                        userRepository.updateUser(article.author());
-                    }
-                    userRepository.updateUser(article.author());
-                    return true;
-                }).skip(offset)
+    public List<Article> findByTagAndAuthorAndFavorited(String tagName, String author, String favorited, int limit, int offset) {
+        return findAll()
+                .filter(article -> equalTagName(tagName, article))
+                .filter(article -> equalAuthorName(author, article))
+                .filter(article -> equalFavorited(favorited, article))
+                .skip(offset)
                 .limit(limit)
                 .toList();
     }
@@ -89,8 +80,15 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
                 .size();
     }
 
-    private Predicate<? super String> isMatchTag(String tagName) {
-        return tag -> tag.equals(tagName);
+    private Stream<Article> findAll() {
+        return articles.stream()
+                .map(this::toDomain);
+    }
+
+    private Article toDomain(ArticlePersistence persistence) {
+        User author = userRepository.findByUUID(persistence.authorId())
+                .orElseThrow();
+        return persistence.toDomain(author);
     }
 
     public void clear() {
