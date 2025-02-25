@@ -17,9 +17,7 @@ public record Article(
         String body,
         List<String> tagList,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt,
-        boolean favorited,
-        int favoritesCount
+        LocalDateTime updatedAt
 ) {
     public static Article create(User author, String title, String description, String body, List<String> tagList) {
         return Article.builder()
@@ -32,8 +30,6 @@ public record Article(
                 .tagList(tagList)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
-                .favorited(false)
-                .favoritesCount(0)
                 .build();
     }
 }
