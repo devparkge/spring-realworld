@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ArticleReadRepository {
-    List<Article> findByTagOrAuthor(String tagName, String author, String favorited, int limit, int offset);
+    List<Article> findByTagAndAuthorAndFavorited(String tagName, String author, String favorited, int limit, int offset);
     List<UUID> getFavoritesArticleIds(UUID userId);
     int getCountByArticleId(UUID articleId);
 }
