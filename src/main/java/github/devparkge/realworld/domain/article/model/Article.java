@@ -35,6 +35,11 @@ public record Article(
 
     public Article update(String title, String description, String body) {
         return Article.builder()
+                .uuid(uuid())
+                .author(author())
+                .tagList(tagList())
+                .createdAt(createdAt())
+                .updatedAt(LocalDateTime.now())
                 .slug((title != null) ? Slug.from(title) : slug())
                 .title((title != null) ? title : title())
                 .description((description != null) ? description : description())
