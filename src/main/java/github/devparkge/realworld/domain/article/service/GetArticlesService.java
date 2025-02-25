@@ -13,6 +13,6 @@ public class GetArticlesService {
     private final ArticleRepository articleRepository;
 
     public List<Article> getArticles(String tag, String author, String favorited, int limit, int offset) {
-        return articleRepository.findByTagOrAuthor(tag, author, favorited, limit, offset);
+        return articleRepository.findByTagAndAuthorAndFavorited(tag, author, favorited, limit, offset);
     }
 }
