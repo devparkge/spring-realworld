@@ -18,9 +18,7 @@ class InMemoryArticleRepositoryTest {
 
     @Test
     void saveArticle() {
-        var repository = new InMemoryArticleRepository(
-                userRepository
-        );
+        var repository = new InMemoryArticleRepository(userRepository);
         UUID userId = UUID.randomUUID();
         Article article = repository.save(
                 Article.create(

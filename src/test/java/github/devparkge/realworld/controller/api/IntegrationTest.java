@@ -41,8 +41,8 @@ public class IntegrationTest {
                 User.signUp(
                         UUID.randomUUID(),
                         username,
-                        email,
-                        password
+                        password,
+                        email
                 )
         );
     }
