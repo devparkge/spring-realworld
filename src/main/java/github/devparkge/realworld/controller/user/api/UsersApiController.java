@@ -33,7 +33,7 @@ public class UsersApiController {
         return UserResponseAddUp.from(user, jwtUtil);
     }
 
-    @PostMapping()
+    @PostMapping
     public UserResponse signUp(
             @JsonRequest("user") SignUpRequest signUpRequest
     ) {

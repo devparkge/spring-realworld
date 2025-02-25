@@ -33,7 +33,7 @@ public class UserApiController {
         return UserResponseAddUp.from(user, jwtUtil);
     }
 
-    @PutMapping()
+    @PutMapping
     public UserResponse updateUser(
             @JwtAuthenticationRequired UUID authUserUUID,
             @JsonRequest("user") UpdateUserRequest updateUserRequest

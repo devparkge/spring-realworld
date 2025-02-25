@@ -24,7 +24,7 @@ public class ArticlesApiController {
     private final GetArticlesService getArticlesService;
     private final ArticleResponseAssembler articleResponseAssembler;
 
-    @PostMapping()
+    @PostMapping
     public ArticleWrapper createArticle(
             @JwtAuthenticationRequired UUID authUserUUID,
             @JsonRequest("article") CreateArticleRequest createArticleRequest
@@ -39,7 +39,7 @@ public class ArticlesApiController {
         return articleResponseAssembler.assembleArticleResponse(article, authUserUUID);
     }
 
-    @GetMapping()
+    @GetMapping
     public ArticlesWrapper getArticles(
             @JwtAuthenticationOptional UUID authUserUUID,
             @RequestParam(required = false, name = "tag") String tag,
