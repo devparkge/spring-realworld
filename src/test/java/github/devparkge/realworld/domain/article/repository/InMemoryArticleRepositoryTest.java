@@ -1,28 +1,32 @@
 package github.devparkge.realworld.domain.article.repository;
 
 import github.devparkge.realworld.domain.article.model.Article;
-import github.devparkge.realworld.domain.user.repository.UserRepository;
+import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
+import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.UUID;
 
-
-class InMemoryArticleRepositoryTest {
-    @Autowired
-    private UserRepository userRepository;
-
+public class InMemoryArticleRepositoryTest {
     @Test
     void saveArticle() {
+        var userRepository = new InMemoryUserRepository();
         var repository = new InMemoryArticleRepository(userRepository);
-        UUID userId = UUID.randomUUID();
+        User user = userRepository.saveUser(
+                User.signUp(
+                        UUID.randomUUID(),
+                        "parkge",
+                        "1234",
+                        "parkge@gmail.com"
+                )
+        );
         Article article = repository.save(
                 Article.create(
-                        userRepository.findByUUID(userId).orElseThrow(() -> new UUIDNotFoundException(String.format("%s를 찾을 수 없습니다.", userId))),
+                        userRepository.findByUUID(user.uuid()).orElseThrow(() -> new UUIDNotFoundException(String.format("%s를 찾을 수 없습니다.", user.uuid()))),
                         "Test",
                         "test saveArticle",
                         "test saveArticle unit test",
