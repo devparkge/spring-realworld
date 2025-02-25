@@ -6,11 +6,14 @@ import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
 import github.devparkge.realworld.controller.article.ArticleResponseAssembler;
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
 import github.devparkge.realworld.controller.article.model.request.GetArticlesRequest;
+import github.devparkge.realworld.controller.article.model.request.UpdateArticleRequest;
 import github.devparkge.realworld.controller.article.model.response.wrapper.ArticleWrapper;
 import github.devparkge.realworld.controller.article.model.response.wrapper.ArticlesWrapper;
 import github.devparkge.realworld.domain.article.model.Article;
+import github.devparkge.realworld.domain.article.model.Slug;
 import github.devparkge.realworld.domain.article.service.CreateArticleService;
 import github.devparkge.realworld.domain.article.service.GetArticlesService;
+import github.devparkge.realworld.domain.article.service.UpdateArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +27,7 @@ public class ArticlesApiController {
     private final CreateArticleService createArticleService;
     private final GetArticlesService getArticlesService;
     private final ArticleResponseAssembler articleResponseAssembler;
+    private final UpdateArticleService updateArticleService;
 
     @PostMapping
     public ArticleWrapper createArticle(
@@ -53,5 +57,20 @@ public class ArticlesApiController {
                 getArticlesRequest.offset()
         );
         return articleResponseAssembler.assembleArticlesResponse(articles, authUserUUID);
+    }
+
+    @PutMapping("/{slug}")
+    public ArticleWrapper updateArticle(
+            @JwtAuthenticationRequired UUID authUserUUID,
+            @PathVariable("slug") String slug,
+            @JsonRequest("article") UpdateArticleRequest updateArticleRequest
+    ) {
+        Article article = updateArticleService.update(
+                Slug.from(slug),
+                updateArticleRequest.title(),
+                updateArticleRequest.description(),
+                updateArticleRequest.body()
+        );
+        return articleResponseAssembler.assembleArticleResponse(article, authUserUUID);
     }
 }
