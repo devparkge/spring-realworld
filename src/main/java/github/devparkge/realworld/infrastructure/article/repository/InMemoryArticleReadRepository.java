@@ -4,20 +4,20 @@ import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.article.repository.ArticleReadRepository;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
-import github.devparkge.realworld.exception.UsernameNotFoundException;
 import github.devparkge.realworld.infrastructure.article.model.ArticleFavorite;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
 public class InMemoryArticleReadRepository implements ArticleReadRepository {
-    protected List<Article> articles = new ArrayList<>();
+    protected List<ArticlePersistence> articles = new ArrayList<>();
     protected List<ArticleFavorite> favorites = new ArrayList<>();
     protected final UserRepository userRepository;
 
@@ -40,6 +40,33 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
                 }).skip(offset)
                 .limit(limit)
                 .toList();
+    }
+
+    private boolean equalFavorited(String favorited, Article article) {
+        if(favorited == null) {
+            return true;
+        }
+        Optional<User> maybeFavoritedUser = userRepository.findByUsername(favorited);
+        if(maybeFavoritedUser.isEmpty()) {
+            return true;
+        }
+
+        User favoritedUser = maybeFavoritedUser.get();
+        List< UUID> favoritedArticleIds = favorites.stream()
+                .filter(favorite -> favorite.userId().equals(favoritedUser.uuid()))
+                .map(ArticleFavorite::articleId)
+                .toList();
+        return favoritedArticleIds.contains(article.uuid());
+    }
+
+    private static boolean equalAuthorName(String author, Article article) {
+        if(author == null) return true;
+        return article.author().username().equals(author);
+    }
+
+    private static boolean equalTagName(String tagName, Article article) {
+        if(tagName == null) return true;
+        return  article.tagList().contains(tagName);
     }
 
     @Override
@@ -71,3 +98,4 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
         favorites = new ArrayList<>();
     }
 }
+

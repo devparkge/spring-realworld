@@ -7,14 +7,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InMemoryArticleRepository extends InMemoryArticleReadRepository implements ArticleRepository {
-
     public InMemoryArticleRepository(UserRepository userRepository) {
         super(userRepository);
     }
 
     @Override
     public Article save(Article article) {
-        articles.add(article);
+        articles.add(ArticlePersistence.from(article));
         return article;
     }
 }
