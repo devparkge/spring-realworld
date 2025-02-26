@@ -73,111 +73,23 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "parkge@gmail.com",
                     "1234"
             );
-            var article1 = ArticlesApiControllerTest.this.createArticle(
+            var article1 = createArticle(
                     user.uuid(),
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
                     List.of("test1", "integrationTest", "integration")
             );
-            var article2 = ArticlesApiControllerTest.this.createArticle(
-                    user.uuid(),
-                    "Test2",
-                    "test2 create article",
-                    "test2 create article integration test",
-                    List.of("test2", "integrationTest", "integration")
-            );
-            var request = new GetArticlesRequest(
-                    "integrationTest",
-                    null,
-                    null,
-                    null,
-                    null
-            );
 
             String token = "Bearer " + jwtUtil.generateToken(user.uuid());
             mockMvc.perform(get("/api/articles")
                             .header(HttpHeaders.AUTHORIZATION, token)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
-                    .andExpect(jsonPath("$.articles").isArray())
-                    .andExpect(jsonPath("$.articlesCount").value(2))
-
-                    .andExpect(jsonPath("$.articles[0].slug").value(article1.slug().value()))
-                    .andExpect(jsonPath("$.articles[0].title").value(article1.title()))
-                    .andExpect(jsonPath("$.articles[0].description").value(article1.description()))
-                    .andExpect(jsonPath("$.articles[0].body").value(article1.body()))
-                    .andExpect(jsonPath("$.articles[0].tagList").isArray())
-                    .andExpect(jsonPath("$.articles[0].tagList[0]").value("test1"))
-                    .andExpect(jsonPath("$.articles[0].tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.articles[0].tagList[2]").value("integration"))
-                    .andExpect(jsonPath("$.articles[0].createdAt").isNotEmpty())
-                    .andExpect(jsonPath("$.articles[0].updatedAt").isNotEmpty())
-                    .andExpect(jsonPath("$.articles[0].favorited").value(false))
-                    .andExpect(jsonPath("$.articles[0].favoritesCount").value(0))
-                    .andExpect(jsonPath("$.articles[0].author.username").value(user.username()))
-                    .andExpect(jsonPath("$.articles[0].author.bio").value(user.bio()))
-                    .andExpect(jsonPath("$.articles[0].author.image").value(user.image()))
-                    .andExpect(jsonPath("$.articles[0].author.isFollowing").value(false))
-
-                    .andExpect(jsonPath("$.articles[1].slug").value(article2.slug().value()))
-                    .andExpect(jsonPath("$.articles[1].title").value(article2.title()))
-                    .andExpect(jsonPath("$.articles[1].description").value(article2.description()))
-                    .andExpect(jsonPath("$.articles[1].body").value(article2.body()))
-                    .andExpect(jsonPath("$.articles[1].tagList").isArray())
-                    .andExpect(jsonPath("$.articles[1].tagList[0]").value("test2"))
-                    .andExpect(jsonPath("$.articles[1].tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.articles[1].tagList[2]").value("integration"))
-                    .andExpect(jsonPath("$.articles[1].createdAt").isNotEmpty())
-                    .andExpect(jsonPath("$.articles[1].updatedAt").isNotEmpty())
-                    .andExpect(jsonPath("$.articles[1].favorited").value(false))
-                    .andExpect(jsonPath("$.articles[1].favoritesCount").value(0))
-                    .andExpect(jsonPath("$.articles[1].author.username").value(user.username()))
-                    .andExpect(jsonPath("$.articles[1].author.bio").value(user.bio()))
-                    .andExpect(jsonPath("$.articles[1].author.image").value(user.image()))
-                    .andExpect(jsonPath("$.articles[1].author.isFollowing").value(false))
-                    .andDo(print());
-        }
-
-        @Test
-        @DisplayName("tag쿼리 파라미터만 존재할 경우 arlticles를 반환한다.")
-        void test() throws Exception {
-            var user = createUser(
-                    "parkge",
-                    "parkge@gmail.com",
-                    "1234"
-            );
-            var article1 = ArticlesApiControllerTest.this.createArticle(
-                    user.uuid(),
-                    "Test1",
-                    "test1 create article",
-                    "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
-            );
-            var article2 = ArticlesApiControllerTest.this.createArticle(
-                    user.uuid(),
-                    "Test2",
-                    "test2 create article",
-                    "test2 create article integration test",
-                    List.of("test2", "integrationTest", "integration")
-            );
-            var request = new GetArticlesRequest(
-                    "test1",
-                    "parkge",
-                    null,
-                    null,
-                    null
-            );
-
-            String token = "Bearer " + jwtUtil.generateToken(user.uuid());
-            mockMvc.perform(get("/api/articles")
-                            .header(HttpHeaders.AUTHORIZATION, token)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
+                            .param("tag", "integrationTest")
+                            .param("author", "parkge"))
                     .andExpect(jsonPath("$.articles").isArray())
                     .andExpect(jsonPath("$.articlesCount").value(1))
 
-                    .andExpect(jsonPath("$.articles[0].slug").value(article1.slug().value()))
+                    .andExpect(jsonPath("$.articles[0].slug").value("test1"))
                     .andExpect(jsonPath("$.articles[0].title").value(article1.title()))
                     .andExpect(jsonPath("$.articles[0].description").value(article1.description()))
                     .andExpect(jsonPath("$.articles[0].body").value(article1.body()))

@@ -53,8 +53,8 @@ class UsersApiControllerTest extends IntegrationTest {
         );
 
         mockMvc.perform(post("/api/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Map.of("user", request))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of("user", request))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user.email").value(request.email()))
                 .andExpect(jsonPath("$.user.username").value(request.username()))
