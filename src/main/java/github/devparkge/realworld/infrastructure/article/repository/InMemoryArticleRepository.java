@@ -14,7 +14,7 @@ public class InMemoryArticleRepository extends InMemoryArticleReadRepository imp
 
     @Override
     public Article save(Article article) {
-        articles.add(ArticlePersistence.from(article));
+        articles.put(article.uuid(), ArticlePersistence.from(article));
         return article;
     }
 }
