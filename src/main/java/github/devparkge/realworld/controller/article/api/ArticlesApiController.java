@@ -12,6 +12,7 @@ import github.devparkge.realworld.controller.article.model.response.wrapper.Arti
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.article.model.Slug;
 import github.devparkge.realworld.domain.article.service.CreateArticleService;
+import github.devparkge.realworld.domain.article.service.DeleteArticleService;
 import github.devparkge.realworld.domain.article.service.GetArticlesService;
 import github.devparkge.realworld.domain.article.service.UpdateArticleService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class ArticlesApiController {
     private final GetArticlesService getArticlesService;
     private final ArticleResponseAssembler articleResponseAssembler;
     private final UpdateArticleService updateArticleService;
+    private final DeleteArticleService deleteArticleService;
 
     @PostMapping
     public ArticleWrapper createArticle(
@@ -72,5 +74,13 @@ public class ArticlesApiController {
                 updateArticleRequest.body()
         );
         return articleResponseAssembler.assembleArticleResponse(article, authUserUUID);
+    }
+
+    @DeleteMapping("/{slug}")
+    public void deleteArticle(
+            @JwtAuthenticationRequired UUID authUserUUID,
+            @PathVariable("slug") String slug
+    ) {
+        deleteArticleService.deleteArticle(Slug.from(slug), authUserUUID);
     }
 }
