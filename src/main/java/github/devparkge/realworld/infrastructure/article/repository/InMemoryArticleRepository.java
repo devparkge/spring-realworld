@@ -23,10 +23,7 @@ public class InMemoryArticleRepository extends InMemoryArticleReadRepository imp
     }
 
     @Override
-    public void delete(Slug slug, User authenticatedUser) {
-        findAll()
-                .filter(article -> article.author().equals(authenticatedUser))
-                .filter(article -> article.slug().value().equals(slug.value()))
-                .forEach(article -> articles.remove(article.uuid()));
+    public void delete(Article article) {
+        articles.remove(article.uuid());
     }
 }
