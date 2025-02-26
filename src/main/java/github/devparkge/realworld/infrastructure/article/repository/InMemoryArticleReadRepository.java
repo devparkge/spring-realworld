@@ -75,6 +75,11 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
         return favoritedArticleIds.contains(article.uuid());
     }
 
+    protected Stream<Article> findAll() {
+        return articles.values().stream()
+                .map(this::toDomain);
+    }
+
     private static boolean equalAuthorName(String author, Article article) {
         if (author == null) return true;
         return article.author().username().equals(author);
@@ -85,10 +90,6 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
         return article.tagList().contains(tagName);
     }
 
-    private Stream<Article> findAll() {
-        return articles.values().stream()
-                .map(this::toDomain);
-    }
 
     private Article toDomain(ArticlePersistence persistence) {
         User author = userRepository.findByUUID(persistence.authorId())
