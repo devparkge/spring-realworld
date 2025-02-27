@@ -1,7 +1,6 @@
 package github.devparkge.realworld.infrastructure.article.repository;
 
 import github.devparkge.realworld.domain.article.model.Article;
-import github.devparkge.realworld.domain.article.model.Slug;
 import github.devparkge.realworld.domain.article.repository.ArticleRepository;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
@@ -43,6 +42,7 @@ public class InMemoryArticleRepository extends InMemoryArticleReadRepository imp
     public void unFavorite(Article article, User user) {
         favorites.stream()
                 .filter(articleFavorite -> articleFavorite.articleId().equals(article.uuid()) && articleFavorite.userId().equals(user.uuid()))
-                .forEach(articleFavorite -> favorites.remove(articleFavorite));
+                .findFirst()
+                .map(articleFavorite -> favorites.remove(articleFavorite));
     }
 }
