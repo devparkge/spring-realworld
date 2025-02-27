@@ -90,7 +90,6 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
         return article.tagList().contains(tagName);
     }
 
-
     private Article toDomain(ArticlePersistence persistence) {
         User author = userRepository.findByUUID(persistence.authorId())
                 .orElseThrow();
