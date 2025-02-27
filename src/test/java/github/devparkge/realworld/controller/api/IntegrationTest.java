@@ -47,7 +47,7 @@ public class IntegrationTest {
         );
     }
 
-    protected void createFollower(UUID followerId, UUID followeeId) {
+    protected void follow(UUID followerId, UUID followeeId) {
         this.userRepository.follow(
                 followerId,
                 followeeId
@@ -63,6 +63,13 @@ public class IntegrationTest {
                         body,
                         tagList
                 )
+        );
+    }
+
+    protected void favorite(Article article, User userId) {
+        this.articleRepository.favorite(
+                article,
+                userId
         );
     }
 }

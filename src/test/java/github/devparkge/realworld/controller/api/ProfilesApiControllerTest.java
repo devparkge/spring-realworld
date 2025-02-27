@@ -27,7 +27,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "parkge@gamil.com",
                     "1234"
             );
-            createFollower(
+            follow(
                     targetUser.uuid(),
                     myUser.uuid()
             );
@@ -55,7 +55,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "parkge@gamil.com",
                     "1234"
             );
-            createFollower(
+            follow(
                     targetUser.uuid(),
                     myUser.uuid()
             );
@@ -112,7 +112,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "parkge@gamil.com",
                     "1234"
             );
-            createFollower(
+            follow(
                     targetUser.uuid(),
                     myUser.uuid()
             );
