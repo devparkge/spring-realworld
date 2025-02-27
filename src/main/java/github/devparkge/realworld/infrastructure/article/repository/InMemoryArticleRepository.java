@@ -38,4 +38,11 @@ public class InMemoryArticleRepository extends InMemoryArticleReadRepository imp
                 )
         );
     }
+
+    @Override
+    public void unFavorite(Article article, User user) {
+        favorites.stream()
+                .filter(articleFavorite -> articleFavorite.articleId().equals(article.uuid()) && articleFavorite.userId().equals(user.uuid()))
+                .forEach(articleFavorite -> favorites.remove(articleFavorite));
+    }
 }
