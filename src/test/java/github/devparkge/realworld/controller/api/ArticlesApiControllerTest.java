@@ -1,7 +1,6 @@
 package github.devparkge.realworld.controller.api;
 
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
-import github.devparkge.realworld.controller.article.model.request.GetArticlesRequest;
 import github.devparkge.realworld.controller.article.model.request.UpdateArticleRequest;
 import github.devparkge.realworld.domain.article.model.Slug;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -155,6 +155,32 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.article.author.bio").value(user.bio()))
                     .andExpect(jsonPath("$.article.author.image").value(user.image()))
                     .andExpect(jsonPath("$.article.author.isFollowing").value(false))
+                    .andDo(print());
+        }
+    }
+    @Nested
+    @DisplayName("DELETE /api/articles/:slug")
+    class DeleteArticle {
+        @Test
+        @DisplayName("인증된 유저의 slug가 일치하는 Article을 삭제한다.")
+        void test() throws Exception {
+            var user = createUser(
+                    "parkge",
+                    "parkge@gmail.com",
+                    "1234"
+            );
+            ArticlesApiControllerTest.this.createArticle(
+                    user.uuid(),
+                    "Test1",
+                    "test1 create article",
+                    "test1 create article integration test",
+                    List.of("test1", "integrationTest", "integration")
+            );
+
+            String token = "Bearer " + jwtUtil.generateToken(user.uuid());
+            mockMvc.perform(delete("/api/articles/test1")
+                            .header(HttpHeaders.AUTHORIZATION, token))
+                    .andExpect(status().isOk())
                     .andDo(print());
         }
     }
