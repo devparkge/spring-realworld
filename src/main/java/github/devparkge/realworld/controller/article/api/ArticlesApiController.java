@@ -11,10 +11,7 @@ import github.devparkge.realworld.controller.article.model.response.wrapper.Arti
 import github.devparkge.realworld.controller.article.model.response.wrapper.ArticlesWrapper;
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.article.model.Slug;
-import github.devparkge.realworld.domain.article.service.CreateArticleService;
-import github.devparkge.realworld.domain.article.service.DeleteArticleService;
-import github.devparkge.realworld.domain.article.service.GetArticlesService;
-import github.devparkge.realworld.domain.article.service.UpdateArticleService;
+import github.devparkge.realworld.domain.article.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +27,7 @@ public class ArticlesApiController {
     private final ArticleResponseAssembler articleResponseAssembler;
     private final UpdateArticleService updateArticleService;
     private final DeleteArticleService deleteArticleService;
+    private final FavoriteArticleService favoriteArticleService;
 
     @PostMapping
     public ArticleWrapper createArticle(
@@ -90,5 +88,14 @@ public class ArticlesApiController {
             @PathVariable("slug") String slug
     ) {
         deleteArticleService.deleteArticle(Slug.from(slug), authUserUUID);
+    }
+
+    @PostMapping("/{slug}/favorite")
+    public ArticleWrapper favoriteArticle(
+            @JwtAuthenticationRequired UUID authUserUUID,
+            @PathVariable("slug") String slug
+    ) {
+        Article article = favoriteArticleService.favorite(Slug.from(slug),authUserUUID);
+        return articleResponseAssembler.assembleArticleResponse(article, authUserUUID);
     }
 }
