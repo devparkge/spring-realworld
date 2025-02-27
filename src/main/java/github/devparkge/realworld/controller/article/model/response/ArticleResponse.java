@@ -20,7 +20,7 @@ public record ArticleResponse(
         int favoritesCount,
         Author author
 ) {
-    public static ArticleResponse from(Article article, User user,boolean favorited, int favoritesCount, boolean isFollowing) {
+    public static ArticleResponse from(Article article, User user, boolean favorited, int favoritesCount, boolean isFollowing) {
         return new ArticleResponse(
                 article.slug().value(),
                 article.title(),

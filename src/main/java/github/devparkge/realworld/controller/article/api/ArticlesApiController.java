@@ -61,6 +61,14 @@ public class ArticlesApiController {
         return articleResponseAssembler.assembleArticlesResponse(articles, authUserUUID);
     }
 
+    @GetMapping("/{slug}")
+    public ArticleWrapper getArticle(
+            @PathVariable("slug") String slug
+    ) {
+        Article article = getArticlesService.getArticle(Slug.from(slug));
+        return articleResponseAssembler.assembleArticleResponse(article, null);
+    }
+
     @PutMapping("/{slug}")
     public ArticleWrapper updateArticle(
             @JwtAuthenticationRequired UUID authUserUUID,
