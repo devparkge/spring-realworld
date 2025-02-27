@@ -95,7 +95,20 @@ public class ArticlesApiController {
             @JwtAuthenticationRequired UUID authUserUUID,
             @PathVariable("slug") String slug
     ) {
-        Article article = favoriteArticleService.favorite(Slug.from(slug),authUserUUID);
-        return articleResponseAssembler.assembleArticleResponse(article, authUserUUID);
+        return articleResponseAssembler.assembleArticleResponse(
+                favoriteArticleService.favorite(Slug.from(slug), authUserUUID),
+                authUserUUID
+        );
+    }
+
+    @DeleteMapping("/{slug}/favorite")
+    public ArticleWrapper unFavoriteArticle(
+            @JwtAuthenticationRequired UUID authUserUUID,
+            @PathVariable("slug") String slug
+    ) {
+        return articleResponseAssembler.assembleArticleResponse(
+                favoriteArticleService.unFavorite(Slug.from(slug), authUserUUID),
+                authUserUUID
+        );
     }
 }
