@@ -5,6 +5,7 @@ import github.devparkge.realworld.domain.article.model.Slug;
 import github.devparkge.realworld.domain.article.repository.ArticleRepository;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
+import github.devparkge.realworld.infrastructure.article.model.ArticleFavorite;
 import github.devparkge.realworld.infrastructure.article.model.ArticlePersistence;
 import org.springframework.stereotype.Component;
 
@@ -25,5 +26,16 @@ public class InMemoryArticleRepository extends InMemoryArticleReadRepository imp
     @Override
     public void delete(Article article) {
         articles.remove(article.uuid());
+    }
+
+    @Override
+    public void favorite(Article article, User user) {
+        favorites.add(
+                new ArticleFavorite(
+                        UUID.randomUUID(),
+                        user.uuid(),
+                        article.uuid()
+                )
+        );
     }
 }
