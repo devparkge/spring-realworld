@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 
 @Component
 @RequiredArgsConstructor
@@ -23,9 +24,17 @@ public class ArticleResponseAssembler {
 
     public ArticleWrapper assembleArticleResponse(Article article, UUID authUserUUID) {
         User author = getUserService.getByUUID(authUserUUID);
-        boolean favorited = favoriteArticleService.getFavoritesArticleIds(authUserUUID).contains(article.uuid());
         int favoriteCount = favoriteArticleService.getFavoriteCount(article.uuid());
-        boolean isFollowing = (authUserUUID != null) ? followService.isFollowing(author.uuid(), authUserUUID) : false;
+        boolean favorited = getContext(
+                authUserUUID,
+                article.uuid(),
+                (userId, articleId) -> favoriteArticleService.getFavoritesArticleIds(userId).contains(articleId)
+        );
+        boolean isFollowing = getContext(
+                authUserUUID,
+                article.author().uuid(),
+                (userId, articleUserId) -> followService.isFollowing(articleUserId, userId)
+        );
         return ArticleWrapper.create(ArticleResponse.from(article, author, favorited, favoriteCount, isFollowing));
     }
 
@@ -34,12 +43,24 @@ public class ArticleResponseAssembler {
                 articles.stream()
                         .map(article -> {
                                     User author = article.author();
-                                    boolean favorited = favoriteArticleService.getFavoritesArticleIds(authUserUUID).contains(article.uuid());
+                                    boolean favorited = getContext(
+                                            authUserUUID,
+                                            article.uuid(),
+                                            (userId, articleId) -> favoriteArticleService.getFavoritesArticleIds(userId).contains(articleId)
+                                    );
+                                    boolean isFollowing = getContext(
+                                            authUserUUID,
+                                            article.author().uuid(),
+                                            (userId, articleUserId) -> followService.isFollowing(articleUserId, userId)
+                                    );
                                     int favoriteCount = favoriteArticleService.getFavoriteCount(article.uuid());
-                                    boolean isFollowing = (authUserUUID != null) ? followService.isFollowing(author.uuid(), authUserUUID) : false;
                                     return ArticleResponse.from(article, author, favorited, favoriteCount, isFollowing);
                                 }
                         ).toList()
         );
+    }
+
+    public boolean getContext(UUID authUserUUID, UUID targetId, BiPredicate<UUID, UUID> condition) {
+        return (authUserUUID != null) && condition.test(authUserUUID, targetId);
     }
 }
