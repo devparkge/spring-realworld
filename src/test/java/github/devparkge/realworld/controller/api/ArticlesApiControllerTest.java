@@ -61,6 +61,50 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andDo(print());
         }
     }
+    @Nested
+    @DisplayName("GET /api/articles/:slug")
+    class GetArticle {
+        @Test
+        @DisplayName("slug가 일치하는 Article을 반환한다.")
+        void test() throws Exception {
+            var user = createUser(
+                    "parkge",
+                    "parkge@gmail.com",
+                    "1234"
+            );
+            var article = createArticle(
+                    user.uuid(),
+                    "Test1",
+                    "test1 create article",
+                    "test1 create article integration test",
+                    List.of("test1", "integrationTest", "integration")
+            );
+
+            mockMvc.perform(get("/api/articles/test1"))
+                    .andExpect(status().isOk())
+
+                    .andExpect(jsonPath("$.article.slug").value(article.slug().value()))
+                    .andExpect(jsonPath("$.article.title").value(article.title()))
+                    .andExpect(jsonPath("$.article.description").value(article.description()))
+                    .andExpect(jsonPath("$.article.body").value(article.body()))
+
+                    .andExpect(jsonPath("$.article.tagList").isArray())
+                    .andExpect(jsonPath("$.article.tagList[0]").value("test1"))
+                    .andExpect(jsonPath("$.article.tagList[1]").value("integrationTest"))
+                    .andExpect(jsonPath("$.article.tagList[2]").value("integration"))
+
+                    .andExpect(jsonPath("$.article.createdAt").isNotEmpty())
+                    .andExpect(jsonPath("$.article.updatedAt").isNotEmpty())
+                    .andExpect(jsonPath("$.article.favorited").value(false))
+                    .andExpect(jsonPath("$.article.favoritesCount").value(0))
+
+                    .andExpect(jsonPath("$.article.author.username").value(user.username()))
+                    .andExpect(jsonPath("$.article.author.bio").value(user.bio()))
+                    .andExpect(jsonPath("$.article.author.image").value(user.image()))
+                    .andExpect(jsonPath("$.article.author.isFollowing").value(false))
+                    .andDo(print());
+        }
+    }
 
     @Nested
     @DisplayName("GET /api/articles")
@@ -184,4 +228,5 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andDo(print());
         }
     }
+
 }
