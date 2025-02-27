@@ -23,7 +23,7 @@ public class ArticleResponseAssembler {
     private final FavoriteArticleService favoriteArticleService;
 
     public ArticleWrapper assembleArticleResponse(Article article, UUID authUserUUID) {
-        User author = getUserService.getByUUID(authUserUUID);
+        User author = getUserService.getByUUID(article.author().uuid());
         int favoriteCount = favoriteArticleService.getFavoriteCount(article.uuid());
         boolean favorited = getContext(
                 authUserUUID,
@@ -61,6 +61,9 @@ public class ArticleResponseAssembler {
     }
 
     public boolean getContext(UUID authUserUUID, UUID targetId, BiPredicate<UUID, UUID> condition) {
-        return (authUserUUID != null) && condition.test(authUserUUID, targetId);
+        if(authUserUUID == null) {
+            return false;
+        }
+        return condition.test(authUserUUID, targetId);
     }
 }
