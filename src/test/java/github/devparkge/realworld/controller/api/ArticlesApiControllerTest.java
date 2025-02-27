@@ -280,4 +280,57 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andDo(print());
         }
     }
+    @Nested
+    @DisplayName("DELETE /api/articles/:slug/favorite")
+    class UnFavoriteArticle {
+        @Test
+        @DisplayName("인증된 유저의 slug가 일치하는 Article을 unFavorite하고 반환한다.")
+        void test() throws Exception {
+            var ownerUser = createUser(
+                    "parkge",
+                    "parkge@gmail.com",
+                    "1234"
+            );
+            var targetUser = createUser(
+                    "gunKim",
+                    "gunKim@gmail.com",
+                    "1234"
+            );
+            var article = createArticle(
+                    targetUser.uuid(),
+                    "Test1",
+                    "test1 create article",
+                    "test1 create article integration test",
+                    List.of("test1", "integrationTest", "integration")
+            );
+            favorite(article, ownerUser);
+            String token = "Bearer " + jwtUtil.generateToken(ownerUser.uuid());
+
+            mockMvc.perform(delete("/api/articles/test1/favorite")
+                            .header(HttpHeaders.AUTHORIZATION, token))
+                    .andExpect(status().isOk())
+
+                    .andExpect(jsonPath("$.article.slug").value(article.slug().value()))
+                    .andExpect(jsonPath("$.article.title").value(article.title()))
+                    .andExpect(jsonPath("$.article.description").value(article.description()))
+                    .andExpect(jsonPath("$.article.body").value(article.body()))
+
+                    .andExpect(jsonPath("$.article.tagList").isArray())
+                    .andExpect(jsonPath("$.article.tagList[0]").value("test1"))
+                    .andExpect(jsonPath("$.article.tagList[1]").value("integrationTest"))
+                    .andExpect(jsonPath("$.article.tagList[2]").value("integration"))
+
+                    .andExpect(jsonPath("$.article.createdAt").isNotEmpty())
+                    .andExpect(jsonPath("$.article.updatedAt").isNotEmpty())
+                    .andExpect(jsonPath("$.article.favorited").value(false))
+                    .andExpect(jsonPath("$.article.favoritesCount").value(0))
+
+                    .andExpect(jsonPath("$.article.author.username").value(targetUser.username()))
+                    .andExpect(jsonPath("$.article.author.bio").value(targetUser.bio()))
+                    .andExpect(jsonPath("$.article.author.image").value(targetUser.image()))
+                    .andExpect(jsonPath("$.article.author.isFollowing").value(false))
+
+                    .andDo(print());
+        }
+    }
 }

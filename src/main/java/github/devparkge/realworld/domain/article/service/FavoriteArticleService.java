@@ -33,4 +33,11 @@ public class FavoriteArticleService {
         articleRepository.favorite(article, user);
         return article;
     }
+
+    public Article unFavorite(Slug slug, UUID authUserUUID) {
+        Article article = articleRepository.findBySlug(slug).orElseThrow(() -> new SlugNotFoundException(String.format("%s 존재하지 않는 slug 입니다.", slug.value())));
+        User user = userRepository.findByUUID(authUserUUID).orElseThrow(() -> new UUIDNotFoundException(String.format("%s은 존재하지 않는 아이디 입니다.", authUserUUID)));
+        articleRepository.unFavorite(article, user);
+        return article;
+    }
 }
