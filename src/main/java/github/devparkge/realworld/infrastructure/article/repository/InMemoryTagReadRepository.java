@@ -17,7 +17,7 @@ public class InMemoryTagReadRepository implements TagReadRepository {
 
     @Override
     public List<Tag> findAll() {
-        return tags;
+        return new ArrayList<>(tags);
     }
 
     public void save(Article article) {
