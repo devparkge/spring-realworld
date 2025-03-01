@@ -23,7 +23,6 @@ public class ArticleResponseAssembler {
     private final FavoriteArticleService favoriteArticleService;
 
     public ArticleWrapper assembleArticleResponse(Article article, UUID authUserUUID) {
-        User author = getUserService.getByUUID(article.author().uuid());
         int favoriteCount = favoriteArticleService.getFavoriteCount(article.uuid());
         boolean favorited = getContext(
                 authUserUUID,
@@ -35,14 +34,13 @@ public class ArticleResponseAssembler {
                 article.author().uuid(),
                 (userId, articleUserId) -> followService.isFollowing(articleUserId, userId)
         );
-        return ArticleWrapper.create(ArticleResponse.from(article, author, favorited, favoriteCount, isFollowing));
+        return ArticleWrapper.create(ArticleResponse.from(article, favorited, favoriteCount, isFollowing));
     }
 
     public ArticlesWrapper assembleArticlesResponse(List<Article> articles, UUID authUserUUID) {
         return ArticlesWrapper.create(
                 articles.stream()
                         .map(article -> {
-                                    User author = article.author();
                                     boolean favorited = getContext(
                                             authUserUUID,
                                             article.uuid(),
@@ -54,7 +52,7 @@ public class ArticleResponseAssembler {
                                             (userId, articleUserId) -> followService.isFollowing(articleUserId, userId)
                                     );
                                     int favoriteCount = favoriteArticleService.getFavoriteCount(article.uuid());
-                                    return ArticleResponse.from(article, author, favorited, favoriteCount, isFollowing);
+                                    return ArticleResponse.from(article, favorited, favoriteCount, isFollowing);
                                 }
                         ).toList()
         );
