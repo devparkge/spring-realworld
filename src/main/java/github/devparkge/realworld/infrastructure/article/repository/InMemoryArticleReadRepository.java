@@ -7,7 +7,6 @@ import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
 import github.devparkge.realworld.infrastructure.article.model.ArticleFavorite;
 import github.devparkge.realworld.infrastructure.article.model.ArticlePersistence;
-import github.devparkge.realworld.domain.article.model.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +18,8 @@ import java.util.stream.Stream;
 public class InMemoryArticleReadRepository implements ArticleReadRepository {
     protected Map<UUID, ArticlePersistence> articles = new HashMap<>();
     protected List<ArticleFavorite> favorites = new ArrayList<>();
-    protected List<Tag> tags = new ArrayList<>();
     protected final UserRepository userRepository;
+    protected final InMemoryTagReadRepository tagReadRepository;
 
     @Override
     public List<Article> findByTagAndAuthorAndFavorited(String tagName, String author, String favorited, int limit, int offset) {
