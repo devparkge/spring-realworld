@@ -6,7 +6,7 @@ import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
 import github.devparkge.realworld.infrastructure.article.model.ArticleFavorite;
 import github.devparkge.realworld.infrastructure.article.model.ArticlePersistence;
-import github.devparkge.realworld.infrastructure.article.model.Tag;
+import github.devparkge.realworld.domain.article.model.Tag;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

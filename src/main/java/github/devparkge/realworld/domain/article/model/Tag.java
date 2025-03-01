@@ -1,4 +1,4 @@
-package github.devparkge.realworld.infrastructure.article.model;
+package github.devparkge.realworld.domain.article.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
