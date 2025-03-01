@@ -4,6 +4,7 @@ import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
+import github.devparkge.realworld.infrastructure.article.repository.InMemoryTagReadRepository;
 import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,8 @@ public class InMemoryArticleRepositoryTest {
     @Test
     void saveArticle() {
         var userRepository = new InMemoryUserRepository();
-        var repository = new InMemoryArticleRepository(userRepository);
+        var tagReadRepository = new InMemoryTagReadRepository();
+        var repository = new InMemoryArticleRepository(userRepository, tagReadRepository);
         User user = userRepository.saveUser(
                 User.signUp(
                         UUID.randomUUID(),

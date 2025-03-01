@@ -5,6 +5,7 @@ import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
+import github.devparkge.realworld.infrastructure.article.repository.InMemoryTagReadRepository;
 import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserRepository;
 import github.devparkge.realworld.util.JwtUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -24,6 +25,8 @@ public class IntegrationTest {
     @Autowired
     private InMemoryArticleRepository articleRepository;
     @Autowired
+    protected InMemoryTagReadRepository tagReadRepository;
+    @Autowired
     protected MockMvc mockMvc;
     @Autowired
     protected ObjectMapper objectMapper;
@@ -34,6 +37,7 @@ public class IntegrationTest {
     void after() {
         this.userRepository.clear();
         this.articleRepository.clear();
+        this.tagReadRepository.clear();
     }
 
     protected User createUser(String username, String email, String password) {

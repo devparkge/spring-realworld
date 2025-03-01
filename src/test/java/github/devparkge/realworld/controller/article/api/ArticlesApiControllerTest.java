@@ -1,5 +1,6 @@
-package github.devparkge.realworld.controller.api;
+package github.devparkge.realworld.controller.article.api;
 
+import github.devparkge.realworld.controller.api.IntegrationTest;
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
 import github.devparkge.realworld.controller.article.model.request.UpdateArticleRequest;
 import github.devparkge.realworld.domain.article.model.Slug;

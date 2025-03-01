@@ -19,6 +19,7 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
     protected Map<UUID, ArticlePersistence> articles = new HashMap<>();
     protected List<ArticleFavorite> favorites = new ArrayList<>();
     protected final UserRepository userRepository;
+    protected final InMemoryTagReadRepository tagReadRepository;
 
     @Override
     public List<Article> findByTagAndAuthorAndFavorited(String tagName, String author, String favorited, int limit, int offset) {

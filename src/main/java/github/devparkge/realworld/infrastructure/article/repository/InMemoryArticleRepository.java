@@ -12,13 +12,14 @@ import java.util.UUID;
 
 @Component
 public class InMemoryArticleRepository extends InMemoryArticleReadRepository implements ArticleRepository {
-    public InMemoryArticleRepository(UserRepository userRepository) {
-        super(userRepository);
+    public InMemoryArticleRepository(UserRepository userRepository, InMemoryTagReadRepository tagReadRepository) {
+        super(userRepository, tagReadRepository);
     }
 
     @Override
     public Article save(Article article) {
         articles.put(article.uuid(), ArticlePersistence.from(article));
+        tagReadRepository.save(article);
         return article;
     }
 
