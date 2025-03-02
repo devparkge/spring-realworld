@@ -16,12 +16,12 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CreateCommentService {
+public class AddCommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
-    public Comment createComment(Slug slug, UUID authUserUUID, String body) {
+    public Comment addComment(Slug slug, UUID authUserUUID, String body) {
         User user = userRepository.findByUUID(authUserUUID).orElseThrow(() -> new UUIDNotFoundException(String.format("%s를 찾을 수 없습니다.", authUserUUID)));
         Article article = articleRepository.findBySlug(slug).orElseThrow(() -> new SlugNotFoundException(String.format("%s은 존재하지 않는 Slug입니다.", slug.value())));
 
