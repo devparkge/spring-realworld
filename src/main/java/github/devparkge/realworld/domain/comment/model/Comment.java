@@ -1,5 +1,6 @@
-package github.devparkge.realworld.domain.article.model;
+package github.devparkge.realworld.domain.comment.model;
 
+import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.user.model.User;
 
 import java.time.LocalDateTime;

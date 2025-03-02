@@ -1,7 +1,7 @@
-package github.devparkge.realworld.infrastructure.article.repository;
+package github.devparkge.realworld.infrastructure.comment.repository;
 
-import github.devparkge.realworld.domain.article.model.Comment;
-import github.devparkge.realworld.domain.article.repository.CommentRepository;
+import github.devparkge.realworld.domain.comment.model.Comment;
+import github.devparkge.realworld.domain.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
