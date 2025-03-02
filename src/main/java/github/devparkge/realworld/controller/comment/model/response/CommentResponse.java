@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.comment.api.model.response;
+package github.devparkge.realworld.controller.comment.model.response;
 
 import github.devparkge.realworld.controller.model.Author;
 import github.devparkge.realworld.domain.comment.model.Comment;
