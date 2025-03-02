@@ -1,8 +1,7 @@
 package github.devparkge.realworld.controller.article.api;
 
 
-import github.devparkge.realworld.controller.api.IntegrationTest;
-import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
+import github.devparkge.realworld.controller.user.api.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

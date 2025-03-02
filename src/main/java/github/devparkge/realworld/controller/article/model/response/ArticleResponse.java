@@ -1,9 +1,7 @@
 package github.devparkge.realworld.controller.article.model.response;
 
-import github.devparkge.realworld.controller.article.model.Author;
+import github.devparkge.realworld.controller.model.Author;
 import github.devparkge.realworld.domain.article.model.Article;
-import github.devparkge.realworld.domain.article.model.Slug;
-import github.devparkge.realworld.domain.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +18,7 @@ public record ArticleResponse(
         int favoritesCount,
         Author author
 ) {
-    public static ArticleResponse from(Article article, User user, boolean favorited, int favoritesCount, boolean isFollowing) {
+    public static ArticleResponse from(Article article, boolean favorited, int favoritesCount, boolean isFollowing) {
         return new ArticleResponse(
                 article.slug().value(),
                 article.title(),
@@ -31,7 +29,7 @@ public record ArticleResponse(
                 article.updatedAt(),
                 favorited,
                 favoritesCount,
-                Author.from(user, isFollowing)
+                Author.from(article.author(), isFollowing)
         );
     }
 }
