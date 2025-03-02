@@ -1,9 +1,7 @@
 package github.devparkge.realworld.controller.article.model.response;
 
-import github.devparkge.realworld.controller.article.model.Author;
+import github.devparkge.realworld.controller.model.Author;
 import github.devparkge.realworld.domain.article.model.Article;
-import github.devparkge.realworld.domain.article.model.Slug;
-import github.devparkge.realworld.domain.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
