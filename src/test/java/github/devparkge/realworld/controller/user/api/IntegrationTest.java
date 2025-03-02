@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.api;
+package github.devparkge.realworld.controller.user.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import github.devparkge.realworld.domain.article.model.Article;

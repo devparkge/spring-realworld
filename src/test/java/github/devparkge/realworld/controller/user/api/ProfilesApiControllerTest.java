@@ -1,4 +1,4 @@
-package github.devparkge.realworld.controller.api;
+package github.devparkge.realworld.controller.user.api;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
