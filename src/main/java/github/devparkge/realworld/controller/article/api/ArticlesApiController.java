@@ -6,6 +6,7 @@ import github.devparkge.realworld.config.annotation.JwtAuthenticationRequired;
 import github.devparkge.realworld.controller.article.ArticleResponseAssembler;
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
 import github.devparkge.realworld.controller.article.model.request.GetArticlesRequest;
+import github.devparkge.realworld.controller.article.model.request.GetFeedArticlesRequest;
 import github.devparkge.realworld.controller.article.model.request.UpdateArticleRequest;
 import github.devparkge.realworld.controller.article.model.response.wrapper.ArticleWrapper;
 import github.devparkge.realworld.controller.article.model.response.wrapper.ArticlesWrapper;
@@ -65,6 +66,15 @@ public class ArticlesApiController {
     ) {
         Article article = getArticlesService.getArticle(Slug.from(slug));
         return articleResponseAssembler.assembleArticleResponse(article, null);
+    }
+
+    @GetMapping("/feed")
+    public ArticlesWrapper getFeedArticles(
+            @JwtAuthenticationRequired UUID authUserUUID,
+            @RequestBody GetFeedArticlesRequest getFeedArticlesRequest
+    ) {
+        List<Article> articles = getArticlesService.getFeedArticles(authUserUUID, getFeedArticlesRequest.limit(), getFeedArticlesRequest.offset());
+        return articleResponseAssembler.assembleArticlesResponse(articles, authUserUUID);
     }
 
     @PutMapping("/{slug}")
