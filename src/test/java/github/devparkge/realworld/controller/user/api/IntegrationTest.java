@@ -42,6 +42,7 @@ public class IntegrationTest {
         this.userRepository.clear();
         this.articleRepository.clear();
         this.tagReadRepository.clear();
+        this.commentRepository.clear();
     }
 
     protected User createUser(String username, String email, String password) {
