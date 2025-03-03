@@ -2,10 +2,12 @@ package github.devparkge.realworld.controller.user.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import github.devparkge.realworld.domain.article.model.Article;
+import github.devparkge.realworld.domain.comment.model.Comment;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
 import github.devparkge.realworld.infrastructure.article.repository.InMemoryTagReadRepository;
+import github.devparkge.realworld.infrastructure.comment.repository.InMemoryCommentRepository;
 import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserRepository;
 import github.devparkge.realworld.util.JwtUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -25,7 +27,9 @@ public class IntegrationTest {
     @Autowired
     private InMemoryArticleRepository articleRepository;
     @Autowired
-    protected InMemoryTagReadRepository tagReadRepository;
+    private InMemoryTagReadRepository tagReadRepository;
+    @Autowired
+    private InMemoryCommentRepository commentRepository;
     @Autowired
     protected MockMvc mockMvc;
     @Autowired
@@ -66,6 +70,16 @@ public class IntegrationTest {
                         description,
                         body,
                         tagList
+                )
+        );
+    }
+
+    protected Comment addComment(User user, Article article, String body) {
+        return this.commentRepository.save(
+                Comment.create(
+                        user,
+                        article,
+                        body
                 )
         );
     }
