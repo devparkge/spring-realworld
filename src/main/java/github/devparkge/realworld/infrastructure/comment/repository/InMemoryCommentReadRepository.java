@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -19,7 +20,13 @@ public class InMemoryCommentReadRepository implements CommentReadRepository {
 
     @Override
     public List<Comment> findByArticleSlug(Slug slug) {
-        return List.of();
+        return findAll()
+                .filter(comment -> comment.article().slug().equals(slug))
+                .toList();
+    }
+
+    private Stream<Comment> findAll() {
+        return comments.values().stream();
     }
 
     public void clear() {
