@@ -33,6 +33,15 @@ public class InMemoryArticleReadRepository implements ArticleReadRepository {
     }
 
     @Override
+    public List<Article> findFeedArticle(UUID userId, int limit, int offset) {
+        return findAll()
+                .filter(article -> userRepository.isFollowing(article.author().uuid(), userId))
+                .skip(offset)
+                .limit(limit)
+                .toList();
+    }
+
+    @Override
     public List<UUID> getFavoritesArticleIds(UUID userId) {
         return favorites.stream()
                 .filter(
