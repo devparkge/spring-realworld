@@ -11,8 +11,7 @@ import org.springframework.http.MediaType;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -110,6 +109,43 @@ class CommentApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.comments[0].author.image").value(requestUser.image()))
                     .andExpect(jsonPath("$.comments[0].author.isFollowing").value(false))
 
+                    .andDo(print());
+        }
+    }
+
+    @Nested
+    @DisplayName("DELETE /api/articles/:slug/comments/:id")
+    class DeleteComment {
+        @Test
+        @DisplayName("slug가 존재하는 article의 id에 해당하는 comment를 삭제한다.")
+        void getComments() throws Exception {
+            var requestUser = createUser(
+                    "parkge",
+                    "parkge@gmail.com",
+                    "1234"
+            );
+            var articleUser = createUser(
+                    "gunKim",
+                    "gunKim@gmail.com",
+                    "1234"
+            );
+            var article = createArticle(
+                    articleUser.uuid(),
+                    "TEST",
+                    "test description",
+                    "test body",
+                    List.of("test", "integrationTset")
+            );
+            addComment(
+                    requestUser,
+                    article,
+                    "comment Body"
+            );
+            String token = "Bearer " + jwtUtil.generateToken(requestUser.uuid());
+
+            mockMvc.perform(delete("/api/articles/test/comments/1")
+                            .header(HttpHeaders.AUTHORIZATION, token))
+                    .andExpect(status().isOk())
                     .andDo(print());
         }
     }
