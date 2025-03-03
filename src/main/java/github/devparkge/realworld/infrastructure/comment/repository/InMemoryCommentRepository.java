@@ -13,4 +13,9 @@ public class InMemoryCommentRepository extends InMemoryCommentReadRepository imp
         comments.put(id, comment.updateId(id));
         return comments.get(id);
     }
+
+    @Override
+    public void delete(Comment comment) {
+        comments.remove(comment.id());
+    }
 }

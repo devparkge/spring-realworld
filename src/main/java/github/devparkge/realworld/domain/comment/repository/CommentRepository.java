@@ -4,4 +4,5 @@ import github.devparkge.realworld.domain.comment.model.Comment;
 
 public interface CommentRepository extends CommentReadRepository {
     Comment save(Comment comment);
+    void delete(Comment comment);
 }
