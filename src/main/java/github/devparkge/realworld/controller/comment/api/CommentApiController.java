@@ -9,6 +9,7 @@ import github.devparkge.realworld.controller.comment.model.response.wrapper.Comm
 import github.devparkge.realworld.controller.comment.model.response.wrapper.CommentsWrapper;
 import github.devparkge.realworld.domain.article.model.Slug;
 import github.devparkge.realworld.domain.comment.service.AddCommentService;
+import github.devparkge.realworld.domain.comment.service.DeleteCommentService;
 import github.devparkge.realworld.domain.comment.service.GetCommentsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class CommentApiController {
     private final CommentResponseAssembler commentResponseAssembler;
     private final AddCommentService addCommentService;
     private final GetCommentsService getCommentsService;
+    private final DeleteCommentService deleteCommentService;
 
     @PostMapping
     public CommentWrapper addComment(
@@ -47,5 +49,14 @@ public class CommentApiController {
                 getCommentsService.getComments(Slug.from(slug)),
                 authUserUUID
         );
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteComment(
+            @JwtAuthenticationRequired UUID authUserUUID,
+            @PathVariable("slug") String slug,
+            @PathVariable("id") int id
+    ) {
+        deleteCommentService.deleteComment(Slug.from(slug), id, authUserUUID);
     }
 }
