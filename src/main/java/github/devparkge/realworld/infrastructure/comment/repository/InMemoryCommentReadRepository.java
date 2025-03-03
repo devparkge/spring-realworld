@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -23,6 +24,11 @@ public class InMemoryCommentReadRepository implements CommentReadRepository {
         return findAll()
                 .filter(comment -> comment.article().slug().equals(slug))
                 .toList();
+    }
+
+    @Override
+    public Optional<Comment> findByCommentId(int commentId) {
+        return Optional.of(comments.get(commentId));
     }
 
     private Stream<Comment> findAll() {
