@@ -1,5 +1,6 @@
 package github.devparkge.realworld.controller.article.api;
 
+import github.devparkge.realworld.controller.article.model.request.GetFeedArticlesRequest;
 import github.devparkge.realworld.controller.user.api.IntegrationTest;
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
 import github.devparkge.realworld.controller.article.model.request.UpdateArticleRequest;
@@ -150,6 +151,68 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.articles[0].author.bio").value(user.bio()))
                     .andExpect(jsonPath("$.articles[0].author.image").value(user.image()))
                     .andExpect(jsonPath("$.articles[0].author.isFollowing").value(false))
+                    .andDo(print());
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /api/articles/feed")
+    class GetFeedArticles {
+        @Test
+        @DisplayName("follow한 유저의 arlticles를 반환한다.")
+        void getFeedArticles() throws Exception {
+            var followeeUser = createUser(
+                    "parkge",
+                    "parkge@gmail.com",
+                    "1234"
+            );
+            var followerUser = createUser(
+                    "gunKim",
+                    "gunKim@gmail.com",
+                    "1234"
+            );
+
+            var article = createArticle(
+                    followerUser.uuid(),
+                    "Test1",
+                    "test1 create article",
+                    "test1 create article integration test",
+                    List.of("test1", "integrationTest", "integration")
+            );
+
+            var request = new GetFeedArticlesRequest(
+                    null,
+                    null
+            );
+
+            follow(followerUser.uuid(), followeeUser.uuid());
+            String token = "Bearer " + jwtUtil.generateToken(followeeUser.uuid());
+
+            mockMvc.perform(get("/api/articles/feed")
+                            .header(HttpHeaders.AUTHORIZATION, token)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.articles").isArray())
+                    .andExpect(jsonPath("$.articlesCount").value(1))
+
+                    .andExpect(jsonPath("$.articles[0].slug").value("test1"))
+                    .andExpect(jsonPath("$.articles[0].title").value(article.title()))
+                    .andExpect(jsonPath("$.articles[0].description").value(article.description()))
+                    .andExpect(jsonPath("$.articles[0].body").value(article.body()))
+                    .andExpect(jsonPath("$.articles[0].tagList").isArray())
+                    .andExpect(jsonPath("$.articles[0].tagList[0]").value("test1"))
+                    .andExpect(jsonPath("$.articles[0].tagList[1]").value("integrationTest"))
+                    .andExpect(jsonPath("$.articles[0].tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.articles[0].createdAt").isNotEmpty())
+                    .andExpect(jsonPath("$.articles[0].updatedAt").isNotEmpty())
+                    .andExpect(jsonPath("$.articles[0].favorited").value(false))
+                    .andExpect(jsonPath("$.articles[0].favoritesCount").value(0))
+
+                    .andExpect(jsonPath("$.articles[0].author.username").value(followerUser.username()))
+                    .andExpect(jsonPath("$.articles[0].author.bio").value(followerUser.bio()))
+                    .andExpect(jsonPath("$.articles[0].author.image").value(followerUser.image()))
+                    .andExpect(jsonPath("$.articles[0].author.isFollowing").value(true))
                     .andDo(print());
         }
     }
