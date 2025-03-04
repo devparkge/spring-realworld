@@ -71,7 +71,7 @@ public class ArticlesApiController {
     @GetMapping("/feed")
     public ArticlesWrapper getFeedArticles(
             @JwtAuthenticationRequired UUID authUserUUID,
-            @RequestBody GetFeedArticlesRequest getFeedArticlesRequest
+            @ModelAttribute GetFeedArticlesRequest getFeedArticlesRequest
     ) {
         List<Article> articles = getArticlesService.getFeedArticles(authUserUUID, getFeedArticlesRequest.limit(), getFeedArticlesRequest.offset());
         return articleResponseAssembler.assembleArticlesResponse(articles, authUserUUID);

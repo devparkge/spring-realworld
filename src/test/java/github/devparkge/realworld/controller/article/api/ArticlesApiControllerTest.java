@@ -38,7 +38,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "test create article integration test",
                     List.of("test", "integrationTest", "integration")
             );
-            String token = "Bearer " + jwtUtil.generateToken(user.uuid());
+            String token = "Token " + jwtUtil.generateToken(user.uuid());
 
             mockMvc.perform(post("/api/articles")
                             .header(HttpHeaders.AUTHORIZATION, token)
@@ -124,13 +124,13 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
+                    List.of("dragons", "training")
             );
 
-            String token = "Bearer " + jwtUtil.generateToken(user.uuid());
+            String token = "Token " + jwtUtil.generateToken(user.uuid());
             mockMvc.perform(get("/api/articles")
                             .header(HttpHeaders.AUTHORIZATION, token)
-                            .param("tag", "integrationTest")
+                            .param("tag", "dragons")
                             .param("author", "parkge"))
                     .andExpect(jsonPath("$.articles").isArray())
                     .andExpect(jsonPath("$.articlesCount").value(1))
@@ -140,9 +140,8 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.articles[0].description").value(article1.description()))
                     .andExpect(jsonPath("$.articles[0].body").value(article1.body()))
                     .andExpect(jsonPath("$.articles[0].tagList").isArray())
-                    .andExpect(jsonPath("$.articles[0].tagList[0]").value("test1"))
-                    .andExpect(jsonPath("$.articles[0].tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.articles[0].tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.articles[0].tagList[0]").value("dragons"))
+                    .andExpect(jsonPath("$.articles[0].tagList[1]").value("training"))
                     .andExpect(jsonPath("$.articles[0].createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.articles[0].updatedAt").isNotEmpty())
                     .andExpect(jsonPath("$.articles[0].favorited").value(false))
@@ -186,7 +185,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
             );
 
             follow(followerUser.uuid(), followeeUser.uuid());
-            String token = "Bearer " + jwtUtil.generateToken(followeeUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(followeeUser.uuid());
 
             mockMvc.perform(get("/api/articles/feed")
                             .header(HttpHeaders.AUTHORIZATION, token)
@@ -242,7 +241,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "test2 create article integration test"
             );
 
-            String token = "Bearer " + jwtUtil.generateToken(user.uuid());
+            String token = "Token " + jwtUtil.generateToken(user.uuid());
             mockMvc.perform(put("/api/articles/test1")
                             .header(HttpHeaders.AUTHORIZATION, token)
                             .contentType(MediaType.APPLICATION_JSON)
@@ -285,7 +284,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     List.of("test1", "integrationTest", "integration")
             );
 
-            String token = "Bearer " + jwtUtil.generateToken(user.uuid());
+            String token = "Token " + jwtUtil.generateToken(user.uuid());
             mockMvc.perform(delete("/api/articles/test1")
                             .header(HttpHeaders.AUTHORIZATION, token))
                     .andExpect(status().isOk())
@@ -316,7 +315,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     List.of("test1", "integrationTest", "integration")
             );
 
-            String token = "Bearer " + jwtUtil.generateToken(ownerUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(ownerUser.uuid());
             mockMvc.perform(post("/api/articles/test1/favorite")
                             .header(HttpHeaders.AUTHORIZATION, token))
                     .andExpect(status().isOk())
@@ -368,7 +367,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     List.of("test1", "integrationTest", "integration")
             );
             favorite(article, ownerUser);
-            String token = "Bearer " + jwtUtil.generateToken(ownerUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(ownerUser.uuid());
 
             mockMvc.perform(delete("/api/articles/test1/favorite")
                             .header(HttpHeaders.AUTHORIZATION, token))

@@ -141,7 +141,7 @@ class CommentApiControllerTest extends IntegrationTest {
                     article,
                     "comment Body"
             );
-            String token = "Bearer " + jwtUtil.generateToken(requestUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(requestUser.uuid());
 
             mockMvc.perform(delete("/api/articles/test/comments/1")
                             .header(HttpHeaders.AUTHORIZATION, token))

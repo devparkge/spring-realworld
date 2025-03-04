@@ -25,7 +25,7 @@ class UserApiControllerTest extends IntegrationTest {
                 "parkge@gmail.com",
                 "1234"
         );
-        String token = "Bearer " + jwtUtil.generateToken(user.uuid());
+        String token = "Token " + jwtUtil.generateToken(user.uuid());
         mockMvc.perform(get("/api/user")
                         .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(jsonPath("$.user.email").value(user.email()))
@@ -51,7 +51,7 @@ class UserApiControllerTest extends IntegrationTest {
                 "I like to skateboard",
                 "https://i.stack.imgur.com/xHWG8.jpg"
         );
-        String token = "Bearer " + jwtUtil.generateToken(user.uuid());
+        String token = "Token " + jwtUtil.generateToken(user.uuid());
         mockMvc.perform(put("/api/user")
                         .header(HttpHeaders.AUTHORIZATION, token)
                         .contentType(MediaType.APPLICATION_JSON)

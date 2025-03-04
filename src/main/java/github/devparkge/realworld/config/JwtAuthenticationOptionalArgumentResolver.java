@@ -44,6 +44,6 @@ public class JwtAuthenticationOptionalArgumentResolver implements HandlerMethodA
     protected Optional<String> extractToken(HttpServletRequest httpServletRequest) {
         return Optional.ofNullable(httpServletRequest.getHeader(header))
                 .filter(header -> header.startsWith(tokenPrefix))
-                .map(header -> header.substring(7));
+                .map(header -> header.replaceAll(tokenPrefix, ""));
     }
 }

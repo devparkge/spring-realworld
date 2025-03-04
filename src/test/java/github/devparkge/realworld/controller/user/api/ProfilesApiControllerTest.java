@@ -32,7 +32,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     myUser.uuid()
             );
 
-            String token = "Bearer " + jwtUtil.generateToken(myUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(myUser.uuid());
             mockMvc.perform(get("/api/profiles/gunKim")
                             .header(HttpHeaders.AUTHORIZATION, token))
                     .andExpect(jsonPath("$.profile.username").value(targetUser.username()))
@@ -85,7 +85,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     "parkge@gamil.com",
                     "1234"
             );
-            String token = "Bearer " + jwtUtil.generateToken(myUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(myUser.uuid());
             mockMvc.perform(post("/api/profiles/gunKim/follow")
                     .header(HttpHeaders.AUTHORIZATION, token))
                     .andExpect(jsonPath("$.profile.username").value(targetUser.username()))
@@ -116,7 +116,7 @@ class ProfilesApiControllerTest extends IntegrationTest {
                     targetUser.uuid(),
                     myUser.uuid()
             );
-            String token = "Bearer " + jwtUtil.generateToken(myUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(myUser.uuid());
             mockMvc.perform(delete("/api/profiles/gunKim/follow")
                             .header(HttpHeaders.AUTHORIZATION, token))
                     .andExpect(jsonPath("$.profile.username").value(targetUser.username()))

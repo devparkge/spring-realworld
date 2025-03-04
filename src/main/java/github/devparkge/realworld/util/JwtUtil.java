@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
 
-
 @Component
 public class JwtUtil {
     private final String secretKey;
@@ -28,10 +27,10 @@ public class JwtUtil {
     public String generateToken(UUID uuid) {
         Date date = new Date();
         return Jwts.builder()
+                .signWith(key, Jwts.SIG.HS256)
                 .subject(uuid.toString())
                 .issuedAt(date)
                 .expiration(getExpiredDate(date))
-                .signWith(key)
                 .compact();
     }
 
@@ -42,11 +41,11 @@ public class JwtUtil {
     public UUID parseToken(String token) {
         return UUID.fromString(
                 Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject()
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload()
+                        .getSubject()
         );
     }
 }
