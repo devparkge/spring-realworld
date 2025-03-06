@@ -8,7 +8,7 @@ import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
 import github.devparkge.realworld.infrastructure.article.repository.InMemoryTagReadRepository;
 import github.devparkge.realworld.infrastructure.comment.repository.InMemoryCommentRepository;
-import github.devparkge.realworld.infrastructure.user.repository.InMemoryUserRepository;
+import github.devparkge.realworld.infrastructure.user.repository.UserRepositoryImpl;
 import github.devparkge.realworld.util.JwtUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @AutoConfigureMockMvc
 public class IntegrationTest {
     @Autowired
-    private InMemoryUserRepository userRepository;
+    private UserRepositoryImpl userRepository;
     @Autowired
     private InMemoryArticleRepository articleRepository;
     @Autowired
@@ -39,7 +39,6 @@ public class IntegrationTest {
 
     @AfterEach
     void after() {
-        this.userRepository.clear();
         this.articleRepository.clear();
         this.tagReadRepository.clear();
         this.commentRepository.clear();
