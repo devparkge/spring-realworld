@@ -30,6 +30,7 @@ dependencies {
 
     // ✅ H2 Database (테스트용)
     runtimeOnly("com.h2database:h2:2.3.232")
+    testRuntimeOnly(("com.h2database:h2:2.3.232"))
 
     // ✅ JUnit 테스트
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
