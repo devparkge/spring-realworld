@@ -3,11 +3,14 @@ package github.devparkge.realworld.infrastructure.user.model;
 import github.devparkge.realworld.domain.user.model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "users")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity {
 
     @Id
