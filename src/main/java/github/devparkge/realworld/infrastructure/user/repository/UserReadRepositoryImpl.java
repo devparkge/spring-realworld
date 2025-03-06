@@ -28,23 +28,17 @@ public class UserReadRepositoryImpl implements UserReadRepository {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.of(
-                userDao.findByEmail(email).get().toDomain()
-        );
+        return userDao.findByEmail(email).map(UserEntity::toDomain);
     }
 
     @Override
     public Optional<User> findByUUID(UUID uuid) {
-        return Optional.of(
-                userDao.findById(uuid).get().toDomain()
-        );
+        return userDao.findById(uuid).map(UserEntity::toDomain);
     }
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return Optional.of(
-                userDao.findByUsername(username).get().toDomain()
-        );
+        return userDao.findByUsername(username).map(UserEntity::toDomain);
     }
 
     protected UserEntity resolveUserEntity(UUID userId) {

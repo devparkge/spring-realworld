@@ -1,6 +1,7 @@
 package github.devparkge.realworld.infrastructure.user.model;
 
 import github.devparkge.realworld.domain.user.model.User;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
@@ -12,9 +13,9 @@ import java.util.UUID;
 @Entity(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity {
-
     @Id
     private UUID userId;
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     private String username;
