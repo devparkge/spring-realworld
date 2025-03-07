@@ -3,7 +3,7 @@ package github.devparkge.realworld.domain.article.model;
 import github.devparkge.realworld.domain.user.model.User;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,11 +15,11 @@ public record Article(
         String title,
         String description,
         String body,
-        List<String> tagList,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        List<Tag> tagList,
+        Instant createdAt,
+        Instant updatedAt
 ) {
-    public static Article create(User author, String title, String description, String body, List<String> tagList) {
+    public static Article create(User author, String title, String description, String body, List<Tag> tagList) {
         return Article.builder()
                 .uuid(UUID.randomUUID())
                 .author(author)
@@ -28,8 +28,8 @@ public record Article(
                 .description(description)
                 .body(body)
                 .tagList(tagList)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createdAt(Instant.now())
+                .updatedAt(Instant.now())
                 .build();
     }
 
@@ -39,7 +39,7 @@ public record Article(
                 .author(author())
                 .tagList(tagList())
                 .createdAt(createdAt())
-                .updatedAt(LocalDateTime.now())
+                .updatedAt(Instant.now())
                 .slug((title != null) ? Slug.from(title) : slug())
                 .title((title != null) ? title : title())
                 .description((description != null) ? description : description())
