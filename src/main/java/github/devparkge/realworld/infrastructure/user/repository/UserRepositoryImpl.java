@@ -7,10 +7,12 @@ import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
 import github.devparkge.realworld.infrastructure.user.model.UserEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Repository
+@Transactional
 public class UserRepositoryImpl extends UserReadRepositoryImpl implements UserRepository {
 
     public UserRepositoryImpl(UserDao userDao, FollowDao followDao) {
