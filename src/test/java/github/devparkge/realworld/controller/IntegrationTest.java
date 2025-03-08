@@ -8,10 +8,9 @@ import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
 import github.devparkge.realworld.infrastructure.article.repository.ArticleRepositoryImpl;
 import github.devparkge.realworld.infrastructure.article.repository.TagReadRepositoryImpl;
-import github.devparkge.realworld.infrastructure.comment.repository.InMemoryCommentRepository;
+import github.devparkge.realworld.infrastructure.comment.repository.CommentRepositoryImpl;
 import github.devparkge.realworld.infrastructure.user.repository.UserRepositoryImpl;
 import github.devparkge.realworld.util.JwtUtil;
-import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,18 +31,13 @@ public class IntegrationTest {
     @Autowired
     private TagReadRepositoryImpl tagReadRepository;
     @Autowired
-    private InMemoryCommentRepository commentRepository;
+    private CommentRepositoryImpl commentRepository;
     @Autowired
     protected MockMvc mockMvc;
     @Autowired
     protected ObjectMapper objectMapper;
     @Autowired
     protected JwtUtil jwtUtil;
-
-    @AfterEach
-    void after() {
-        this.commentRepository.clear();
-    }
 
     protected User createUser(String username, String email, String password) {
         return this.userRepository.saveUser(

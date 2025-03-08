@@ -45,14 +45,14 @@ class CommentApiControllerTest extends IntegrationTest {
             var request = new AddCommentRequest(
                     "add comment body"
             );
-            String token = "Bearer " + jwtUtil.generateToken(requestUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(requestUser.uuid());
 
             mockMvc.perform(post("/api/articles/test/comments")
                             .header(HttpHeaders.AUTHORIZATION, token)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(Map.of("comment", request))))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.comment.id").value(1))
+                    .andExpect(jsonPath("$.comment.id").isNotEmpty())
                     .andExpect(jsonPath("$.comment.createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.comment.updatedAt").isNotEmpty())
                     .andExpect(jsonPath("$.comment.body").value(request.body()))
@@ -94,13 +94,13 @@ class CommentApiControllerTest extends IntegrationTest {
                     article,
                     "comment Body"
             );
-            String token = "Bearer " + jwtUtil.generateToken(requestUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(requestUser.uuid());
 
             mockMvc.perform(get("/api/articles/test/comments")
                             .header(HttpHeaders.AUTHORIZATION, token))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.comments").isArray())
-                    .andExpect(jsonPath("$.comments[0].id").value(1))
+                    .andExpect(jsonPath("$.comments[0].id").isNotEmpty())
                     .andExpect(jsonPath("$.comments[0].createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.comments[0].updatedAt").isNotEmpty())
                     .andExpect(jsonPath("$.comments[0].body").value("comment Body"))

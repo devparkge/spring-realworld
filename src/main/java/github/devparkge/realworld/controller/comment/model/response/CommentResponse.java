@@ -1,25 +1,14 @@
 package github.devparkge.realworld.controller.comment.model.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import github.devparkge.realworld.controller.model.Author;
 import github.devparkge.realworld.domain.comment.model.Comment;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record CommentResponse(
         int id,
-        @JsonFormat(
-                shape = JsonFormat.Shape.STRING,
-                pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'",
-                timezone = "UTC"
-        )
-        LocalDateTime createdAt,
-        @JsonFormat(
-                shape = JsonFormat.Shape.STRING,
-                pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'",
-                timezone = "UTC"
-        )
-        LocalDateTime updatedAt,
+        Instant createdAt,
+        Instant updatedAt,
         String body,
         Author author
 ) {
