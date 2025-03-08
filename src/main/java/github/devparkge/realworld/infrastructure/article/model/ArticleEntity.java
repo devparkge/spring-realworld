@@ -6,7 +6,11 @@ import github.devparkge.realworld.infrastructure.article.model.converter.SlugCon
 import github.devparkge.realworld.infrastructure.user.model.UserEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@Getter
 @Entity(name = "article")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -32,6 +37,7 @@ public class ArticleEntity {
     private List<ArticleTagEntity> tagEntities = new ArrayList<>();
     @CreatedDate
     private Instant createdAt;
+    @LastModifiedDate
     private Instant updatedAt;
 
     public ArticleEntity(UUID articleId, UserEntity authorEntity, Slug slug, String title, String description, String body, List<ArticleTagEntity> tagEntities) {
@@ -42,6 +48,7 @@ public class ArticleEntity {
         this.description = description;
         this.body = body;
         this.tagEntities = tagEntities;
+        this.tagEntities.forEach(articleTagEntity -> articleTagEntity.setArticleEntity(this));
     }
 
     @Override
@@ -81,7 +88,27 @@ public class ArticleEntity {
                 article.title(),
                 article.description(),
                 article.body(),
-                article.tagList().stream().map(TagEntity::from).toList()
+                tagEntities.stream()
+                        .map(ArticleTagEntity::from)
+                        .toList()
         );
+    }
+    public static ArticleEntity from(Article article, List<ArticleTagEntity> tagEntities) {
+        return new ArticleEntity(
+                article.uuid(),
+                UserEntity.from(article.author()),
+                article.slug(),
+                article.title(),
+                article.description(),
+                article.body(),
+                tagEntities
+        );
+    }
+
+    public void update(Article article) {
+        this.slug = article.slug();
+        this.title = article.title();
+        this.description = article.description();
+        this.body = article.body();
     }
 }

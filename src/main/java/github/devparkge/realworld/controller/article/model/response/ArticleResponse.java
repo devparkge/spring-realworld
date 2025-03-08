@@ -2,8 +2,9 @@ package github.devparkge.realworld.controller.article.model.response;
 
 import github.devparkge.realworld.controller.model.Author;
 import github.devparkge.realworld.domain.article.model.Article;
+import github.devparkge.realworld.domain.article.model.Tag;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 public record ArticleResponse(
@@ -19,7 +20,12 @@ public record ArticleResponse(
         Author author
 ) {
     public static ArticleResponse from(Article article, boolean favorited, int favoritesCount, boolean isFollowing) {
-        List<String> sortedList = article.tagList().stream().sorted().toList();
+        List<String> sortedList = article
+                .tagList()
+                .stream()
+                .map(Tag::tagName)
+                .sorted()
+                .toList();
         return new ArticleResponse(
                 article.slug().value(),
                 article.title(),

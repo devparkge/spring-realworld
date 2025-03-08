@@ -1,5 +1,6 @@
 package github.devparkge.realworld.infrastructure.article.model;
 
+import github.devparkge.realworld.domain.article.model.Tag;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,10 +20,11 @@ public class ArticleTagEntity {
     @Column(name = "article_tag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer databaseId;
+    @Setter
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "articleId", nullable = false)
     private ArticleEntity articleEntity;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tagId", nullable = false)
     private TagEntity tagEntity;
     @CreatedDate
