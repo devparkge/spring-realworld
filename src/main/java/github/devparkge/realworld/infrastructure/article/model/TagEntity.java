@@ -5,12 +5,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+@Getter
 @Entity(name = "tag")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TagEntity {

@@ -1,6 +1,7 @@
 package github.devparkge.realworld.domain.article.service;
 
 import github.devparkge.realworld.domain.article.model.Article;
+import github.devparkge.realworld.domain.article.model.Tag;
 import github.devparkge.realworld.domain.article.repository.ArticleRepository;
 import github.devparkge.realworld.domain.user.repository.UserRepository;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
@@ -23,7 +24,7 @@ public class CreateArticleService {
                         title,
                         description,
                         body,
-                        tagList
+                        tagList.stream().map(Tag::create).toList()
                 )
         );
         return article;

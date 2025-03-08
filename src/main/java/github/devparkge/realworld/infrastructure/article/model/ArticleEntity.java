@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @Entity(name = "article")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class ArticleEntity {
     @Id
     private UUID articleId;
@@ -28,11 +29,12 @@ public class ArticleEntity {
     private String description;
     private String body;
     @OneToMany(mappedBy = "articleEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TagEntity> tagEntities = new ArrayList<>();
+    private List<ArticleTagEntity> tagEntities = new ArrayList<>();
+    @CreatedDate
     private Instant createdAt;
     private Instant updatedAt;
 
-    public ArticleEntity(UUID articleId, UserEntity authorEntity, Slug slug, String title, String description, String body, List<TagEntity> tagEntities) {
+    public ArticleEntity(UUID articleId, UserEntity authorEntity, Slug slug, String title, String description, String body, List<ArticleTagEntity> tagEntities) {
         this.articleId = articleId;
         this.authorEntity = authorEntity;
         this.slug = slug;
@@ -63,16 +65,18 @@ public class ArticleEntity {
                 title,
                 description,
                 body,
-                tagEntities.stream().map(TagEntity::toDomain).toList(),
+                tagEntities.stream()
+                        .map(ArticleTagEntity::toDomain)
+                        .toList(),
                 createdAt,
                 updatedAt
         );
     }
 
-    public static ArticleEntity from(Article article) {
+    public static ArticleEntity from(Article article, List<TagEntity> tagEntities, UserEntity userEntity) {
         return new ArticleEntity(
                 article.uuid(),
-                UserEntity.from(article.author()),
+                userEntity,
                 article.slug(),
                 article.title(),
                 article.description(),

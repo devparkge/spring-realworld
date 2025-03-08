@@ -1,6 +1,5 @@
 package github.devparkge.realworld.controller.article.model.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import github.devparkge.realworld.controller.model.Author;
 import github.devparkge.realworld.domain.article.model.Article;
 
@@ -13,18 +12,8 @@ public record ArticleResponse(
         String description,
         String body,
         List<String> tagList,
-        @JsonFormat(
-                shape = JsonFormat.Shape.STRING,
-                pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'",
-                timezone = "UTC"
-        )
-        LocalDateTime createdAt,
-        @JsonFormat(
-                shape = JsonFormat.Shape.STRING,
-                pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'",
-                timezone = "UTC"
-        )
-        LocalDateTime updatedAt,
+        Instant createdAt,
+        Instant updatedAt,
         boolean favorited,
         int favoritesCount,
         Author author

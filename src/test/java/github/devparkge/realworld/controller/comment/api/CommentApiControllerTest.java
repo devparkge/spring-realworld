@@ -1,15 +1,16 @@
 package github.devparkge.realworld.controller.comment.api;
 
+import github.devparkge.realworld.controller.IntegrationTest;
 import github.devparkge.realworld.controller.comment.model.request.AddCommentRequest;
-import github.devparkge.realworld.controller.user.api.IntegrationTest;
+import github.devparkge.realworld.domain.article.model.Tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,7 +40,7 @@ class CommentApiControllerTest extends IntegrationTest {
                     "TEST",
                     "test description",
                     "test body",
-                    List.of("test", "integrationTset")
+                    Stream.of("test", "integrationTest").map(Tag::create).toList()
             );
             var request = new AddCommentRequest(
                     "add comment body"
@@ -86,7 +87,7 @@ class CommentApiControllerTest extends IntegrationTest {
                     "TEST",
                     "test description",
                     "test body",
-                    List.of("test", "integrationTset")
+                    Stream.of("test", "integrationTest").map(Tag::create).toList()
             );
             addComment(
                     requestUser,
@@ -134,7 +135,7 @@ class CommentApiControllerTest extends IntegrationTest {
                     "TEST",
                     "test description",
                     "test body",
-                    List.of("test", "integrationTset")
+                    Stream.of("test", "integrationTest").map(Tag::create).toList()
             );
             addComment(
                     requestUser,

@@ -23,16 +23,16 @@ public class UserRepositoryImpl extends UserReadRepositoryImpl implements UserRe
     }
 
     @Override
-    public void follow(UUID followerId, UUID followeeId) {
-        UserEntity followerEntity = resolveUserEntity(followerId);
+    public void follow(UUID followeeId, UUID followerId) {
         UserEntity followeeEntity = resolveUserEntity(followeeId);
+        UserEntity followerEntity = resolveUserEntity(followerId);
         followDao.save(FollowEntity.of(followeeEntity, followerEntity));
     }
 
     @Override
-    public void unFollow(UUID followerId, UUID followeeId) {
-        UserEntity followerEntity = resolveUserEntity(followerId);
+    public void unFollow(UUID followeeId, UUID followerId) {
         UserEntity followeeEntity = resolveUserEntity(followeeId);
+        UserEntity followerEntity = resolveUserEntity(followerId);
         followDao.deleteByFolloweeEntityAndFollowerEntity(followeeEntity, followerEntity);
     }
 }

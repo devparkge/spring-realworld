@@ -8,7 +8,7 @@ public interface ArticleRepository extends ArticleReadRepository {
 
     void delete(Article article);
 
-    void  favorite(Article article, User user);
+    void favorite(Article article, User user);
 
     void unFavorite(Article article, User user);
 }

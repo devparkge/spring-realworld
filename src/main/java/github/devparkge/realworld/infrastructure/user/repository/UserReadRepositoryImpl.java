@@ -20,9 +20,9 @@ public class UserReadRepositoryImpl implements UserReadRepository {
     protected final FollowDao followDao;
 
     @Override
-    public boolean isFollowing(UUID followerId, UUID followeeId) {
-        UserEntity followerEntity = resolveUserEntity(followerId);
+    public boolean isFollowing(UUID followeeId, UUID followerId) {
         UserEntity followeeEntity = resolveUserEntity(followeeId);
+        UserEntity followerEntity = resolveUserEntity(followerId);
         return followDao.existsByFolloweeEntityAndFollowerEntity(followeeEntity, followerEntity);
     }
 

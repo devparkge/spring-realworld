@@ -1,7 +1,8 @@
 package github.devparkge.realworld.controller.article.api;
 
 
-import github.devparkge.realworld.controller.user.api.IntegrationTest;
+import github.devparkge.realworld.controller.IntegrationTest;
+import github.devparkge.realworld.domain.article.model.Tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 @DisplayName("TagApiController 통합 테스트")
 class TagApiControllerTest extends IntegrationTest {
@@ -30,7 +31,7 @@ class TagApiControllerTest extends IntegrationTest {
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
+                    Stream.of("test1", "integrationTest", "integration").map(Tag::create).toList()
             );
 
             mockMvc.perform(get("/api/tags"))

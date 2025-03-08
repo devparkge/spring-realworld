@@ -1,12 +1,13 @@
-package github.devparkge.realworld.controller.user.api;
+package github.devparkge.realworld.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import github.devparkge.realworld.domain.article.model.Article;
+import github.devparkge.realworld.domain.article.model.Tag;
 import github.devparkge.realworld.domain.comment.model.Comment;
 import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.exception.UUIDNotFoundException;
-import github.devparkge.realworld.infrastructure.article.repository.InMemoryArticleRepository;
-import github.devparkge.realworld.infrastructure.article.repository.InMemoryTagReadRepository;
+import github.devparkge.realworld.infrastructure.article.repository.ArticleRepositoryImpl;
+import github.devparkge.realworld.infrastructure.article.repository.TagReadRepositoryImpl;
 import github.devparkge.realworld.infrastructure.comment.repository.InMemoryCommentRepository;
 import github.devparkge.realworld.infrastructure.user.repository.UserRepositoryImpl;
 import github.devparkge.realworld.util.JwtUtil;
@@ -27,9 +28,9 @@ public class IntegrationTest {
     @Autowired
     private UserRepositoryImpl userRepository;
     @Autowired
-    private InMemoryArticleRepository articleRepository;
+    private ArticleRepositoryImpl articleRepository;
     @Autowired
-    private InMemoryTagReadRepository tagReadRepository;
+    private TagReadRepositoryImpl tagReadRepository;
     @Autowired
     private InMemoryCommentRepository commentRepository;
     @Autowired
@@ -41,8 +42,6 @@ public class IntegrationTest {
 
     @AfterEach
     void after() {
-        this.articleRepository.clear();
-        this.tagReadRepository.clear();
         this.commentRepository.clear();
     }
 
@@ -57,14 +56,14 @@ public class IntegrationTest {
         );
     }
 
-    protected void follow(UUID followerId, UUID followeeId) {
+    protected void follow(UUID followeeId, UUID followerId) {
         this.userRepository.follow(
-                followerId,
-                followeeId
+                followeeId,
+                followerId
         );
     }
 
-    protected Article createArticle(UUID userId, String title, String description, String body, List<String> tagList) {
+    protected Article createArticle(UUID userId, String title, String description, String body, List<Tag> tagList) {
         return this.articleRepository.save(
                 Article.create(
                         userRepository.findByUUID(userId).orElseThrow(() -> new UUIDNotFoundException(String.format("%s를 찾을 수 없습니다.", userId))),
