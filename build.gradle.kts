@@ -16,6 +16,9 @@ dependencies {
     // ✅ MyBatis
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4")
 
+    // ✅ JPA
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.4.3")
+
     // ✅ JSON Web Token (JWT)
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
@@ -27,6 +30,7 @@ dependencies {
 
     // ✅ H2 Database (테스트용)
     runtimeOnly("com.h2database:h2:2.3.232")
+    testRuntimeOnly(("com.h2database:h2:2.3.232"))
 
     // ✅ JUnit 테스트
     testImplementation(platform("org.junit:junit-bom:5.10.0"))

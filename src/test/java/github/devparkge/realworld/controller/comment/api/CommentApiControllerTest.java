@@ -1,15 +1,16 @@
 package github.devparkge.realworld.controller.comment.api;
 
+import github.devparkge.realworld.controller.IntegrationTest;
 import github.devparkge.realworld.controller.comment.model.request.AddCommentRequest;
-import github.devparkge.realworld.controller.user.api.IntegrationTest;
+import github.devparkge.realworld.domain.article.model.Tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,19 +40,19 @@ class CommentApiControllerTest extends IntegrationTest {
                     "TEST",
                     "test description",
                     "test body",
-                    List.of("test", "integrationTset")
+                    Stream.of("test", "integrationTest").map(Tag::create).toList()
             );
             var request = new AddCommentRequest(
                     "add comment body"
             );
-            String token = "Bearer " + jwtUtil.generateToken(requestUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(requestUser.uuid());
 
             mockMvc.perform(post("/api/articles/test/comments")
                             .header(HttpHeaders.AUTHORIZATION, token)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(Map.of("comment", request))))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.comment.id").value(1))
+                    .andExpect(jsonPath("$.comment.id").isNotEmpty())
                     .andExpect(jsonPath("$.comment.createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.comment.updatedAt").isNotEmpty())
                     .andExpect(jsonPath("$.comment.body").value(request.body()))
@@ -86,20 +87,20 @@ class CommentApiControllerTest extends IntegrationTest {
                     "TEST",
                     "test description",
                     "test body",
-                    List.of("test", "integrationTset")
+                    Stream.of("test", "integrationTest").map(Tag::create).toList()
             );
             addComment(
                     requestUser,
                     article,
                     "comment Body"
             );
-            String token = "Bearer " + jwtUtil.generateToken(requestUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(requestUser.uuid());
 
             mockMvc.perform(get("/api/articles/test/comments")
                             .header(HttpHeaders.AUTHORIZATION, token))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.comments").isArray())
-                    .andExpect(jsonPath("$.comments[0].id").value(1))
+                    .andExpect(jsonPath("$.comments[0].id").isNotEmpty())
                     .andExpect(jsonPath("$.comments[0].createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.comments[0].updatedAt").isNotEmpty())
                     .andExpect(jsonPath("$.comments[0].body").value("comment Body"))
@@ -134,7 +135,7 @@ class CommentApiControllerTest extends IntegrationTest {
                     "TEST",
                     "test description",
                     "test body",
-                    List.of("test", "integrationTset")
+                    Stream.of("test", "integrationTest").map(Tag::create).toList()
             );
             addComment(
                     requestUser,

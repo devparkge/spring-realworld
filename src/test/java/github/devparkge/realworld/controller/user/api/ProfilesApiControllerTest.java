@@ -1,5 +1,6 @@
 package github.devparkge.realworld.controller.user.api;
 
+import github.devparkge.realworld.controller.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

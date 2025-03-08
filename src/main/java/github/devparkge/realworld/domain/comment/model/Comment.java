@@ -4,19 +4,20 @@ import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.user.model.User;
 import lombok.Builder;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Builder
 public record Comment(
         int id,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt,
+        Instant createdAt,
+        Instant updatedAt,
         String body,
         User author,
         Article article
 ) {
     public static Comment create(User author, Article article, String body) {
-        LocalDateTime now = LocalDateTime.now();
+        Instant now = Instant.now();
         return Comment.builder()
                 .id(-1)
                 .createdAt(now)

@@ -12,17 +12,17 @@ import java.util.UUID;
 public class FollowService {
     private final UserRepository userRepository;
 
-    public Boolean isFollowing(UUID followerId, UUID followeeId) {
-        return Optional.ofNullable(followeeId)
-                .map(id -> userRepository.isFollowing(followerId, followeeId))
+    public Boolean isFollowing(UUID followeeId, UUID followerId) {
+        return Optional.ofNullable(followerId)
+                .map(id -> userRepository.isFollowing(followeeId, followerId))
                 .orElse(false);
     }
 
-    public void followUser(UUID followerId, UUID followeeId) {
-        userRepository.follow(followerId, followeeId);
+    public void followUser(UUID followeeId, UUID followerId) {
+        userRepository.follow(followeeId, followerId);
     }
 
-    public void unFollowUser(UUID followerId, UUID followeeId) {
-        userRepository.unFollow(followerId, followeeId);
+    public void unFollowUser(UUID followeeId, UUID followerId) {
+        userRepository.unFollow(followeeId, followerId);
     }
 }

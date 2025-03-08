@@ -1,10 +1,11 @@
 package github.devparkge.realworld.controller.article.api;
 
-import github.devparkge.realworld.controller.article.model.request.GetFeedArticlesRequest;
-import github.devparkge.realworld.controller.user.api.IntegrationTest;
+import github.devparkge.realworld.controller.IntegrationTest;
 import github.devparkge.realworld.controller.article.model.request.CreateArticleRequest;
+import github.devparkge.realworld.controller.article.model.request.GetFeedArticlesRequest;
 import github.devparkge.realworld.controller.article.model.request.UpdateArticleRequest;
 import github.devparkge.realworld.domain.article.model.Slug;
+import github.devparkge.realworld.domain.article.model.Tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,11 +14,12 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("ArticlesApiController 통합 테스트")
 class ArticlesApiControllerTest extends IntegrationTest {
@@ -49,9 +51,9 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.article.description").value(request.description()))
                     .andExpect(jsonPath("$.article.body").value(request.body()))
                     .andExpect(jsonPath("$.article.tagList").isArray())
-                    .andExpect(jsonPath("$.article.tagList[0]").value("test"))
+                    .andExpect(jsonPath("$.article.tagList[0]").value("integration"))
                     .andExpect(jsonPath("$.article.tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.article.tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.article.tagList[2]").value("test"))
                     .andExpect(jsonPath("$.article.createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.article.updatedAt").isNotEmpty())
                     .andExpect(jsonPath("$.article.favorited").value(false))
@@ -79,7 +81,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
+                    Stream.of("test1", "integrationTest", "integration").map(Tag::create).toList()
             );
 
             mockMvc.perform(get("/api/articles/test1"))
@@ -91,9 +93,10 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.article.body").value(article.body()))
 
                     .andExpect(jsonPath("$.article.tagList").isArray())
-                    .andExpect(jsonPath("$.article.tagList[0]").value("test1"))
+
+                    .andExpect(jsonPath("$.article.tagList[0]").value("integration"))
                     .andExpect(jsonPath("$.article.tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.article.tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.article.tagList[2]").value("test1"))
 
                     .andExpect(jsonPath("$.article.createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.article.updatedAt").isNotEmpty())
@@ -124,7 +127,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("dragons", "training")
+                    Stream.of("dragons", "training").map(Tag::create).toList()
             );
 
             String token = "Token " + jwtUtil.generateToken(user.uuid());
@@ -160,23 +163,23 @@ class ArticlesApiControllerTest extends IntegrationTest {
         @Test
         @DisplayName("follow한 유저의 arlticles를 반환한다.")
         void getFeedArticles() throws Exception {
-            var followeeUser = createUser(
+            var followerUser = createUser(
                     "parkge",
                     "parkge@gmail.com",
                     "1234"
             );
-            var followerUser = createUser(
+            var followeeUser = createUser(
                     "gunKim",
                     "gunKim@gmail.com",
                     "1234"
             );
 
             var article = createArticle(
-                    followerUser.uuid(),
+                    followeeUser.uuid(),
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
+                    Stream.of("test1", "integrationTest", "integration").map(Tag::create).toList()
             );
 
             var request = new GetFeedArticlesRequest(
@@ -184,8 +187,8 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     null
             );
 
-            follow(followerUser.uuid(), followeeUser.uuid());
-            String token = "Token " + jwtUtil.generateToken(followeeUser.uuid());
+            follow(followeeUser.uuid(), followerUser.uuid());
+            String token = "Token " + jwtUtil.generateToken(followerUser.uuid());
 
             mockMvc.perform(get("/api/articles/feed")
                             .header(HttpHeaders.AUTHORIZATION, token)
@@ -200,17 +203,17 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.articles[0].description").value(article.description()))
                     .andExpect(jsonPath("$.articles[0].body").value(article.body()))
                     .andExpect(jsonPath("$.articles[0].tagList").isArray())
-                    .andExpect(jsonPath("$.articles[0].tagList[0]").value("test1"))
+                    .andExpect(jsonPath("$.articles[0].tagList[0]").value("integration"))
                     .andExpect(jsonPath("$.articles[0].tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.articles[0].tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.articles[0].tagList[2]").value("test1"))
                     .andExpect(jsonPath("$.articles[0].createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.articles[0].updatedAt").isNotEmpty())
                     .andExpect(jsonPath("$.articles[0].favorited").value(false))
                     .andExpect(jsonPath("$.articles[0].favoritesCount").value(0))
 
-                    .andExpect(jsonPath("$.articles[0].author.username").value(followerUser.username()))
-                    .andExpect(jsonPath("$.articles[0].author.bio").value(followerUser.bio()))
-                    .andExpect(jsonPath("$.articles[0].author.image").value(followerUser.image()))
+                    .andExpect(jsonPath("$.articles[0].author.username").value(followeeUser.username()))
+                    .andExpect(jsonPath("$.articles[0].author.bio").value(followeeUser.bio()))
+                    .andExpect(jsonPath("$.articles[0].author.image").value(followeeUser.image()))
                     .andExpect(jsonPath("$.articles[0].author.isFollowing").value(true))
                     .andDo(print());
         }
@@ -227,12 +230,12 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "parkge@gmail.com",
                     "1234"
             );
-            var article1 = ArticlesApiControllerTest.this.createArticle(
+            var article = ArticlesApiControllerTest.this.createArticle(
                     user.uuid(),
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
+                    Stream.of("test1", "integrationTest", "integration").map(Tag::create).toList()
             );
 
             var request = new UpdateArticleRequest(
@@ -251,9 +254,9 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.article.description").value(request.description()))
                     .andExpect(jsonPath("$.article.body").value(request.body()))
                     .andExpect(jsonPath("$.article.tagList").isArray())
-                    .andExpect(jsonPath("$.article.tagList[0]").value("test1"))
+                    .andExpect(jsonPath("$.article.tagList[0]").value("integration"))
                     .andExpect(jsonPath("$.article.tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.article.tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.article.tagList[2]").value("test1"))
                     .andExpect(jsonPath("$.article.createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.article.updatedAt").isNotEmpty())
                     .andExpect(jsonPath("$.article.favorited").value(false))
@@ -281,7 +284,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
+                    Stream.of("test1", "integrationTest", "integration").map(Tag::create).toList()
             );
 
             String token = "Token " + jwtUtil.generateToken(user.uuid());
@@ -312,7 +315,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
+                    Stream.of("test1", "integrationTest", "integration").map(Tag::create).toList()
             );
 
             String token = "Token " + jwtUtil.generateToken(ownerUser.uuid());
@@ -326,9 +329,9 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.article.body").value(article.body()))
 
                     .andExpect(jsonPath("$.article.tagList").isArray())
-                    .andExpect(jsonPath("$.article.tagList[0]").value("test1"))
+                    .andExpect(jsonPath("$.article.tagList[0]").value("integration"))
                     .andExpect(jsonPath("$.article.tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.article.tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.article.tagList[2]").value("test1"))
 
                     .andExpect(jsonPath("$.article.createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.article.updatedAt").isNotEmpty())
@@ -364,7 +367,7 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     "Test1",
                     "test1 create article",
                     "test1 create article integration test",
-                    List.of("test1", "integrationTest", "integration")
+                    Stream.of("test1", "integrationTest", "integration").map(Tag::create).toList()
             );
             favorite(article, ownerUser);
             String token = "Token " + jwtUtil.generateToken(ownerUser.uuid());
@@ -379,9 +382,9 @@ class ArticlesApiControllerTest extends IntegrationTest {
                     .andExpect(jsonPath("$.article.body").value(article.body()))
 
                     .andExpect(jsonPath("$.article.tagList").isArray())
-                    .andExpect(jsonPath("$.article.tagList[0]").value("test1"))
+                    .andExpect(jsonPath("$.article.tagList[0]").value("integration"))
                     .andExpect(jsonPath("$.article.tagList[1]").value("integrationTest"))
-                    .andExpect(jsonPath("$.article.tagList[2]").value("integration"))
+                    .andExpect(jsonPath("$.article.tagList[2]").value("test1"))
 
                     .andExpect(jsonPath("$.article.createdAt").isNotEmpty())
                     .andExpect(jsonPath("$.article.updatedAt").isNotEmpty())

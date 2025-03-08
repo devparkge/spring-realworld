@@ -5,9 +5,7 @@ import github.devparkge.realworld.controller.article.model.response.wrapper.Arti
 import github.devparkge.realworld.controller.article.model.response.wrapper.ArticlesWrapper;
 import github.devparkge.realworld.domain.article.model.Article;
 import github.devparkge.realworld.domain.article.service.FavoriteArticleService;
-import github.devparkge.realworld.domain.user.model.User;
 import github.devparkge.realworld.domain.user.service.FollowService;
-import github.devparkge.realworld.domain.user.service.GetUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +16,6 @@ import java.util.function.BiPredicate;
 @Component
 @RequiredArgsConstructor
 public class ArticleResponseAssembler {
-    private final GetUserService getUserService;
     private final FollowService followService;
     private final FavoriteArticleService favoriteArticleService;
 
@@ -27,12 +24,12 @@ public class ArticleResponseAssembler {
         boolean favorited = getContext(
                 authUserUUID,
                 article.uuid(),
-                (userId, articleId) -> favoriteArticleService.getFavoritesArticleIds(userId).contains(articleId)
+                (articleId, userId) -> favoriteArticleService.getFavoritesArticleIds(userId).contains(articleId)
         );
         boolean isFollowing = getContext(
                 authUserUUID,
                 article.author().uuid(),
-                (userId, articleUserId) -> followService.isFollowing(articleUserId, userId)
+                followService::isFollowing
         );
         return ArticleWrapper.create(ArticleResponse.from(article, favorited, favoriteCount, isFollowing));
     }
@@ -44,12 +41,12 @@ public class ArticleResponseAssembler {
                                     boolean favorited = getContext(
                                             authUserUUID,
                                             article.uuid(),
-                                            (userId, articleId) -> favoriteArticleService.getFavoritesArticleIds(userId).contains(articleId)
+                                            (articleId, userId) -> favoriteArticleService.getFavoritesArticleIds(userId).contains(articleId)
                                     );
                                     boolean isFollowing = getContext(
                                             authUserUUID,
                                             article.author().uuid(),
-                                            (userId, articleUserId) -> followService.isFollowing(articleUserId, userId)
+                                            followService::isFollowing
                                     );
                                     int favoriteCount = favoriteArticleService.getFavoriteCount(article.uuid());
                                     return ArticleResponse.from(article, favorited, favoriteCount, isFollowing);
@@ -59,9 +56,9 @@ public class ArticleResponseAssembler {
     }
 
     public boolean getContext(UUID authUserUUID, UUID targetId, BiPredicate<UUID, UUID> condition) {
-        if(authUserUUID == null) {
+        if (authUserUUID == null) {
             return false;
         }
-        return condition.test(authUserUUID, targetId);
+        return condition.test(targetId, authUserUUID);
     }
 }
